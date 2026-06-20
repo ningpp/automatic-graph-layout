@@ -256,7 +256,7 @@ namespace Microsoft.Msagl.UnitTests.Rectilinear
             {
                 return new Shape(new Polyline(points) { Closed = true });
             }
-            return new Shape(new Polyline(points.Reverse()) { Closed = true });
+            return new Shape(new Polyline(((IEnumerable<Point>)points).Reverse()) { Closed = true });
         }
 
         internal static Shape CurveFromPoints(Point[] points)

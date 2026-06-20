@@ -68,19 +68,19 @@ namespace Microsoft.Msagl.UnitTests
         #region Test
         [TestMethod]
         [Description("Randomly selects some DOT files and do Sugiyam layout testing")]
-        [DeploymentItem(@"Resources\DotFiles\LevFiles", "Dots")]
+        [DeploymentItem("Resources/DotFiles/LevFiles", "Dots")]
         public void RandomDotFileTests() {
             int line, column;
             string msg;
 
-            string fileName = Path.Combine(this.TestContext.TestDir, "Out\\Dots\\fsm.dot");
+            string fileName = GetDeploymentPath("Dots", "fsm.dot");
             Drawing.Graph drawGraph = Parser.Parse(fileName, out line, out column, out msg);
             drawGraph.CreateGeometryGraph();
             GeometryGraph graph = drawGraph.GeometryGraph;
             GraphGenerator.SetRandomNodeShapes(graph, random);
             LayeredLayout layeredLayout = new LayeredLayout(graph, new SugiyamaLayoutSettings() { BrandesThreshold = 1 });
             layeredLayout.Run();
-            string[] allFiles = Directory.GetFiles(Path.Combine(this.TestContext.TestDir, "Out\\Dots"), "*.dot");
+            string[] allFiles = Directory.GetFiles(GetDeploymentPath("Dots"), "*.dot");
             List<int> selected = new List<int>();
 
             for (int i = 0; i < 10; i++)

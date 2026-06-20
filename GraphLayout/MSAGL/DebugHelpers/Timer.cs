@@ -1,34 +1,25 @@
-﻿using System.Runtime.InteropServices;
-using System.ComponentModel;
+﻿using System.Diagnostics;
 
 namespace Microsoft.Msagl.DebugHelpers {
     /// <summary>
-    /// support for native method calls
+    /// High-resolution timer using System.Diagnostics.Stopwatch
     /// </summary>
     public class Timer {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass"), DllImport("Kernel32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool QueryPerformanceCounter(out long lpPerformanceCount);
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass"), DllImport("Kernel32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool QueryPerformanceFrequency(out long lpFrequency);
         private long startTime;
         private long stopTime;
-        private long freq;
+        private readonly long freq;
         /// <summary>
         /// ctor
         /// </summary>
         public Timer() {
-            if (QueryPerformanceFrequency(out freq) == false) {
-                throw new Win32Exception(); // timer not supanchored
-            }
+            freq = Stopwatch.Frequency;
         }
         /// <summary>
         /// Start the timer
         /// </summary>
         /// <returns>long - tick count</returns>
         public long Start() {
-            QueryPerformanceCounter(out startTime);
+            startTime = Stopwatch.GetTimestamp();
             return startTime;
         }
         /// <summary>
@@ -36,7 +27,7 @@ namespace Microsoft.Msagl.DebugHelpers {
         /// </summary>
         /// <returns>long - tick count</returns>
         public long Stop() {
-            QueryPerformanceCounter(out stopTime);
+            stopTime = Stopwatch.GetTimestamp();
             return stopTime;
         }
         /// <summary>
@@ -54,7 +45,6 @@ namespace Microsoft.Msagl.DebugHelpers {
         ///<returns>long - Frequency</returns>
         public long Frequency {
             get {
-                QueryPerformanceFrequency(out freq);
                 return freq;
             }
         }

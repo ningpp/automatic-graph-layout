@@ -18,8 +18,8 @@
       (5) Collapse and open subgraphs
       (6) Edit the graph
     </description>
-    <releaseNotes></releaseNotes>
-    <copyright>
+      <releaseNotes>The release contains bug fixes and code cleanup. Some defines like TEST_MSAGL were removed.</releaseNotes>
+     <copyright>
       Copyright © Microsoft Corporation
     </copyright>
     <language>en-US</language>
@@ -27,15 +27,24 @@
 
     <dependencies>
       <group targetFramework=".NETFramework4.7.2" >
-        <dependency id="Microsoft.Msagl.Drawing" version="BuildVersion" />
+        <dependency id="Msagl.Drawing" version="BuildVersion" />
       </group>
       <group targetFramework="net6.0-windows7.0">
-        <dependency id="Microsoft.Msagl.Drawing" version="BuildVersion" />
+        <dependency id="Msagl.Drawing" version="BuildVersion" />
       </group>      
     </dependencies>
     <frameworkReferences>
       <group targetFramework="net6.0-windows7.0">
-        <frameworkReference name="Microsoft.WindowsDesktop.App.WinForms" />
+        <frameworkReference name="Microsoft.WindowsDesktop.App.WindowsForms" />
+      </group>
+      <group targetFramework="net8.0-windows7.0">
+        <frameworkReference name="Microsoft.WindowsDesktop.App.WindowsForms" />
+      </group>
+      <group targetFramework="net9.0-windows7.0">
+        <frameworkReference name="Microsoft.WindowsDesktop.App.WindowsForms" />
+      </group>
+      <group targetFramework="net10.0-windows7.0">
+        <frameworkReference name="Microsoft.WindowsDesktop.App.WindowsForms" />
       </group>
       
     </frameworkReferences>

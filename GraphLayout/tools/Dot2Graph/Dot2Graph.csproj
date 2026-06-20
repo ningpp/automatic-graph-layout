@@ -2,7 +2,6 @@
 	<PropertyGroup>
 		<OutputType>Library</OutputType>
 		<TargetFrameworks>netstandard2.0</TargetFrameworks>
-		<RuntimeIdentifiers>win</RuntimeIdentifiers>
 	  <RootNamespace>Dot2Graph</RootNamespace>
     <AssemblyName>Dot2Graph</AssemblyName>
     <Platforms>AnyCPU;x86;x64</Platforms>

@@ -27,7 +27,7 @@ namespace Microsoft.Msagl.UnitTests
     /// Tests specific to the InitialLayout class.
     /// </summary>
     [TestClass]
-    [DeploymentItem(@"Resources\MSAGLGeometryGraphs")]
+    [DeploymentItem("Resources/MSAGLGeometryGraphs")]
     public class InitialLayoutTests : MsaglTestBase
     {
         [TestInitialize]

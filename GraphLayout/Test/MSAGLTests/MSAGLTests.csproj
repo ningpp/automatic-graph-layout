@@ -1,7 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     
     <AssemblyName>Microsoft.Msagl.UnitTests</AssemblyName>
@@ -16,11 +16,10 @@
     <Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
     <ProjectReference Include="../../MSAGL/AutomaticGraphLayout.csproj"/>
     <ProjectReference Include="../../Drawing/AutomaticGraphLayout.Drawing.csproj"/>
-    <ProjectReference Include="../../tools/GraphViewerGDI/GraphViewerGDI.csproj"/>
-    <ProjectReference Include="../../tools/Dot2Graph/Dot2graph.csproj"/>
+    <ProjectReference Include="../../tools/Dot2Graph/Dot2Graph.csproj"/>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\MsaglGeometryGraphs\graph0.msagl.geom">
+    <None Include="Resources/MSAGLGeometryGraphs/graph0.msagl.geom">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Resources\Constraints\OverlapRemoval\Data\*.txt">
@@ -29,14 +28,14 @@
     <None Include="Resources\Constraints\ProjectionSolver\Data\*.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\MsaglGeometryGraphs\bug1.msagl.geom" />
-    <None Include="Resources\MsaglGeometryGraphs\graphWithGroups.msagl.geom">
+    <None Include="Resources/MSAGLGeometryGraphs/bug1.msagl.geom" />
+    <None Include="Resources/MSAGLGeometryGraphs/graphWithGroups.msagl.geom">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\MsaglGeometryGraphs\complex.msagl.geom">
+    <None Include="Resources/MSAGLGeometryGraphs/complex.msagl.geom">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\MsaglGeometryGraphs\RoutingRegressionBug20110127.msagl.geom">
+    <None Include="Resources/MSAGLGeometryGraphs/RoutingRegressionBug20110127.msagl.geom">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Resources\Rectilinear\Data\*.txt">
@@ -586,7 +585,7 @@
     <None Include="Resources\DotFiles\MoreGraphs\*.*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\MsaglGeometryGraphs\*.msagl.geom">
+    <None Include="Resources/MSAGLGeometryGraphs/*.msagl.geom">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

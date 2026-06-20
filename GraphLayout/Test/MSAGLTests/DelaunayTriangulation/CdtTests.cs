@@ -11,7 +11,6 @@ using Microsoft.Msagl.Routing.ConstrainedDelaunayTriangulation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
 using Microsoft.Msagl.Routing.Spline.Bundling;
-using Microsoft.Msagl.GraphViewerGdi;
 
 
 
@@ -113,7 +112,6 @@ namespace Microsoft.Msagl.UnitTests.DelaunayTriangulation {
         [Ignore]
         [TestMethod]
         public void FlatLine() {
-            GraphViewerGdi.DisplayGeometryGraph.SetShowFunctions();
             var points = new List<Point> { new Point(0, 0), new Point(100, 0), new Point(300, 0) };
             var cdt = new Cdt(points, null, null);
             cdt.Run();
@@ -121,7 +119,6 @@ CdtSweeper.ShowFront(cdt.GetTriangles(), null, null, null);
         }
         [TestMethod]
         public void SmallTriangulation() {
-            GraphViewerGdi.DisplayGeometryGraph.SetShowFunctions();
             var cdt = new Cdt(Points(), null, new[]{new SymmetricTuple<Point>(new Point(109,202),new Point(506,135) ),
             new SymmetricTuple<Point>(new Point(139,96),new Point(452,96) )}.ToList());
             cdt.Run();
@@ -167,7 +164,6 @@ CdtSweeper.ShowFront(cdt.GetTriangles(), null, null, null);
         }
         [TestMethod]
         public void TriangulationWithSizes() {
-            GraphViewerGdi.DisplayGeometryGraph.SetShowFunctions();
             int[] dimensions = { 2, 10, 100, 10000, 100000 };
             double size = 10.0;
             foreach (var n in dimensions)
@@ -242,7 +238,6 @@ CdtSweeper.ShowFront(cdt.GetTriangles(), null, null, null);
 
         [TestMethod]
         public void TwoHoles() {
-            GraphViewerGdi.DisplayGeometryGraph.SetShowFunctions();
             var corners = new[]{
             new Point(0, 0),
             new Point(100, 0),
@@ -277,7 +272,6 @@ CdtSweeper.ShowFront(cdt.GetTriangles(), null, null, null);
         }
         [TestMethod]
         public void GridRotated() {
-            GraphViewerGdi.DisplayGeometryGraph.SetShowFunctions();
             var corners = new List<Point>();
             var ang = Math.PI / 6;
             for (var i = 0; i < 10; i++) {
@@ -291,7 +285,6 @@ CdtSweeper.ShowFront(cdt.GetTriangles(), null, null, null);
         }
         [TestMethod]
         public void AlongFrontTest() {
-            DisplayGeometryGraph.SetShowFunctions();
             List<Polyline> polys = CreatePolylines();
             var constrainedDelaunayTriangulation = new Cdt(null, polys, null);
             constrainedDelaunayTriangulation.Run();

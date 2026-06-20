@@ -10,7 +10,6 @@
 
 using System;
 using System.Diagnostics;
-using System.Windows.Forms;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -54,21 +53,8 @@ namespace Microsoft.Msagl.UnitTests
         [SuppressMessage("Microsoft.Globalization", "CA1300:SpecifyMessageBoxOptions", Justification = "This is test code.")]
         internal static void RaiseInteractiveAssert(string message)
         {
-            // Debug.Assert puts a second callstack in the error dialog so do the Abort/Retry/Ignore handling manually.
-            var button = MessageBox.Show(
-                message,
-                Process.GetCurrentProcess().ProcessName,
-                MessageBoxButtons.AbortRetryIgnore,
-                MessageBoxIcon.Error,
-                MessageBoxDefaultButton.Button3);
-            if (DialogResult.Retry == button)
-            {
-                Debugger.Break();
-            }
-            else if (DialogResult.Abort == button)
-            {
-                Environment.Exit(-1);
-            }
+            Debug.Assert(false, message);
+            Debugger.Break();
         }
 
         [DebuggerStepThrough]
