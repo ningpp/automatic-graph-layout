@@ -11,7 +11,7 @@ using Microsoft.Msagl.Routing.Spline.Bundling;
 using Microsoft.Msagl.Core.GraphAlgorithms;
 
 namespace Microsoft.Msagl.Routing {
-    internal class MultiEdgeRouter {
+    public class MultiEdgeRouter {
         readonly List<EdgeGeometry[]> multiEdgeGeometries;
         readonly InteractiveEdgeRouter interactiveEdgeRouter;
         readonly BundlingSettings bundlingSettings;

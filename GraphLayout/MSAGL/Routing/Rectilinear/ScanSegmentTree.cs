@@ -1,4 +1,4 @@
-//
+﻿//
 // ScanSegmentTree.cs
 // MSAGL class for visibility scan segment tree for Rectilinear Edge Routing.
 //
@@ -13,8 +13,8 @@ using Microsoft.Msagl.Core.Geometry;
 namespace Microsoft.Msagl.Routing.Rectilinear {
     using DebugHelpers;
 
-    internal class ScanSegmentTree : IComparer<ScanSegment> {
-        internal ScanDirection ScanDirection { get; private set; }
+    public class ScanSegmentTree : IComparer<ScanSegment> {
+        public ScanDirection ScanDirection { get; private set; }
         private readonly RbTree<ScanSegment> segmentTree;
 
         // Temporary variables for lookup.
@@ -22,18 +22,18 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
         readonly Func<ScanSegment, bool> findIntersectorPred;
         readonly Func<ScanSegment, bool> findPointPred;
 
-        internal ScanSegmentTree(ScanDirection scanDir) {
+        public ScanSegmentTree(ScanDirection scanDir) {
             ScanDirection = scanDir;
             this.segmentTree = new RbTree<ScanSegment>(this);
             this.findIntersectorPred = new Func<ScanSegment, bool>(this.CompareIntersector);
             this.findPointPred = new Func<ScanSegment, bool>(this.CompareToPoint);
         }
 
-        internal IEnumerable<ScanSegment> Segments { get { return this.segmentTree; } }
+        public IEnumerable<ScanSegment> Segments { get { return this.segmentTree; } }
 
         // If the seg is already in the tree it returns that instance, else it inserts the new
         // seg and returns that.
-        internal RBNode<ScanSegment> InsertUnique(ScanSegment seg) {
+        public RBNode<ScanSegment> InsertUnique(ScanSegment seg) {
             // RBTree's internal operations on insert/remove etc. mean the node can't cache the
             // RBNode returned by insert(); instead we must do find() on each call.  But we can
             // use the returned node to get predecessor/successor.
@@ -53,12 +53,12 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             Debug.Assert(ScanDirection.IsFlat(seg.Start, seg.End), "non-flat segment cannot be inserted");
         }
 
-        internal void Remove(ScanSegment seg) {
+        public void Remove(ScanSegment seg) {
             Debug.Assert(seg.IsVertical == ScanDirection.IsVertical, "seg.IsVertical != ScanDirection.IsVertical");
             this.segmentTree.Remove(seg);
         }
 
-        internal ScanSegment Find(Point start, Point end) {
+        public ScanSegment Find(Point start, Point end) {
             Debug.Assert(PointComparer.Equal(start, end) || !ScanDirection.IsPerpendicular(start, end)
                         , "perpendicular segment passed");
             this.lookupSegment.Update(start, end);
@@ -70,12 +70,12 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
         }
 
         // Find the lowest perpendicular scanseg that intersects the segment endpoints.
-        internal ScanSegment FindLowestIntersector(Point start, Point end) {
+        public ScanSegment FindLowestIntersector(Point start, Point end) {
             var node = FindLowestIntersectorNode(start, end);
             return (null != node) ? node.Item : null;
         }
 
-        internal RBNode<ScanSegment> FindLowestIntersectorNode(Point start, Point end) {
+        public RBNode<ScanSegment> FindLowestIntersectorNode(Point start, Point end) {
             Debug.Assert(ScanDirection.IsPerpendicular(start, end), "non-perpendicular segment passed");
 
             // Find the last segment that starts at or before 'start'.
@@ -104,7 +104,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
         }
 
         // Find the highest perpendicular scanseg that intersects the segment endpoints.
-        internal ScanSegment FindHighestIntersector(Point start, Point end) {
+        public ScanSegment FindHighestIntersector(Point start, Point end) {
             Debug.Assert(ScanDirection.IsPerpendicular(start, end), "non-perpendicular segment passed");
 
             // Find the last segment that starts at or before 'end'.
@@ -136,10 +136,10 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             return (ScanDirection.Compare(seg.Start, this.lookupSegment.Start) <= 0);
         }
 
-        internal ScanSegment FindSegmentContainingPoint(Point location, bool allowUnfound) {
+        public ScanSegment FindSegmentContainingPoint(Point location, bool allowUnfound) {
             return FindSegmentOverlappingPoints(location, location, allowUnfound);
         }
-        internal ScanSegment FindSegmentOverlappingPoints(Point start, Point end, bool allowUnfound) {
+        public ScanSegment FindSegmentOverlappingPoints(Point start, Point end, bool allowUnfound) {
             this.lookupSegment.Update(start, end);
             RBNode<ScanSegment> node = this.segmentTree.FindFirst(this.findPointPred);
 
@@ -180,7 +180,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             return this.segmentTree.Find(currentSegment);
         }
 
-        internal void MergeSegments() {
+        public void MergeSegments() {
             // As described in the doc, hintScanSegment handles all the non-overlapped non-reflection cases.
             DevTraceInfo(1, "{0} ScanSegmentTree MergeSegments, count = {1}"
                             , ScanDirection.IsHorizontal ? "Horizontal" : "Vertical", this.segmentTree.Count);
@@ -349,7 +349,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
 
         [Conditional("DEVTRACE")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        internal void DevTraceVerifyVisibility() {
+        public void DevTraceVerifyVisibility() {
 #if DEVTRACE
             if (this.scanSegmentVerify.IsLevel(1)) {
                 DevTraceInfo(1, "Beginning {0} ScanSegmentTree VisibilityVertex Check..."

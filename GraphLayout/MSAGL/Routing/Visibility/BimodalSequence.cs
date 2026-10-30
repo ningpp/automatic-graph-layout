@@ -6,9 +6,9 @@ namespace Microsoft.Msagl.Routing.Visibility {
     /// one for which there is an r in [ 0, n-1] such that f(r), f(r + I), . . . , f(n), f( l), . . . ,
     /// f(r - 1) is unimodal. In our case no three sequential elements have the same value
     /// </summary>
-    internal class BimodalSequence {
+    public class BimodalSequence {
 
-        internal BimodalSequence(Func<int,double> sequence, int length) {
+        public BimodalSequence(Func<int,double> sequence, int length) {
             this.sequence = sequence;
             this.length = length;
         }
@@ -18,7 +18,7 @@ namespace Microsoft.Msagl.Routing.Visibility {
         /// <summary>
         /// the sequence values
         /// </summary>
-        internal Func<int,double> Sequence {
+        public Func<int,double> Sequence {
             get { return sequence; }
         }
 
@@ -26,11 +26,11 @@ namespace Microsoft.Msagl.Routing.Visibility {
         /// <summary>
         /// the length of the sequence: the sequence starts from 0
         /// </summary>
-        internal int Length {
+        public int Length {
             get { return length; }
         }
         //following Chazelle, Dobkin
-        internal int FindMinimum(){
+        public int FindMinimum(){
             if (sequence(0) == sequence(Length - 1)) //we have a unimodal function
                 return (new UnimodalSequence(sequence,Length)).FindMinimum();
 
@@ -46,7 +46,7 @@ namespace Microsoft.Msagl.Routing.Visibility {
             return delegate(int i) { return Math.Min(this.Sequence(i), leftVal + k * i); };
         }
 
-        internal int FindMaximum() {
+        public int FindMaximum() {
             if (sequence(0) == sequence(Length - 1)) //we have a unimodal function
                 return (new UnimodalSequence(sequence, Length)).FindMaximum();
 

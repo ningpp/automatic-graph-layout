@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="BlockVector.cs" company="Microsoft">
 //   (c) Microsoft Corporation.  All rights reserved.
 // </copyright>
@@ -16,7 +16,7 @@ namespace Microsoft.Msagl.Core.ProjectionSolver
     class BlockVector
     {
         internal List<Block> Vector { get; private set; }
-        internal int Count { get { return Vector.Count; } }
+        public int Count { get { return Vector.Count; } }
         internal Block this[int index] { get { return Vector[index]; } }
 
         internal BlockVector()
@@ -24,7 +24,7 @@ namespace Microsoft.Msagl.Core.ProjectionSolver
             Vector = new List<Block>();
         }
 
-        internal void Add(Block block)
+        public void Add(Block block)
         {
             block.VectorIndex = Vector.Count;
             Vector.Add(block);

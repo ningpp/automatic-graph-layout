@@ -13,11 +13,11 @@ namespace Microsoft.Msagl.Core.Geometry.Curves
     /// Is used in curve intersections routines.
     /// </summary>
     [Serializable]
-  internal class ParallelogramInternalTreeNode : ParallelogramNodeOverICurve
+  public class ParallelogramInternalTreeNode : ParallelogramNodeOverICurve
   {
     List<ParallelogramNodeOverICurve> children = new List<ParallelogramNodeOverICurve>();
 
-    internal ParallelogramInternalTreeNode(ICurve seg, double leafBoxesOffset):base(seg,leafBoxesOffset)
+    public ParallelogramInternalTreeNode(ICurve seg, double leafBoxesOffset):base(seg,leafBoxesOffset)
     {
     }
 
@@ -25,12 +25,12 @@ namespace Microsoft.Msagl.Core.Geometry.Curves
     /// children of the node
     /// </summary>
     /// <value></value>
-    internal List<ParallelogramNodeOverICurve> Children
+    public List<ParallelogramNodeOverICurve> Children
     {
       get { return children; }
     }
 
-    internal void AddChild(ParallelogramNodeOverICurve node)
+    public void AddChild(ParallelogramNodeOverICurve node)
     {
       children.Add(node);
     }

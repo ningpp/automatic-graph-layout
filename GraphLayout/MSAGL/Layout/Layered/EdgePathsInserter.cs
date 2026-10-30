@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.Msagl.Core.GraphAlgorithms;
 using Microsoft.Msagl.Core.Layout;
 
@@ -7,7 +7,7 @@ namespace Microsoft.Msagl.Layout.Layered {
     /// This class is used in the case when there are multiple edges, but there is no need to dublicate layers.
     /// We just insert dummy nodes for edge middles without distorting the order of vertices in the layers.
     /// </summary>
-    internal class EdgePathsInserter {
+    public class EdgePathsInserter {
         Database database;
         BasicGraph<Node, PolyIntEdge> intGraph;
         ProperLayeredGraph layeredGraph;
@@ -30,7 +30,7 @@ namespace Microsoft.Msagl.Layout.Layered {
             }
         }
 
-        static internal void InsertPaths(
+        static public void InsertPaths(
                                          ref ProperLayeredGraph layeredGraph, ref LayerArrays la,
                                          Database db, BasicGraph<Node, PolyIntEdge> intGraphP) {
             EdgePathsInserter li = new EdgePathsInserter(layeredGraph, la, db, intGraphP);
@@ -137,13 +137,13 @@ namespace Microsoft.Msagl.Layout.Layered {
             this.nLayeredGraph = new ProperLayeredGraph(this.intGraph);
         }
 
-        internal static int GetTarget(ref int currentVV, PolyIntEdge e, int i, int span) {
+        public static int GetTarget(ref int currentVV, PolyIntEdge e, int i, int span) {
             if (i < span - 1)
                 return currentVV;
             return e.Target;
         }
 
-        internal static int GetSource(ref int currentVV, PolyIntEdge e, int i) {
+        public static int GetSource(ref int currentVV, PolyIntEdge e, int i) {
             if (i == 0)
                 return e.Source;
             return currentVV++;

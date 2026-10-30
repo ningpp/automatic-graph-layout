@@ -8,7 +8,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear.Nudging {
     /// <summary>
     /// keeps a list of active overlapping AxisEdges discovered during the sweep
     ///  </summary>
-    internal class AxisEdgesContainer {
+    public class AxisEdgesContainer {
         readonly Set<AxisEdge> edges = new Set<AxisEdge>();
         internal IEnumerable<AxisEdge> Edges {get { return edges; } }
         /// <summary>
@@ -23,7 +23,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear.Nudging {
             edges.Insert(edge);
         }
 
-        internal AxisEdgesContainer(Point source){
+        public AxisEdgesContainer(Point source){
             Source = source;
         }
 
@@ -36,7 +36,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear.Nudging {
             edges.Remove(edge);
         }
 
-        internal bool IsEmpty(){
+        public bool IsEmpty(){
             return edges.Count == 0;
         }
     }

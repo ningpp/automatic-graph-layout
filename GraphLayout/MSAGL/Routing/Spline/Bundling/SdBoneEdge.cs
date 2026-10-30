@@ -6,33 +6,33 @@ using System.Diagnostics;
 
 namespace Microsoft.Msagl.Routing.Spline.Bundling {
     [DebuggerDisplay("({SourcePoint.X},{SourcePoint.Y})->({TargetPoint.X},{TargetPoint.Y})")]
-    internal class SdBoneEdge {
-        internal readonly VisibilityEdge VisibilityEdge;
-        internal readonly SdVertex Source;
-        internal readonly SdVertex Target;
+    public class SdBoneEdge {
+        public readonly VisibilityEdge VisibilityEdge;
+        public readonly SdVertex Source;
+        public readonly SdVertex Target;
         int numberOfPassedPaths;
 
-        internal SdBoneEdge(VisibilityEdge visibilityEdge, SdVertex source, SdVertex target) {
+        public SdBoneEdge(VisibilityEdge visibilityEdge, SdVertex source, SdVertex target) {
             VisibilityEdge = visibilityEdge;
             Source = source;
             Target = target;
         }
 
-        internal Point TargetPoint {
+        public Point TargetPoint {
             get { return Target.Point; }
         }
 
-        internal Point SourcePoint {
+        public Point SourcePoint {
             get { return Source.Point; }
         }
 
-        internal bool IsOccupied {
+        public bool IsOccupied {
             get { return numberOfPassedPaths > 0; }
         }
 
-        internal Set<CdtEdge> CrossedCdtEdges { get; set; }
+        public Set<CdtEdge> CrossedCdtEdges { get; set; }
 
-        internal bool IsPassable {
+        public bool IsPassable {
             get {
                 return Target.IsTargetOfRouting || Source.IsSourceOfRouting ||
                        VisibilityEdge.IsPassable == null ||
@@ -40,11 +40,11 @@ namespace Microsoft.Msagl.Routing.Spline.Bundling {
             }
         }
 
-        internal void AddOccupiedEdge() {
+        public void AddOccupiedEdge() {
             numberOfPassedPaths++;
         }
 
-        internal void RemoveOccupiedEdge() {
+        public void RemoveOccupiedEdge() {
             numberOfPassedPaths--;
             Debug.Assert(numberOfPassedPaths >= 0);
         }

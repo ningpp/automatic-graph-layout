@@ -1,4 +1,4 @@
-﻿// //﻿#region Using directives
+﻿﻿// //﻿#region Using directives
 
 using System;
 using System.Collections.Generic;
@@ -21,7 +21,7 @@ namespace Microsoft.Msagl.Core.Geometry.Curves {
         /// <summary>
         /// The segment bounded by the parallelogram
         /// </summary>
-        internal ICurve Seg {
+        public ICurve Seg {
             get {
                 return seg;
             }
@@ -46,7 +46,7 @@ namespace Microsoft.Msagl.Core.Geometry.Curves {
 
 
 
-        internal ParallelogramNodeOverICurve(ICurve s, double leafBoxesOffset) {
+        public ParallelogramNodeOverICurve(ICurve s, double leafBoxesOffset) {
             seg = s;
             this.leafBoxesOffset = leafBoxesOffset;
         }

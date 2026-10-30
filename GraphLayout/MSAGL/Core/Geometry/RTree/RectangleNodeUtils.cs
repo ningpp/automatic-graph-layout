@@ -1,8 +1,8 @@
 ﻿using System;
 
 namespace Microsoft.Msagl.Core.Geometry {
-    internal sealed class RectangleNodeUtils {
-        internal static void CrossRectangleNodes<TA, TB, P>(RectangleNode<TA,P > a, RectangleNode<TB, P> b, Action<TA, TB> action) {
+    public sealed class RectangleNodeUtils {
+        public static void CrossRectangleNodes<TA, TB, P>(RectangleNode<TA,P > a, RectangleNode<TB, P> b, Action<TA, TB> action) {
             if (!a.rectangle.Intersects(b.rectangle))
                 return;
             if (a.Left == null) { //a is a leat
@@ -25,7 +25,7 @@ namespace Microsoft.Msagl.Core.Geometry {
             }
         }
 
-        internal static void CrossRectangleNodes<TA,P >(RectangleNode<TA,P> a, RectangleNode<TA,P> b, Action<TA, TA> action) {
+        public static void CrossRectangleNodes<TA,P >(RectangleNode<TA,P> a, RectangleNode<TA,P> b, Action<TA, TA> action) {
             if (!a.rectangle.Intersects(b.rectangle))
                 return;
             if (Equals(a, b))

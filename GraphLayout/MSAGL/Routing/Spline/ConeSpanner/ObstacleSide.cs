@@ -1,27 +1,27 @@
-using Microsoft.Msagl.Core.Geometry;
+﻿using Microsoft.Msagl.Core.Geometry;
 using Microsoft.Msagl.Core.Geometry.Curves;
 using Microsoft.Msagl.Routing.Visibility;
 
 namespace Microsoft.Msagl.Routing.Spline.ConeSpanner
 {
-         abstract class ObstacleSide : SegmentBase
+         public abstract class ObstacleSide : SegmentBase
     {
-        internal PolylinePoint StartVertex { get; private set; }
+        public PolylinePoint StartVertex { get; private set; }
         internal ObstacleSide(PolylinePoint startVertex)
         {
             StartVertex = startVertex;
         }
 
-        internal abstract PolylinePoint EndVertex { get; }
+        public abstract PolylinePoint EndVertex { get; }
 
-        internal Polyline Polyline { get { return StartVertex.Polyline; } }
+        public Polyline Polyline { get { return StartVertex.Polyline; } }
 
-        internal override Point Start
+        public override Point Start
         {
             get { return StartVertex.Point; }
         }
 
-        internal override Point End
+        public override Point End
         {
             get { return EndVertex.Point; }
         }

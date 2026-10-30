@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using Dot2Graph;
 using Microsoft.Msagl.Core.Geometry;
@@ -91,13 +92,7 @@ namespace Microsoft.Msagl.UnitTests {
         }
 
         public static bool EnableDebugViewer() {
-            if (DontShowTheDebugViewer()) {
-                return false;
-            }
-
-            GraphViewerGdi.DisplayGeometryGraph.SetShowFunctions();
-            return true;
-
+            return false;
         }
 
         internal static bool DontShowTheDebugViewer() {
@@ -113,11 +108,6 @@ namespace Microsoft.Msagl.UnitTests {
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "graph")]
         protected static void ShowGraphInDebugViewer(GeometryGraph graph) {
-            if (graph == null || LayoutAlgorithmSettings.ShowDebugCurvesEnumeration == null || DontShowTheDebugViewer()) {
-                return;
-            }
-            GraphViewerGdi.DisplayGeometryGraph.ShowGraph(graph);
-
         }
 
         protected GeometryGraph LoadGraph(string geometryGraphFileName) {
@@ -125,30 +115,104 @@ namespace Microsoft.Msagl.UnitTests {
             return this.LoadGraph(geometryGraphFileName, out settings);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "1#"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1307:SpecifyStringComparison", MessageId = "System.String.EndsWith(System.String)")]
+        protected string GetDeploymentPath(params string[] relativePathSegments) {
+            if (relativePathSegments == null || relativePathSegments.Length == 0) {
+                throw new ArgumentException("A relative path is required.", nameof(relativePathSegments));
+            }
+
+            var baseDirectory = TestContext?.DeploymentDirectory;
+            if (string.IsNullOrEmpty(baseDirectory)) {
+                baseDirectory = Path.Combine(TestContext?.TestRunDirectory ?? AppContext.BaseDirectory, "Out");
+            }
+
+            return relativePathSegments.Aggregate(baseDirectory, Path.Combine);
+        }
+
+        protected string GetTestResourcePath(params string[] relativePathSegments) {
+            if (relativePathSegments == null || relativePathSegments.Length == 0) {
+                throw new ArgumentException("A resource path is required.", nameof(relativePathSegments));
+            }
+
+            var resourcePath = Path.Combine(new[] { "Resources" }.Concat(relativePathSegments).ToArray());
+            var deploymentDirectory = TestContext?.DeploymentDirectory;
+            if (!string.IsNullOrEmpty(deploymentDirectory)) {
+                var deploymentPath = Path.Combine(deploymentDirectory, resourcePath);
+                if (Directory.Exists(deploymentPath) || File.Exists(deploymentPath)) {
+                    return deploymentPath;
+                }
+            }
+
+            var testRunDirectory = TestContext?.TestRunDirectory;
+            if (!string.IsNullOrEmpty(testRunDirectory)) {
+                var testRunPath = Path.Combine(testRunDirectory, "Out", resourcePath);
+                if (Directory.Exists(testRunPath) || File.Exists(testRunPath)) {
+                    return testRunPath;
+                }
+            }
+
+            var directory = new DirectoryInfo(AppContext.BaseDirectory);
+            while (directory != null) {
+                var sourcePath = Path.Combine(directory.FullName, resourcePath);
+                if (Directory.Exists(sourcePath) || File.Exists(sourcePath)) {
+                    return sourcePath;
+                }
+                directory = directory.Parent;
+            }
+
+            return Path.Combine(AppContext.BaseDirectory, resourcePath);
+        }
+
+        string ResolveTestFilePath(string filePath) {
+            if (Path.IsPathRooted(filePath) || File.Exists(filePath)) {
+                return filePath;
+            }
+
+            var baseDirectories = new[] {
+                TestContext?.DeploymentDirectory,
+                string.IsNullOrEmpty(TestContext?.TestRunDirectory) ? null : Path.Combine(TestContext.TestRunDirectory, "Out"),
+                AppContext.BaseDirectory,
+            };
+
+            foreach (var baseDirectory in baseDirectories.Where(directory => !string.IsNullOrEmpty(directory))) {
+                var directPath = Path.Combine(baseDirectory, filePath);
+                if (File.Exists(directPath)) {
+                    return directPath;
+                }
+
+                var geometryGraphPath = Path.Combine(baseDirectory, "Resources", "MSAGLGeometryGraphs", filePath);
+                if (File.Exists(geometryGraphPath)) {
+                    return geometryGraphPath;
+                }
+            }
+
+            return filePath;
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "1#")]
         protected GeometryGraph LoadGraph(string geometryGraphFileName, out LayoutAlgorithmSettings settings) {
             if (string.IsNullOrEmpty(geometryGraphFileName)) {
                 throw new ArgumentNullException("geometryGraphFileName");
             }
 
+            var resolvedGraphFileName = ResolveTestFilePath(geometryGraphFileName);
             GeometryGraph graph = null;
             settings = null;
-            if (geometryGraphFileName.EndsWith(".geom")) {
-                graph = GeometryGraphReader.CreateFromFile(geometryGraphFileName, out settings);
+            if (resolvedGraphFileName.EndsWith(".geom", StringComparison.OrdinalIgnoreCase)) {
+                graph = GeometryGraphReader.CreateFromFile(resolvedGraphFileName, out settings);
                 SetupPorts(graph);
             }
-            else if (geometryGraphFileName.EndsWith(".dot")) {
+            else if (resolvedGraphFileName.EndsWith(".dot", StringComparison.OrdinalIgnoreCase)) {
                 int line;
                 string msg;
                 int col;
-                Drawing.Graph drawingGraph = Parser.Parse(geometryGraphFileName, out line, out col, out msg);
+                Drawing.Graph drawingGraph = Parser.Parse(resolvedGraphFileName, out line, out col, out msg);
                 drawingGraph.CreateGeometryGraph();
                 graph = drawingGraph.GeometryGraph;
                 settings = drawingGraph.CreateLayoutSettings();
                 GraphGenerator.SetRandomNodeShapes(graph, new Random(1));
             }
             else {
-                Assert.Fail("Unknown graph format for file: " + geometryGraphFileName);
+                Assert.Fail("Unknown graph format for file: " + resolvedGraphFileName);
             }
 
             TestContext.WriteLine("Loaded graph: {0} Nodes, {1} Edges", graph.Nodes.Count, graph.Edges.Count);

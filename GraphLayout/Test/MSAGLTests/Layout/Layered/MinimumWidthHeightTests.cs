@@ -1,4 +1,4 @@
-﻿//-----------------------------------------------------------------------
+﻿﻿//-----------------------------------------------------------------------
 // <copyright file="MinimumWidthHeightTests.cs" company="Microsoft">
 //   (c) Microsoft Corporation.  All rights reserved.
 // </copyright>
@@ -20,11 +20,10 @@ namespace Microsoft.Msagl.UnitTests
     {
         [TestMethod]
         [Description("Verifies that the specified minimum width and heights are respected.")]
-        [DeploymentItem(@"Resources\DotFiles\LevFiles\chat.dot", "Dots")]
         public void MinimumSizeIsRespected()
         {
             // Setup
-            string filePath = Path.Combine(this.TestContext.TestDir, "Out\\Dots", "chat.dot");
+            string filePath = Path.Combine(GetTestResourcePath("DotFiles", "LevFiles"), "chat.dot");
             GeometryGraph graph = this.LoadGraph(filePath);
 
             const double DesiredHeight = 100000;

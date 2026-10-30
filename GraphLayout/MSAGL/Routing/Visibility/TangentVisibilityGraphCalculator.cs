@@ -1,12 +1,13 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Microsoft.Msagl.Core.DataStructures;
 using Microsoft.Msagl.Core.Geometry;
 using Microsoft.Msagl.Core.Geometry.Curves;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Microsoft.Msagl.Routing.Visibility {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses")]
-    internal class TangentVisibilityGraphCalculator {
+    public class TangentVisibilityGraphCalculator {
         /// <summary>
         /// the list of obstacles
         /// </summary>
@@ -20,7 +21,7 @@ namespace Microsoft.Msagl.Routing.Visibility {
         ActiveDiagonalComparerWithRay activeDiagonalComparer = new ActiveDiagonalComparerWithRay();
         bool useLeftPTangents;
 
-        internal static void AddTangentVisibilityEdgesToGraph(List<Polygon> holes, VisibilityGraph visibilityGraph) {
+        public static void AddTangentVisibilityEdgesToGraph(List<Polygon> holes, VisibilityGraph visibilityGraph) {
 
             if (holes.Count > 1) {
                 TangentVisibilityGraphCalculator calculator = new TangentVisibilityGraphCalculator(holes, visibilityGraph, true);

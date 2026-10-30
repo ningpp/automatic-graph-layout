@@ -1,0 +1,25 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="MSAGL/AutomaticGraphLayout.csproj" />
+  <Project Path="Drawing/AutomaticGraphLayout.Drawing.csproj" />
+  <Folder Name="/Tools/">
+    <Project Path="tools/DgmlParser/DgmlParser.csproj">
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
+    <Project Path="tools/Dot2Graph/Dot2Graph.csproj">
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
+    <Project Path="tools/QUT.ShiftReduceParser/QUT.ShiftReduceParser.csproj" />
+  </Folder>
+  <Project Path="Test/MSAGLTests/MSAGLTests.csproj">
+    <Platform Solution="*|x64" Project="x64" />
+    <Platform Solution="*|x86" Project="x86" />
+  </Project>
+  <Project Path="WriteToSvgSample/WriteToSvgSample.csproj" />
+</Solution>

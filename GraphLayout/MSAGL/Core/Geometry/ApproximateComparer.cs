@@ -129,7 +129,7 @@ namespace Microsoft.Msagl.Core.Geometry {
         /// <summary>
         /// The distance for two points considered to be the same
         /// </summary>
-        internal static double DistanceEpsilon = Math.Pow(10.0, -DistanceEpsilonPrecision);
+        public static double DistanceEpsilon = Math.Pow(10.0, -DistanceEpsilonPrecision);
 
         /// <summary>
         /// The square of the distance epsilon for two points considered to be the same
@@ -182,16 +182,16 @@ namespace Microsoft.Msagl.Core.Geometry {
             get { return DistanceEpsilonPrecision; }
         }
 
-        static internal Point Round(Point point) {
+        static public Point Round(Point point) {
             return new Point(Round(point.X), Round(point.Y));
         }
 
-        static internal Point Round(Point point, int numberDigitsToRound)
+        static public Point Round(Point point, int numberDigitsToRound)
         {
             return new Point(Math.Round(point.X, numberDigitsToRound), Math.Round(point.Y, numberDigitsToRound));
         }
 
-        static internal double Round(double value) {
+        static public double Round(double value) {
             return Math.Round(value, NumberOfDigitsToRound);
         }
     }

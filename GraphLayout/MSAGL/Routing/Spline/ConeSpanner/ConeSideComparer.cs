@@ -1,18 +1,18 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.Msagl.Core.Geometry;
 using Microsoft.Msagl.Core.Geometry.Curves;
 
 namespace Microsoft.Msagl.Routing.Spline.ConeSpanner {
-    internal class ConeSideComparer : IComparer<ConeSide> {
+    public class ConeSideComparer : IComparer<ConeSide> {
         Point x;
-        internal void SetOperand(ConeSide activeElement) {
+        public void SetOperand(ConeSide activeElement) {
             x = IntersectionOfSegmentAndSweepLine((activeElement));
         }
         readonly IConeSweeper coneSweeper;
 
-        internal ConeSideComparer(IConeSweeper coneSweeper) {
+        public ConeSideComparer(IConeSweeper coneSweeper) {
             this.coneSweeper = coneSweeper;
         }
 
@@ -67,7 +67,7 @@ namespace Microsoft.Msagl.Routing.Spline.ConeSpanner {
             return coneSide is ConeLeftSide ? 1 : -1;
         }
 
-        internal Point IntersectionOfSegmentAndSweepLine(ConeSide obstacleSide) {
+        public Point IntersectionOfSegmentAndSweepLine(ConeSide obstacleSide) {
             var den = obstacleSide.Direction*coneSweeper.SweepDirection;
             Debug.Assert(Math.Abs(den) > 0);
             var t = (coneSweeper.Z - obstacleSide.Start*coneSweeper.SweepDirection)/den;

@@ -28,7 +28,7 @@ namespace Microsoft.Msagl.Routing
         /// </summary>
         public List<CdtEdge> Edges;
 
-        internal List<CdtEdge> InEdges;
+        public List<CdtEdge> InEdges;
 
         ///<summary>
         ///</summary>
@@ -57,7 +57,7 @@ namespace Microsoft.Msagl.Routing
         }
 
 
-        internal CdtEdge EdgeBetweenUpperSiteAndLowerSite(CdtSite b)
+        public CdtEdge EdgeBetweenUpperSiteAndLowerSite(CdtSite b)
         {
             Debug.Assert(Cdt.Above(this, b) > 0);
             if (Edges != null)
@@ -67,7 +67,7 @@ namespace Microsoft.Msagl.Routing
             return null;
         }
 
-        internal void AddInEdge(CdtEdge e)
+        public void AddInEdge(CdtEdge e)
         {
             if (InEdges == null)
                 InEdges = new List<CdtEdge>();
@@ -76,7 +76,7 @@ namespace Microsoft.Msagl.Routing
         /// <summary>
         /// enumerates over all site triangles
         /// </summary>
-        internal IEnumerable<CdtTriangle> Triangles
+        public IEnumerable<CdtTriangle> Triangles
         {
             // this function might not work correctly if InEdges are not set
             get

@@ -8,7 +8,7 @@ namespace Microsoft.Msagl.Routing {
     /// <summary>
     /// written in assumption of a single parent
     /// </summary>
-    internal static class ShapeCreatorForRoutingToParents {
+    public static class ShapeCreatorForRoutingToParents {
         public static IEnumerable<Shape> GetShapes(IEnumerable<Edge> inParentEdges, List<Edge> outParentEdges) {
             var nodesToShapes = new Dictionary<Node, Shape>();
             foreach (var edge in inParentEdges) {
@@ -73,7 +73,7 @@ namespace Microsoft.Msagl.Routing {
             return node.ClusterParent;
         }
 
-        internal static bool NumberOfActiveNodesIsUnderThreshold(List<Edge> inParentEdges, List<Edge> outParentEdges, int threshold) {
+        public static bool NumberOfActiveNodesIsUnderThreshold(List<Edge> inParentEdges, List<Edge> outParentEdges, int threshold) {
             var usedNodeSet = new Set<Node>();
             foreach (var edge in inParentEdges) 
                 if(SetOfActiveNodesIsLargerThanThreshold((Cluster)edge.Target, edge.Source, usedNodeSet, threshold))

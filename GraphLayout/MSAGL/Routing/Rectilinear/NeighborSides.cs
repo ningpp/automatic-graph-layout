@@ -1,4 +1,4 @@
-//
+﻿//
 // NeighborSides.cs
 // MSAGL class for neighboring sides for scanline operations in Rectilinear Edge Routing.
 //
@@ -8,7 +8,7 @@ using Microsoft.Msagl.Core.DataStructures;
 using Microsoft.Msagl.Core.Geometry;
 
 namespace Microsoft.Msagl.Routing.Rectilinear {
-    internal partial class VisibilityGraphGenerator
+    public partial class VisibilityGraphGenerator
     {
         /// <summary>
         /// From an OpenVertexEvent or CloseVertexEvent, we search in the high and low direction for neighbors.
@@ -55,7 +55,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             /// </summary>
             internal BasicObstacleSide GroupSideInterveningBeforeHighNeighbor { get; private set; }
 
-            internal void Clear() {
+            public void Clear() {
                 this.LowNeighbor = null;
                 this.LowOverlapEnd = null;
                 this.GroupSideInterveningBeforeLowNeighbor = null;

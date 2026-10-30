@@ -1,4 +1,4 @@
-﻿//-----------------------------------------------------------------------
+﻿﻿//-----------------------------------------------------------------------
 // <copyright file="SugiyamaEdgeLabelTests.cs" company="Microsoft">
 //   (c) Microsoft Corporation.  All rights reserved.
 // </copyright>
@@ -16,7 +16,6 @@ namespace Microsoft.Msagl.UnitTests
     /// Test class for verifying the positioning of labels along edges.
     /// </summary>
     [TestClass]
-    [DeploymentItem(@"Resources\DotFiles\LevFiles\chat.dot", "Dots")]
     public class SugiyamaEdgeLabelTests : MsaglTestBase
     {
         [TestMethod]
@@ -24,7 +23,7 @@ namespace Microsoft.Msagl.UnitTests
         public void LabelsNearEdges()
         {
             // Setup
-            string filePath = Path.Combine(this.TestContext.TestDir, "Out\\Dots", "chat.dot");
+            string filePath = Path.Combine(GetTestResourcePath("DotFiles", "LevFiles"), "chat.dot");
 
             GeometryGraph graph = this.LoadGraph(filePath);
             AddLabelSizes(graph);

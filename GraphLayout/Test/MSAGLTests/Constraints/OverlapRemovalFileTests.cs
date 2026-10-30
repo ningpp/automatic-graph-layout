@@ -17,7 +17,7 @@ namespace Microsoft.Msagl.UnitTests.Constraints
     ///  File-dependent tests for OverlapRemoval.
     /// </summary>
     [TestClass]
-    [DeploymentItem(@"Resources\Constraints\OverlapRemoval\Data", @"Constraints\OverlapRemoval\Data")]
+    [DeploymentItem("Resources/Constraints/OverlapRemoval/Data", "Constraints/OverlapRemoval/Data")]
     public class OverlapRemovalFileTests : OverlapRemovalVerifier
     {
         [ClassInitialize]
@@ -32,7 +32,7 @@ namespace Microsoft.Msagl.UnitTests.Constraints
 
         private void RunTestDataFile(string fileName)
         {
-            var pathAndFileSpec = Path.Combine(TestContext.DeploymentDirectory, @"Constraints\OverlapRemoval\Data", fileName);
+            var pathAndFileSpec = Path.Combine(TestContext.DeploymentDirectory, "Constraints", "OverlapRemoval", "Data", fileName);
             var testFileReader = this.LoadTestDataFile(pathAndFileSpec);
             Validate.IsTrue(CheckResult(testFileReader.VariableDefs,
                             testFileReader.ClusterDefs,

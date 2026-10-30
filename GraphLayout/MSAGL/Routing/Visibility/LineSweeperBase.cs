@@ -8,7 +8,7 @@ using Microsoft.Msagl.Routing.Spline.ConeSpanner;
 using Microsoft.Msagl.Core;
 
 namespace Microsoft.Msagl.Routing.Visibility {
-    internal class LineSweeperBase : IComparer<SweepEvent> {
+    public class LineSweeperBase : IComparer<SweepEvent> {
         Point directionPerp; // sweep direction rotated 90 degrees clockwse
         BinaryHeapWithComparer<SweepEvent> eventQueue;
 

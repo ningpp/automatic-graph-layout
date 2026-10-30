@@ -1,11 +1,11 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.Msagl.Core.DataStructures;
 
 namespace Microsoft.Msagl.Core.GraphAlgorithms {
     /// <summary>
     /// Calculates a set of edges to reverse, so called "feedback set", for obtaining a DAG
     /// </summary>
-    static internal class CycleRemoval<TEdge> where TEdge : IEdge {
+    static public class CycleRemoval<TEdge> where TEdge : IEdge {
         
         /// <summary>
         /// Returning a list of edges reversing which makes the graph into a DAG
@@ -13,7 +13,7 @@ namespace Microsoft.Msagl.Core.GraphAlgorithms {
         /// <param name="graph"></param>
         /// <param name="constraints"></param>
         /// <returns></returns>
-        static internal IEnumerable<IEdge> GetFeedbackSetWithConstraints(BasicGraphOnEdges<TEdge> graph, Set<IntPair> constraints) {
+        static public IEnumerable<IEdge> GetFeedbackSetWithConstraints(BasicGraphOnEdges<TEdge> graph, Set<IntPair> constraints) {
             if (constraints == null || constraints.Count == 0) {
                 return GetFeedbackSet(graph);
             } else
@@ -51,7 +51,7 @@ namespace Microsoft.Msagl.Core.GraphAlgorithms {
         /// </summary>
         /// <param name="graph"></param>
         /// <returns></returns>
-        static internal IEnumerable<IEdge> GetFeedbackSet(BasicGraphOnEdges<TEdge> graph) {
+        static public IEnumerable<IEdge> GetFeedbackSet(BasicGraphOnEdges<TEdge> graph) {
             if (graph != null && graph.NodeCount > 0 && graph.Edges.Count > 0) {
                 Set<IEdge> feedbackSet = new Set<IEdge>();
                 VertStatus[] status = new VertStatus[graph.NodeCount]; //will be Unvisited at the beginning

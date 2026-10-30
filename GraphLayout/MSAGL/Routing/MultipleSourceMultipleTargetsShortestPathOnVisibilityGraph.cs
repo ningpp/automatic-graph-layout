@@ -7,7 +7,7 @@ using Microsoft.Msagl.Routing.Visibility;
 
 namespace Microsoft.Msagl.Routing {
     
-    internal class MultipleSourceMultipleTargetsShortestPathOnVisibilityGraph {
+    public class MultipleSourceMultipleTargetsShortestPathOnVisibilityGraph {
         //we are not using the A* algorithm since it does not make much sense for muliple targets
         //but we use the upper bound heuristic
         readonly IEnumerable<VisibilityVertex> sources;
@@ -16,7 +16,7 @@ namespace Microsoft.Msagl.Routing {
         VisibilityVertex closestTarget;
         double upperBound = double.PositiveInfinity;
         VisibilityGraph _visGraph;
-        internal MultipleSourceMultipleTargetsShortestPathOnVisibilityGraph(IEnumerable<VisibilityVertex> sourceVisVertices,
+        public MultipleSourceMultipleTargetsShortestPathOnVisibilityGraph(IEnumerable<VisibilityVertex> sourceVisVertices,
                                                                          IEnumerable<VisibilityVertex> targetVisVertices, VisibilityGraph visibilityGraph)
         {
             _visGraph = visibilityGraph;
@@ -35,7 +35,7 @@ namespace Microsoft.Msagl.Routing {
         /// Returns  a  path
         /// </summary>
         /// <returns>a path or null if the target is not reachable from the source</returns>
-        internal IEnumerable<VisibilityVertex> GetPath(){ 
+        public IEnumerable<VisibilityVertex> GetPath(){ 
             var pq = new GenericBinaryHeapPriorityQueue<VisibilityVertex>();
             foreach (var v in sources) {
                 v.Distance = 0;
@@ -67,7 +67,7 @@ namespace Microsoft.Msagl.Routing {
         }
 
 
-        internal static bool IsForbidden(VisibilityEdge e) {
+        public static bool IsForbidden(VisibilityEdge e) {
             return e.IsPassable != null && !e.IsPassable() || e is TollFreeVisibilityEdge;
         }
 

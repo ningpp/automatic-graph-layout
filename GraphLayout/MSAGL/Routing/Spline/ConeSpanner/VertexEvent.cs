@@ -2,19 +2,19 @@ using Microsoft.Msagl.Core.Geometry;
 using Microsoft.Msagl.Core.Geometry.Curves;
 
 namespace Microsoft.Msagl.Routing.Spline.ConeSpanner {
-    abstract internal class VertexEvent: SweepEvent {
+    public abstract class VertexEvent: SweepEvent {
         PolylinePoint vertex;
 
-        internal PolylinePoint Vertex {
+        public PolylinePoint Vertex {
             get { return vertex; }
             set { vertex = value; }
         }
 
-        internal override Point Site {
+        public override Point Site {
             get { return vertex.Point; }
         }
 
-        internal VertexEvent(PolylinePoint p) { vertex = p; }
-        internal Polyline Polyline { get { return vertex.Polyline; } }
+        public VertexEvent(PolylinePoint p) { vertex = p; }
+        public Polyline Polyline { get { return vertex.Polyline; } }
     }
 }

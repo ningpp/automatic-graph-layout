@@ -6,7 +6,7 @@ namespace Microsoft.Msagl.Core.DataStructures {
     /// <summary>
     /// A priority queue based on the binary heap algorithm
     /// </summary>
-    internal class BinaryHeapPriorityQueue {
+    public class BinaryHeapPriorityQueue {
         //indexing for A starts from 1
 
         readonly int[] _heap;//array of heap elements
@@ -15,14 +15,14 @@ namespace Microsoft.Msagl.Core.DataStructures {
         /// the array of priorities
         /// </summary>
         readonly double[] _priors;
-        internal int Count { get { return heapSize; } }
+        public int Count { get { return heapSize; } }
         int heapSize;
         /// <summary>
         /// the constructor
         /// we suppose that all integers inserted into the queue will be less then n
         /// </summary>
         /// <param name="n">it is the number of different integers that will be inserted into the queue </param>
-        internal BinaryHeapPriorityQueue(int n) {
+        public BinaryHeapPriorityQueue(int n) {
             _priors = new double[n];
             _heap = new int[n + 1];//because indexing for A starts from 1
             _reverse_heap = new int[n];
@@ -35,7 +35,7 @@ namespace Microsoft.Msagl.Core.DataStructures {
             PutAtI(i, parent);
         }
 
-        internal void Enqueue(int o, double priority) {
+        public void Enqueue(int o, double priority) {
             heapSize++;
             int i = heapSize;
             _priors[o] = priority;
@@ -55,7 +55,7 @@ namespace Microsoft.Msagl.Core.DataStructures {
         /// return the first element of the queue and removes it from the queue
         /// </summary>
         /// <returns></returns>
-        internal int Dequeue() {
+        public int Dequeue() {
             if (heapSize == 0)
                 throw new InvalidOperationException();
             int ret = _heap[1];
@@ -93,7 +93,7 @@ namespace Microsoft.Msagl.Core.DataStructures {
         /// sets the object priority to c
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal void DecreasePriority(int o, double newPriority) {
+        public void DecreasePriority(int o, double newPriority) {
 
             //System.Diagnostics.Debug.WriteLine("delcrease "+ o.ToString()+" to "+ newPriority.ToString());
 

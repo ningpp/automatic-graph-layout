@@ -1,7 +1,7 @@
-﻿using Microsoft.Msagl.Core.GraphAlgorithms;
+﻿﻿using Microsoft.Msagl.Core.GraphAlgorithms;
 
 namespace Microsoft.Msagl.Layout.Layered {
-    internal class RecoveryLayerCalculator : LayerCalculator {
+    public class RecoveryLayerCalculator : LayerCalculator {
         LayerArrays layers;
 
         public RecoveryLayerCalculator(LayerArrays recoveredLayerArrays) {

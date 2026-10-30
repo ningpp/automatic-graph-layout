@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.Msagl.Core;
 using Microsoft.Msagl.Core.DataStructures;
@@ -11,20 +11,20 @@ namespace Microsoft.Msagl.Routing.Visibility
     {
 
         // This member is accessed a lot.  Using a field instead of a property for performance.
-        readonly internal Point Point;
+        readonly public Point Point;
         public bool isReal;
         bool _isTerminal;
         bool _isShortestPathTerminal;
         readonly List<VisibilityEdge> _inEdges = new List<VisibilityEdge>();
 
      
-        internal void AddInEdge(VisibilityEdge e) {
+        public void AddInEdge(VisibilityEdge e) {
             _inEdges.Add(e);
         }
-        internal int InEdgesCount() {
+        public int InEdgesCount() {
             return _inEdges.Count;
         }
-        internal IEnumerable<VisibilityEdge> InEdges
+        public IEnumerable<VisibilityEdge> InEdges
         {
             get { return _inEdges; }
         }
@@ -35,19 +35,19 @@ namespace Microsoft.Msagl.Routing.Visibility
         /// <summary>
         /// this collection is sorted by the target point, in the lexicographical order
         /// </summary>
-        internal RbTree<VisibilityEdge> OutEdges
+        public RbTree<VisibilityEdge> OutEdges
         {
             get { return _outEdges; }
         }
 
-        internal int Degree
+        public int Degree
         {
             get { return InEdgesCount() + OutEdges.Count; }
         }
         /// <summary>
         /// needed for shortest path calculations
         /// </summary>
-        internal double Distance { get; set; }
+        public double Distance { get; set; }
 
         internal bool IsTerminal
         {
@@ -66,7 +66,7 @@ namespace Microsoft.Msagl.Routing.Visibility
                 /// <summary>
                 /// needed for shortest path calculations
                 /// </summary>        
-                internal VisibilityVertex Prev {
+                public VisibilityVertex Prev {
                     get {
                         if (prev == null) return null;
                         if(prev.Source==this)
@@ -79,7 +79,7 @@ namespace Microsoft.Msagl.Routing.Visibility
                     prev = e;
                 }
                 */
-        internal VisibilityVertex(Point point)
+        public VisibilityVertex(Point point)
         {
             _outEdges = new RbTree<VisibilityEdge>(this);
             Point = point;
@@ -101,12 +101,12 @@ namespace Microsoft.Msagl.Routing.Visibility
         /// rectilinear, this optimization isn't always possible).
         /// </summary>
         /// <param name="edge"></param>
-        internal void RemoveOutEdge(VisibilityEdge edge)
+        public void RemoveOutEdge(VisibilityEdge edge)
         {
             OutEdges.Remove(edge);
         }
 
-        internal void RemoveInEdge(VisibilityEdge edge)
+        public void RemoveInEdge(VisibilityEdge edge)
         {
             for (int ii = _inEdges.Count - 1; ii >= 0; --ii)
             {
@@ -139,7 +139,7 @@ namespace Microsoft.Msagl.Routing.Visibility
             return good;
         }
 
-        internal bool TryGetEdge(VisibilityVertex target, out VisibilityEdge visEdge)
+        public bool TryGetEdge(VisibilityVertex target, out VisibilityEdge visEdge)
         {
             var node = FindFirst(OutEdges, target.Point);// OutEdges.FindFirst(e => e.TargetPoint >= target.Point); 
             if (node != null)

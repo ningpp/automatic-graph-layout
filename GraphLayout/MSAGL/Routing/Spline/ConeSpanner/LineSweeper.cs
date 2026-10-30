@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -7,6 +7,7 @@ using Microsoft.Msagl.Core.Geometry;
 using Microsoft.Msagl.Core.Geometry.Curves;
 using Microsoft.Msagl.Core.Layout;
 using Microsoft.Msagl.DebugHelpers;
+using System.Diagnostics.CodeAnalysis;
 
 using Microsoft.Msagl.Routing.Visibility;
 
@@ -14,7 +15,7 @@ namespace Microsoft.Msagl.Routing.Spline.ConeSpanner {
     /// <summary>
     /// sweeps a given direction of cones and adds discovered edges to the graph
     /// </summary>
-    internal class LineSweeper : LineSweeperBase, IConeSweeper {
+    public class LineSweeper : LineSweeperBase, IConeSweeper {
         public Point ConeRightSideDirection { get; set; }
         public Point ConeLeftSideDirection { get; set; }
 
@@ -43,7 +44,7 @@ namespace Microsoft.Msagl.Routing.Spline.ConeSpanner {
         Polyline BorderPolyline { get; set; }
 
        
-        internal static void Sweep(
+        public static void Sweep(
             IEnumerable<Polyline> obstacles,
             Point direction,
             double coneAngle,
@@ -810,7 +811,6 @@ namespace Microsoft.Msagl.Routing.Spline.ConeSpanner {
 
         void RemoveSegFromLeftTree(ConeSide coneSide) {
             Debug.Assert(coneSide.Removed == false);
-            coneSide.Removed = true;
             coneSideComparer.SetOperand(coneSide);
             var b = leftConeSides.Remove(coneSide);
 
@@ -820,14 +820,32 @@ namespace Microsoft.Msagl.Routing.Spline.ConeSpanner {
                 coneSideComparer.SetOperand(coneSide);
                 b = leftConeSides.Remove(coneSide);
                 Z = tmpZ;
-                if (b == null) {
-                    PrintOutLeftSegTree();
-                    ShowLeftTree(new Ellipse(2, 2, coneSide.Start));
-                }
-
             }
-
+            if (b == null) {
+                var node = FindNodeByReference(leftConeSides, coneSide);
+                if (node != null) {
+                    leftConeSides.DeleteNodeInternal(node);
+                    b = node;
+                }
+            }
+            coneSide.Removed = true;
             Debug.Assert(b != null);
+        }
+
+        static RBNode<ConeSide> FindNodeByReference(RbTree<ConeSide> tree, ConeSide coneSide) {
+            var stack = new Stack<RBNode<ConeSide>>();
+            if (tree.Root != tree.Nil)
+                stack.Push(tree.Root);
+            while (stack.Count > 0) {
+                var node = stack.Pop();
+                if (ReferenceEquals(node.Item, coneSide))
+                    return node;
+                if (node.left != tree.Nil)
+                    stack.Push(node.left);
+                if (node.right != tree.Nil)
+                    stack.Push(node.right);
+            }
+            return null;
         }
 
         /// <summary>

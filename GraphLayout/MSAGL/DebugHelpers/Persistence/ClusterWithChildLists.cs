@@ -8,10 +8,10 @@ namespace Microsoft.Msagl.DebugHelpers {
     /// and the list of node Id's representing cluster child nodes
     /// </summary>
     public class ClusterWithChildLists {
-        internal List<string> ChildClusters = new List<string>();
-        internal List<string> ChildNodes = new List<string>();
-        internal Cluster Cluster;
-        internal ClusterWithChildLists(Cluster cl) {
+        public List<string> ChildClusters = new List<string>();
+        public List<string> ChildNodes = new List<string>();
+        public Cluster Cluster;
+        public ClusterWithChildLists(Cluster cl) {
             Cluster = cl;
         }
     }

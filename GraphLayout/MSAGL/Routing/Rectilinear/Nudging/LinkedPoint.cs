@@ -1,4 +1,4 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Collections;
 using System.Collections.Generic;
 using Microsoft.Msagl.Core.Geometry;
@@ -9,12 +9,12 @@ namespace Microsoft.Msagl.Routing.Rectilinear.Nudging {
     /// <summary>
     /// represents a segment of a path
     /// </summary>
-    internal class LinkedPoint : IEnumerable<Point> {
-        internal Point Point { get; set; }
+    public class LinkedPoint : IEnumerable<Point> {
+        public Point Point { get; set; }
 
-        internal LinkedPoint Next { get; set; }
+        public LinkedPoint Next { get; set; }
 
-        internal LinkedPoint(Point point) {
+        public LinkedPoint(Point point) {
             Point = point;
         }
 
@@ -27,11 +27,11 @@ namespace Microsoft.Msagl.Routing.Rectilinear.Nudging {
             return GetEnumerator();
         }
 
-        internal double X { get { return Point.X; } }
+        public double X { get { return Point.X; } }
  
-        internal double Y { get { return Point.Y; } }
+        public double Y { get { return Point.Y; } }
 
-        internal void InsertVerts(int i, int j, Point[] points) {
+        public void InsertVerts(int i, int j, Point[] points) {
             for (j--; i < j; j--)
                 SetNewNext(points[j]);
         }
@@ -41,7 +41,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear.Nudging {
                 SetNewNext(points[i]);
         }
 
-        internal void SetNewNext(Point p) {
+        public void SetNewNext(Point p) {
             var nv = new LinkedPoint(p);
             var tmp = Next;
             Next = nv;

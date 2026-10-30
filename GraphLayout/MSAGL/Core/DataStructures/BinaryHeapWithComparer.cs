@@ -1,4 +1,4 @@
-using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -9,13 +9,13 @@ namespace Microsoft.Msagl.Core.DataStructures {
     /// This class needs a comparer object to compare elements of the queue.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    internal class BinaryHeapWithComparer<T> {
+    public class BinaryHeapWithComparer<T> {
         const int initialHeapCapacity = 16;
         T[] A; //array of the heap elems starting at A[1]
 
         int heapSize = 0;
 
-        internal void Enqueue(T element) {
+        public void Enqueue(T element) {
             if (heapSize == A.Length - 1) {
                 var newA = new T[A.Length*2];
                 Array.Copy(A, 1, newA, 1, heapSize);
@@ -36,7 +36,7 @@ namespace Microsoft.Msagl.Core.DataStructures {
         }
 
 
-        internal T Dequeue() {
+        public T Dequeue() {
             if (heapSize < 1)
                 throw new InvalidOperationException();
             T ret = A[1];
@@ -50,7 +50,7 @@ namespace Microsoft.Msagl.Core.DataStructures {
             return ret;
         }
 
-        internal void ChangeMinimum(T candidate) {
+        public void ChangeMinimum(T candidate) {
             A[1] = candidate;
 
             int j = 1;
@@ -93,17 +93,17 @@ namespace Microsoft.Msagl.Core.DataStructures {
             }
         }
 
-        internal int Count {
+        public int Count {
             get { return heapSize; }
         }
 
-        internal bool Less(T a, T b) {
+        public bool Less(T a, T b) {
             return comparer.Compare(a, b) < 0;
         }
 
         IComparer<T> comparer;
 
-        internal BinaryHeapWithComparer(IComparer<T> comparer) {
+        public BinaryHeapWithComparer(IComparer<T> comparer) {
             A = new T[initialHeapCapacity + 1];
             this.comparer = comparer;
         }

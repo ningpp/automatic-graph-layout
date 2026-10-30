@@ -1,4 +1,4 @@
-using System.Collections;
+﻿﻿using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Msagl.Core.Geometry;
@@ -63,7 +63,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// </summary>
         /// <param name="source"></param>
         /// <param name="target"></param>
-        internal PolyIntEdge(int source, int target) {
+        public PolyIntEdge(int source, int target) {
             this.source = source;
             this.target = target;
 #if SHARPKIT //https://code.google.com/p/sharpkit/issues/detail?id=289 Support Dictionary directly based on object's GetHashCode
@@ -74,21 +74,21 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// <summary>
         /// Returns true if the edge has label
         /// </summary>
-        internal bool HasLabel {
+        public bool HasLabel {
             get { return Edge.Label != null; }
         }
 
         /// <summary>
         /// Label width
         /// </summary>
-        internal double LabelWidth {
+        public double LabelWidth {
             get { return Edge.Label.Width; }
         }
 
         /// <summary>
         /// Label height
         /// </summary>
-        internal double LabelHeight {
+        public double LabelHeight {
             get { return Edge.Label.Height; }
         }
 
@@ -96,7 +96,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// This function changes the edge by swapping 
         /// source and target. However Revert(Revert) does not change it.
         /// </summary>
-        internal void Revert() {
+        public void Revert() {
             int t = source;
             source = target;
             target = t;
@@ -117,7 +117,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// <param name="source"></param>
         /// <param name="target"></param>
         /// <param name="edge"></param>
-        internal PolyIntEdge(int source, int target, Edge edge) {
+        public PolyIntEdge(int source, int target, Edge edge) {
             this.source = source;
             this.target = target;
             Edge = edge;
@@ -168,14 +168,14 @@ namespace Microsoft.Msagl.Layout.Layered {
             return "Edge(" + source + "->" + target + ")";
         }
 
-        internal ICurve Curve {
+        public ICurve Curve {
             get { return Edge.Curve; }
             set { Edge.Curve = value; }
         }
 
 
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal SmoothedPolyline UnderlyingPolyline {
+        public SmoothedPolyline UnderlyingPolyline {
             get { return Edge.UnderlyingPolyline; }
             set { Edge.UnderlyingPolyline = value; }
         }
@@ -183,13 +183,13 @@ namespace Microsoft.Msagl.Layout.Layered {
 
         int weight = 1;
 
-        internal int Weight {
+        public int Weight {
             get { return weight; }
             set { weight = value; }
         }
 
         
-        internal int CrossingWeight {
+        public int CrossingWeight {
             get { return 1; }
         }
 
@@ -225,11 +225,11 @@ namespace Microsoft.Msagl.Layout.Layered {
         }
 
 
-        internal bool SelfEdge() {
+        public bool SelfEdge() {
             return source == target;
         }
 
-        internal PolyIntEdge ReversedClone() {
+        public PolyIntEdge ReversedClone() {
             var ret = new PolyIntEdge(target, source, Edge);
             if (layerEdges != null) {
                 int len = layerEdges.Length;
@@ -247,16 +247,16 @@ namespace Microsoft.Msagl.Layout.Layered {
             return ret;
         }
 
-        internal LayerEdge this[int i] {
+        public LayerEdge this[int i] {
             get { return layerEdges[i]; }
         }
 
-        internal int Count {
+        public int Count {
             get { return layerEdges.Length; }
         }
 
 
-        internal void UpdateEdgeLabelPosition(Anchor[] anchors) {
+        public void UpdateEdgeLabelPosition(Anchor[] anchors) {
             if (Edge.Label != null) {
                 int m = layerEdges.Length/2;
                 LayerEdge layerEdge = layerEdges[m];
@@ -296,7 +296,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// </summary>
         /// <param name="graph"></param>
         /// <returns></returns>
-        internal static int[] GetOrder(BasicGraphOnEdges<PolyIntEdge> graph){
+        public static int[] GetOrder(BasicGraphOnEdges<PolyIntEdge> graph){
             var visited = new bool[graph.NodeCount];
 
             //no recursion! So we have to organize a stack

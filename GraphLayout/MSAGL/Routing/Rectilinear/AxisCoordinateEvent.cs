@@ -8,12 +8,12 @@ using Microsoft.Msagl.Core.Geometry;
 using Microsoft.Msagl.Routing.Spline.ConeSpanner;
 
 namespace Microsoft.Msagl.Routing.Rectilinear {
-    internal class AxisCoordinateEvent : SweepEvent {
-        internal AxisCoordinateEvent(Point p) {
+    public class AxisCoordinateEvent : SweepEvent {
+        public AxisCoordinateEvent(Point p) {
             this.site = p;
         }
 
-        internal override Point Site {
+        public override Point Site {
             get { return site; }
         }
 

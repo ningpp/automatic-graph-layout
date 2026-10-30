@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Msagl.Core.Geometry;
@@ -11,9 +11,9 @@ namespace Microsoft.Msagl.Routing.Rectilinear.Nudging {
     /// If a path passes through a vertex of another path then insert this vertex into the first path.
     /// </summary>
 
-    internal class PathRefiner {
+    public class PathRefiner {
         
-        internal static void RefinePaths(IEnumerable<Path> paths, bool mergePaths) {
+        public static void RefinePaths(IEnumerable<Path> paths, bool mergePaths) {
             AdjustPaths(paths);
             var pathsToFirstLinkedVertices = CreatePathsToFirstLinkedVerticesMap(paths);
             Refine(pathsToFirstLinkedVertices.Values);

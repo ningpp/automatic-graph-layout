@@ -11,7 +11,7 @@ namespace Microsoft.Msagl.Core.DataStructures {
         /// <summary>
         /// Add	value to dictionary
         /// </summary>
-        internal static void AddToMap<TS, T, TC>(Dictionary<T, TC> dictionary, T key, TS value)
+        public static void AddToMap<TS, T, TC>(Dictionary<T, TC> dictionary, T key, TS value)
             where TC : ICollection<TS>, new() {
             TC tc;
             if (!dictionary.TryGetValue(key, out tc))
@@ -26,7 +26,7 @@ namespace Microsoft.Msagl.Core.DataStructures {
         [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix", MessageId = "T"),
          SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "S"),
          SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        internal static void RemoveFromMap<TS, T, TC>(Dictionary<T, TC> dictionary, T key, TS value)
+        public static void RemoveFromMap<TS, T, TC>(Dictionary<T, TC> dictionary, T key, TS value)
             where TC : ICollection<TS> {
             var tc = dictionary[key];
             tc.Remove(value);

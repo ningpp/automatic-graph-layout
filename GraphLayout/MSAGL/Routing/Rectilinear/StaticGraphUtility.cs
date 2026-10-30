@@ -1,4 +1,4 @@
-//
+﻿//
 // StaticGraphUtility.cs
 // MSAGL class for static utility functions for Rectilinear Edge Routing.
 //
@@ -14,25 +14,26 @@ using Microsoft.Msagl.Core.Layout;
 using Microsoft.Msagl.DebugHelpers; // TEST_MSAGL
 using Microsoft.Msagl.Routing.Rectilinear.Nudging;
 using Microsoft.Msagl.Routing.Visibility;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Microsoft.Msagl.Routing.Rectilinear {
     // Static utilities for the visibility graph.
-    internal static class StaticGraphUtility {
+    public static class StaticGraphUtility {
         // Determine the direction of an edge.
-        static internal Direction EdgeDirection(VisibilityEdge edge) {
+        static public Direction EdgeDirection(VisibilityEdge edge) {
             return EdgeDirection(edge.Source, edge.Target);
         }
-        static internal Direction EdgeDirection(VisibilityVertex source, VisibilityVertex target) {
+        static public Direction EdgeDirection(VisibilityVertex source, VisibilityVertex target) {
             return PointComparer.GetPureDirection(source.Point, target.Point);
         }
 
-        static internal VisibilityVertex GetEdgeEnd(VisibilityEdge edge, Direction dir) {
+        static public VisibilityVertex GetEdgeEnd(VisibilityEdge edge, Direction dir) {
             Direction edgeDir = EdgeDirection(edge);
             Debug.Assert(0 != (dir & (edgeDir | CompassVector.OppositeDir(edgeDir))), "dir is orthogonal to edge");
             return (dir == edgeDir) ? edge.Target : edge.Source;
         }
         
-        static internal VisibilityVertex FindAdjacentVertex(VisibilityVertex a, Direction dir) {
+        static public VisibilityVertex FindAdjacentVertex(VisibilityVertex a, Direction dir) {
             // This function finds the next vertex in the desired direction relative to the
             // current vertex, not necessarily the edge orientation, hence it does not use
             // EdgeDirection().  This is so the caller can operate on a desired movement
@@ -53,7 +54,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             return null;
         }
 
-        static internal VisibilityEdge FindAdjacentEdge(VisibilityVertex a, Direction dir) {
+        static public VisibilityEdge FindAdjacentEdge(VisibilityVertex a, Direction dir) {
             foreach (var edge in a.InEdges) {
 
                 if (PointComparer.GetPureDirection(edge.SourcePoint, a.Point) == dir) {
@@ -69,7 +70,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             return null;
         }
 
-        static internal Point FindBendPointBetween(Point sourcePoint, Point targetPoint, Direction finalEdgeDir) {
+        static public Point FindBendPointBetween(Point sourcePoint, Point targetPoint, Direction finalEdgeDir) {
             Direction targetDir = PointComparer.GetDirections(sourcePoint, targetPoint);
             Debug.Assert(!PointComparer.IsPureDirection(targetDir), "pure direction has no bend");
             Direction firstDir = targetDir & ~finalEdgeDir;
@@ -82,27 +83,27 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
                     : new Point(targetPoint.X, sourcePoint.Y);
         }
 
-        static internal Point SegmentIntersection(Point first, Point second, Point from) {
+        static public Point SegmentIntersection(Point first, Point second, Point from) {
             Direction dir = PointComparer.GetPureDirection(first, second);
             Point intersect = IsVertical(dir) ? new Point(first.X, from.Y) : new Point(from.X, first.Y);
             return intersect;
         }
 
-        static internal Point SegmentIntersection(SegmentBase seg, Point from) {
+        static public Point SegmentIntersection(SegmentBase seg, Point from) {
             return SegmentIntersection(seg.Start, seg.End, from);
         }
 
-        static internal bool SegmentsIntersect(SegmentBase first, SegmentBase second) {
+        static public bool SegmentsIntersect(SegmentBase first, SegmentBase second) {
             Point intersect;
             return SegmentsIntersect(first, second, out intersect);
         }
-        static internal bool SegmentsIntersect(SegmentBase first, SegmentBase second, out Point intersect) {
+        static public bool SegmentsIntersect(SegmentBase first, SegmentBase second, out Point intersect) {
             return IntervalsIntersect(first.Start, first.End, second.Start, second.End, out intersect);
         }
-        static internal bool SegmentsIntersect(LineSegment first, LineSegment second, out Point intersect) {
+        static public bool SegmentsIntersect(LineSegment first, LineSegment second, out Point intersect) {
             return IntervalsIntersect(first.Start, first.End, second.Start, second.End, out intersect);
         }
-        static internal Point SegmentIntersection(SegmentBase first, SegmentBase second) {
+        static public Point SegmentIntersection(SegmentBase first, SegmentBase second) {
             // Caller expects segments to intersect.
             Point intersect;
             if (!SegmentsIntersect(first, second, out intersect)) {
@@ -111,16 +112,16 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             return intersect;
         }
 
-        static internal bool IntervalsOverlap(SegmentBase first, SegmentBase second) {
+        static public bool IntervalsOverlap(SegmentBase first, SegmentBase second) {
             return IntervalsOverlap(first.Start, first.End, second.Start, second.End);
         }
 
-        static internal bool IntervalsOverlap(Point start1, Point end1, Point start2, Point end2) {
+        static public bool IntervalsOverlap(Point start1, Point end1, Point start2, Point end2) {
             return IntervalsAreCollinear(start1, end1, start2, end2)
                 && PointComparer.Compare(start1, end2) != PointComparer.Compare(end1, start2);
         }
 
-        static internal bool IntervalsAreCollinear(Point start1, Point end1, Point start2, Point end2) {
+        static public bool IntervalsAreCollinear(Point start1, Point end1, Point start2, Point end2) {
             Debug.Assert(IsVertical(start1, end1) == IsVertical(start2, end2), "segments are not in the same orientation");
             bool vertical = IsVertical(start1, end1);
             if (IsVertical(start2, end2) == vertical) {
@@ -129,60 +130,60 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             }
             return false;
         }
-        static internal bool IntervalsAreSame(Point start1, Point end1, Point start2, Point end2) {
+        static public bool IntervalsAreSame(Point start1, Point end1, Point start2, Point end2) {
             return PointComparer.Equal(start1, start2) && PointComparer.Equal(end1, end2);
         }
-        static internal bool IntervalsIntersect(Point firstStart, Point firstEnd, Point secondStart, Point secondEnd, out Point intersect) {
+        static public bool IntervalsIntersect(Point firstStart, Point firstEnd, Point secondStart, Point secondEnd, out Point intersect) {
             Debug.Assert(IsVertical(firstStart, firstEnd) != IsVertical(secondStart, secondEnd), "cannot intersect two parallel segments");
             intersect = SegmentIntersection(firstStart, firstEnd, secondStart);
             return PointIsOnSegment(firstStart, firstEnd, intersect)
                 && PointIsOnSegment(secondStart, secondEnd, intersect);
         }
 
-        static internal Point SegmentIntersection(VisibilityEdge edge, Point from) {
+        static public Point SegmentIntersection(VisibilityEdge edge, Point from) {
             return SegmentIntersection(edge.SourcePoint, edge.TargetPoint, from);
         }
 
-        static internal bool PointIsOnSegment(Point first, Point second, Point test) {
+        static public bool PointIsOnSegment(Point first, Point second, Point test) {
             return PointComparer.Equal(first, test)
                 || PointComparer.Equal(second, test)
                 || (PointComparer.GetPureDirection(first, test) == PointComparer.GetPureDirection(test, second));
         }
-        static internal bool PointIsOnSegment(SegmentBase seg, Point test) {
+        static public bool PointIsOnSegment(SegmentBase seg, Point test) {
             return PointIsOnSegment(seg.Start, seg.End, test);
         }
 
-        static internal bool IsVertical(Direction dir) {
+        static public bool IsVertical(Direction dir) {
             return (0 != (dir & (Direction.North | Direction.South)));
         }
-        static internal bool IsVertical(VisibilityEdge edge) {
+        static public bool IsVertical(VisibilityEdge edge) {
             return IsVertical(PointComparer.GetPureDirection(edge.SourcePoint, edge.TargetPoint));
         }
-        static internal bool IsVertical(Point first, Point second) {
+        static public bool IsVertical(Point first, Point second) {
             return IsVertical(PointComparer.GetPureDirection(first, second));
         }
 
-        static internal bool IsVertical(LineSegment seg) {
+        static public bool IsVertical(LineSegment seg) {
             return IsVertical(PointComparer.GetPureDirection(seg.Start, seg.End));
         }
 
-        static internal bool IsAscending(Direction dir) {
+        static public bool IsAscending(Direction dir) {
             return (0 != (dir & (Direction.North | Direction.East)));
         }
 
-        static internal double Slope(Point start, Point end, ScanDirection scanDir) {
+        static public double Slope(Point start, Point end, ScanDirection scanDir) {
             // Find the slope relative to scanline - how much scan coord changes per sweep change.
             Point lineDirAsPoint = end - start;
             return (lineDirAsPoint * scanDir.PerpDirectionAsPoint) / (lineDirAsPoint * scanDir.DirectionAsPoint);
         }
 
-        static internal Tuple<Point, Point> SortAscending(Point a, Point b) {
+        static public Tuple<Point, Point> SortAscending(Point a, Point b) {
             Direction dir = PointComparer.GetDirections(a, b);
             Debug.Assert((Direction. None == dir) || PointComparer.IsPureDirection(dir), "SortAscending with impure direction");
             return ((Direction. None == dir) || IsAscending(dir)) ? new Tuple<Point, Point>(a, b) : new Tuple<Point, Point>(b, a);
         }
 
-        static internal Point RectangleBorderIntersect(Rectangle boundingBox, Point point, Direction dir) {
+        static public Point RectangleBorderIntersect(Rectangle boundingBox, Point point, Direction dir) {
             switch (dir) {
                 case Direction.North:
                 case Direction.South:
@@ -197,7 +198,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             }
         }
 
-        static internal double GetRectangleBound(Rectangle rect, Direction dir) {
+        static public double GetRectangleBound(Rectangle rect, Direction dir) {
             switch (dir) {
                 case Direction.North:
                     return rect.Top;
@@ -214,14 +215,14 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             }
         }
 
-        static internal bool RectangleInteriorsIntersect(Rectangle a, Rectangle b) {
+        static public bool RectangleInteriorsIntersect(Rectangle a, Rectangle b) {
             return (PointComparer.Compare(a.Bottom, b.Top) < 0)
                 && (PointComparer.Compare(b.Bottom, a.Top) < 0)
                 && (PointComparer.Compare(a.Left, b.Right) < 0)
                 && (PointComparer.Compare(b.Left, a.Right) < 0);
         }
 
-        static internal bool PointIsInRectangleInterior(Point point, Rectangle rect) {
+        static public bool PointIsInRectangleInterior(Point point, Rectangle rect) {
             return (PointComparer.Compare(point.Y, rect.Top) < 0)
                 && (PointComparer.Compare(rect.Bottom, point.Y) < 0)
                 && (PointComparer.Compare(point.X, rect.Right) < 0)
@@ -311,7 +312,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
                         new LineSegment(seg.Start, seg.End))).ToList();
         }
 
-        static internal string GetDumpFileName(string prefix) {
+        static public string GetDumpFileName(string prefix) {
             return System.IO.Path.GetTempPath() + prefix + ".DebugCurves";
         }
  // TEST
@@ -319,10 +320,10 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
 
         // Make it easier for floating-point conditional breakpoints in the VS debugger
         // (the docs say they don't need to be non-private but apparently they do).
-        static internal bool IsEqualForDebugger(double variable, double want) {
+        static public bool IsEqualForDebugger(double variable, double want) {
             return (variable < (want + 1.0)) && (variable > (want - 1.0));
         }
-        static internal bool IsEqualForDebugger(Point variable, double wantX, double wantY) {
+        static public bool IsEqualForDebugger(Point variable, double wantX, double wantY) {
             return IsEqualForDebugger(variable.X, wantX) && IsEqualForDebugger(variable.Y, wantY);
         }
  // TEST_MSAGL

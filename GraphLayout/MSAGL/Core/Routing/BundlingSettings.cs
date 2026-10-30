@@ -1,4 +1,4 @@
-#region Using directives
+﻿#region Using directives
 
 using System;
 using System.ComponentModel;
@@ -36,7 +36,7 @@ namespace Microsoft.Msagl.Core.Routing {
         /// <summary>
         /// the lower bound of the virtual node radius
         /// </summary>
-        internal double MinHubRadius = 0.1;
+        public double MinHubRadius = 0.1;
 
         /// <summary>
         /// 
@@ -171,6 +171,6 @@ namespace Microsoft.Msagl.Core.Routing {
         /// <summary>
         /// rotate bundles to diminish the cost: seems counter productive!
         /// </summary>
-        public bool RotateBundles { get; internal set; }
+        public bool RotateBundles { get; set; }
     }
 }

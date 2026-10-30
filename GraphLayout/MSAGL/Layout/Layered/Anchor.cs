@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -149,7 +149,7 @@ namespace Microsoft.Msagl.Layout.Layered {
 
         Node node;
 
-        internal Node Node {
+        public Node Node {
             get { return node; }
             set { 
                 node = value;
@@ -187,7 +187,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// <summary>
         /// the x position
         /// </summary>
-        internal double X {
+        public double X {
             get {
                 return x;
             }
@@ -202,7 +202,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// <summary>
         /// the y position
         /// </summary>
-        internal double Y {
+        public double Y {
             get {
                 return y;
             }
@@ -261,7 +261,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// An anchor for an edge label with the label to the right of the spline has its height equal to the one of the label
         /// Its leftAnchor is a reserved space for the spline and the rightAnchor is equal to the label width.
         /// </summary>
-        internal bool LabelToTheLeftOfAnchorCenter {
+        public bool LabelToTheLeftOfAnchorCenter {
             get { return labelIsToTheLeftOfTheSpline; }
             set { labelIsToTheLeftOfTheSpline = value; }
         }
@@ -272,16 +272,16 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// An anchor for an edge label with the label to the left of the spline has its height equal to the one of the label
         /// Its rightAnchor is a reserved space for the spline and the leftAnchor is equal to the label width.
         /// </summary>
-        internal bool LabelToTheRightOfAnchorCenter {
+        public bool LabelToTheRightOfAnchorCenter {
             get { return labelIsToTheRightOfTheSpline; }
             set { labelIsToTheRightOfTheSpline = value; }
         }
 
-        internal bool HasLabel {
+        public bool HasLabel {
             get { return LabelToTheRightOfAnchorCenter || LabelToTheLeftOfAnchorCenter; }
         }
 
-        internal double LabelWidth {
+        public double LabelWidth {
             get {
                 if (LabelToTheLeftOfAnchorCenter)
                     return LeftAnchor;
@@ -468,7 +468,7 @@ namespace Microsoft.Msagl.Layout.Layered {
             set { padding = value; }
         }
 
-        internal void Move(Point p){
+        public void Move(Point p){
             this.X += p.X;
             this.Y += p.Y;
         }

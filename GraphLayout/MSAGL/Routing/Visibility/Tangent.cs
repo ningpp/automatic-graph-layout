@@ -1,26 +1,26 @@
-using System;
+﻿using System;
 using Microsoft.Msagl.Core.Geometry.Curves;
 
 namespace Microsoft.Msagl.Routing.Visibility {
-    internal class Tangent {
+    public class Tangent {
 
         Tangent comp;
 
         //the complimentary tangent
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Tangent Comp {
+        public Tangent Comp {
             get { return comp; }
             set { comp = value; }
         }
 
-        internal bool IsHigh {
+        public bool IsHigh {
             get { return !IsLow; }
         }
 
         bool lowTangent; //true means that it is a low tangent to Q, false meanst that it is a high tangent to Q
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal bool IsLow {
+        public bool IsLow {
             get { return lowTangent; }
             set { lowTangent = value; }
         }
@@ -28,7 +28,7 @@ namespace Microsoft.Msagl.Routing.Visibility {
         bool separatingPolygons;
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal bool SeparatingPolygons
+        public bool SeparatingPolygons
         {
             get { return separatingPolygons; }
             set { separatingPolygons = value; }
@@ -39,7 +39,7 @@ namespace Microsoft.Msagl.Routing.Visibility {
         /// the diagonal will be not a null only when it is active
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Diagonal Diagonal {
+        public Diagonal Diagonal {
             get { return diagonal; }
             set { diagonal = value; }
         }
@@ -47,7 +47,7 @@ namespace Microsoft.Msagl.Routing.Visibility {
         PolylinePoint start;
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal PolylinePoint Start {
+        public PolylinePoint Start {
             get { return start; }
             set { start = value; }
         }
@@ -60,7 +60,7 @@ namespace Microsoft.Msagl.Routing.Visibility {
             set { end = value; }
         }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Tangent(PolylinePoint start, PolylinePoint end) {
+        public Tangent(PolylinePoint start, PolylinePoint end) {
             this.Start = start;
             this.End = end;
         }

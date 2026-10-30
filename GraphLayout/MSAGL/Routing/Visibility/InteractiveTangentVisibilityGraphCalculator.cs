@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,10 +6,11 @@ using Microsoft.Msagl.Core;
 using Microsoft.Msagl.Core.DataStructures;
 using Microsoft.Msagl.Core.Geometry;
 using Microsoft.Msagl.Core.Geometry.Curves;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Microsoft.Msagl.Routing.Visibility {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses")]
-    internal class InteractiveTangentVisibilityGraphCalculator : AlgorithmBase {
+    public class InteractiveTangentVisibilityGraphCalculator : AlgorithmBase {
         /// <summary>
         /// the list of obstacles
         /// </summary>

@@ -1,13 +1,13 @@
-using System;
+﻿﻿using System;
 using System.Diagnostics;
 
 using Microsoft.Msagl.Core.Geometry;
 using Microsoft.Msagl.Core.Geometry.Curves;
 
 namespace Microsoft.Msagl.Routing.Rectilinear {
-    static internal class SpliceUtility {
+    static public class SpliceUtility {
         // Most of the original contents of this file have been subsumed into ObstacleTree and TransientGraphUtility.
-        internal static Point MungeClosestIntersectionInfo(Point rayOrigin, IntersectionInfo closestIntersection, bool isHorizontal) {
+        public static Point MungeClosestIntersectionInfo(Point rayOrigin, IntersectionInfo closestIntersection, bool isHorizontal) {
             Rectangle bbox = closestIntersection.Segment1.BoundingBox;
 #if SHARPKIT //https://code.google.com/p/sharpkit/issues/detail?id=369
             Point closest = RawIntersection(closestIntersection, rayOrigin).Clone();
@@ -24,7 +24,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
         }
 
         // Make sure that we intersect the object space.
-        static internal double MungeIntersect(double site, double intersect, double start, double end) {
+        static public double MungeIntersect(double site, double intersect, double start, double end) {
             if (site < intersect) {
                 double min = Math.Min(start, end);
                 if (intersect < min) {
@@ -41,7 +41,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "origin")]
-        static internal Point RawIntersection(IntersectionInfo xx) {
+        static public Point RawIntersection(IntersectionInfo xx) {
 
             return ApproximateComparer.Round(xx.IntersectionPoint);
         }

@@ -1,15 +1,15 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Msagl.DebugHelpers.Persistence;
 
 namespace Microsoft.Msagl.DebugHelpers {
-    internal class CurveStream {
+    public class CurveStream {
         string data;
         CurveStreamElement[] curveStreamElements;
         int offset;
 
-        internal CurveStream(string curveData) {
+        public CurveStream(string curveData) {
             data=curveData;
             Init();
         }
@@ -41,13 +41,13 @@ namespace Microsoft.Msagl.DebugHelpers {
             }
         }
 
-        internal CurveStreamElement GetNextCurveStreamElement() {
+        public CurveStreamElement GetNextCurveStreamElement() {
             if (offset >= curveStreamElements.Length)
                 return null;
             return curveStreamElements[offset++];
         }
 
-        internal CurveStreamElement PickNextCurveStreamElement() {
+        public CurveStreamElement PickNextCurveStreamElement() {
             if (offset >= curveStreamElements.Length)
                 return null;
             return curveStreamElements[offset];

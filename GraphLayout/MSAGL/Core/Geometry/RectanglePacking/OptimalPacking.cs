@@ -125,7 +125,7 @@ namespace Microsoft.Msagl.Core.Geometry
         /// else 
         /// f(x2)==f(x4) and we know that f is only weakly unimodal (not strongly unimodal) and we must search both branches.
         /// </summary>
-        internal static double GoldenSectionSearch(Func<double, double> f, double x1, double x2, double x3, double precision)
+        public static double GoldenSectionSearch(Func<double, double> f, double x1, double x2, double x3, double precision)
         {
             Debug.Assert((Math.Abs(x3 - x1) - precision) / precision <= MaxSteps + 0.1, "precision would violate the limit imposed by MaxSteps");
 

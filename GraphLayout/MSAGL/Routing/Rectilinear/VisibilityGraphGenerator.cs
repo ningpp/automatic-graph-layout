@@ -1,4 +1,4 @@
-//
+﻿//
 // VisibilityGraphGenerator.cs
 // MSAGL base class to create the visibility graph for Rectilinear Edge Routing.
 //
@@ -10,6 +10,7 @@ using Microsoft.Msagl.Core.DataStructures;
 using Microsoft.Msagl.Core.Geometry;
 using Microsoft.Msagl.Core.Geometry.Curves;
 using Microsoft.Msagl.Routing.Spline.ConeSpanner;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Msagl.Routing.Visibility;
 
 using System.Linq;
@@ -23,7 +24,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
     // X for Hscan, Y for Vscan) to handle reflections from non-orthogonal obstacle sides, 
     // and lookback scans that have not had their reflections calculated because they reflect
     // backward from the scanline and thus must be picked up on a subsequent perpendicular sweep.
-    internal abstract partial class VisibilityGraphGenerator {
+    public abstract partial class VisibilityGraphGenerator {
         // The direction of the current scan - perpendicular to the sweep direction
         // (i.e. a vertical sweep will scan along a horizontal line).
         protected ScanDirection ScanDirection;
@@ -45,8 +46,8 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
         protected EventQueue eventQueue;
 
         // The line segments produced during the vertex event processing.
-        internal ScanSegmentTree HorizontalScanSegments;
-        internal ScanSegmentTree VerticalScanSegments;
+        public ScanSegmentTree HorizontalScanSegments;
+        public ScanSegmentTree VerticalScanSegments;
 
         protected ScanSegmentTree ParallelScanSegments        // Parallel to scanline
             { get { return ScanDirection.IsHorizontal ? HorizontalScanSegments : VerticalScanSegments; } }
@@ -61,7 +62,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
         private readonly bool wantReflections;
 
         // This is the tree of rectangle nodes of the input obstacles' padded encompassing polylines.
-        internal ObstacleTree ObsTree = new ObstacleTree();
+        public ObstacleTree ObsTree = new ObstacleTree();
 
         // The scanline of obstacle sides, for processing events.
         protected RectilinearScanLine scanLine;
@@ -81,7 +82,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
         protected readonly NeighborSides LowNeighborSides = new NeighborSides();
         protected readonly NeighborSides HighNeighborSides = new NeighborSides();
 
-        internal static VisibilityGraph NewVisibilityGraph() {
+        public static VisibilityGraph NewVisibilityGraph() {
             return new VisibilityGraph { VertexFactory = (point => new VisibilityVertexRectilinear(point)) };
         }
 
@@ -89,7 +90,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
         /// Generate the visibility graph along which edges will be routed.
         /// </summary>
         /// <returns></returns>
-        internal virtual void GenerateVisibilityGraph() {
+        public virtual void GenerateVisibilityGraph() {
             // Generate the Polyline tree from the padded shapes.  ObstacleTree allows us to do
             // obstacle hit-testing for dynamic obstacles, as well as providing input for the Nudger.
             // Each PolylinePoint contains a reference to the Polyline of which it is a member.
@@ -167,7 +168,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
 
         }
 
-        internal static Point ScanLineIntersectSide(Point site, BasicObstacleSide side, ScanDirection scanDir)
+        public static Point ScanLineIntersectSide(Point site, BasicObstacleSide side, ScanDirection scanDir)
         {
             // Note: we don't assert that site and side are not PointComparer.Equal, because ScanLine calls
             // this on sides that share vertices.

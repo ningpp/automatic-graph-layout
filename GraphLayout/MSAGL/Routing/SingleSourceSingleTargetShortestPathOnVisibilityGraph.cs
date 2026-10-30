@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.Msagl.Core.DataStructures;
@@ -8,7 +8,7 @@ using Microsoft.Msagl.Routing.Visibility;
 
 namespace Microsoft.Msagl.Routing
 {
-    internal class SingleSourceSingleTargetShortestPathOnVisibilityGraph
+    public class SingleSourceSingleTargetShortestPathOnVisibilityGraph
     {
         public Tiling _g;
         readonly VisibilityVertex _source;
@@ -28,7 +28,7 @@ namespace Microsoft.Msagl.Routing
             set { _lengthMultiplierForAStar = value; }
         }
 
-        internal SingleSourceSingleTargetShortestPathOnVisibilityGraph(VisibilityGraph visGraph, VisibilityVertex sourceVisVertex, VisibilityVertex targetVisVertex, Tiling g)
+        public SingleSourceSingleTargetShortestPathOnVisibilityGraph(VisibilityGraph visGraph, VisibilityVertex sourceVisVertex, VisibilityVertex targetVisVertex, Tiling g)
         {
             _visGraph = visGraph;
             _source = sourceVisVertex;
@@ -36,7 +36,7 @@ namespace Microsoft.Msagl.Routing
             _source.Distance = 0;
             _g = g;
         }
-        internal SingleSourceSingleTargetShortestPathOnVisibilityGraph(VisibilityGraph visGraph, VisibilityVertex sourceVisVertex, VisibilityVertex targetVisVertex)
+        public SingleSourceSingleTargetShortestPathOnVisibilityGraph(VisibilityGraph visGraph, VisibilityVertex sourceVisVertex, VisibilityVertex targetVisVertex)
         {
             _visGraph = visGraph;
             _source = sourceVisVertex;
@@ -48,7 +48,7 @@ namespace Microsoft.Msagl.Routing
         /// Returns  a  path
         /// </summary>
         /// <returns>a path or null if the target is not reachable from the source</returns>
-        internal IEnumerable<VisibilityVertex> GetPath(bool shrinkEdgeLength)
+        public IEnumerable<VisibilityVertex> GetPath(bool shrinkEdgeLength)
         {
             var pq = new GenericBinaryHeapPriorityQueue<VisibilityVertex>();
 
@@ -90,7 +90,7 @@ namespace Microsoft.Msagl.Routing
         }
 
 
-        internal void AssertEdgesPassable(List<VisibilityEdge> path)
+        public void AssertEdgesPassable(List<VisibilityEdge> path)
         {
             foreach (var edge in path)
             {
@@ -108,7 +108,7 @@ namespace Microsoft.Msagl.Routing
             return e.Source == _target || e.Target == _source || !IsForbidden(e);
         }
 
-        internal static bool IsForbidden(VisibilityEdge e)
+        public static bool IsForbidden(VisibilityEdge e)
         {
             return e.IsPassable != null && !e.IsPassable() || e is TollFreeVisibilityEdge;
         }

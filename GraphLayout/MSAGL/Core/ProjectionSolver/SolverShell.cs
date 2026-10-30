@@ -23,6 +23,12 @@ namespace Microsoft.Msagl.Core.ProjectionSolver{
     public class SolverShell {
 
         const double FixedVarWeight = 10e8;
+        // The fixed-variable adjustment loop can stall on the same small set of moved fixed variables,
+        // re-solving an expensive projection each time without making progress.  Bound both the total
+        // number of adjustment passes and the number of consecutive no-progress passes.
+        const int MaxFixedVarAdjustmentIterations = 10;
+        const int MaxStalledAdjustmentIterations = 3;
+        const int SmallMovedFixedVarCount = 8;
 
         readonly Dictionary<int, Variable> variables = new Dictionary<int, Variable>();
         Solver solver;
@@ -139,6 +145,10 @@ namespace Microsoft.Msagl.Core.ProjectionSolver{
         [SuppressMessage("Microsoft.Usage", "CA2208")]
         public bool Solve(object parameters, out bool executionLimitExceeded){
             bool fixedVarsMoved;
+            int adjustmentIterations = 0;
+            int stalledAdjustmentIterations = 0;
+            int previousMovedFixedVarCount = int.MaxValue;
+            int movedFixedVarCount = 0;
             do{
                 solution = null; // Remove any stale solution in case parameters validation or Solve() throws.
 
@@ -154,8 +164,17 @@ namespace Microsoft.Msagl.Core.ProjectionSolver{
                 System.Diagnostics.Debug.Assert(0 == solution.NumberOfUnsatisfiableConstraints, "Unsatisfiable constraints encountered");
 #endif // DEVTRACE
                 executionLimitExceeded = solution.ExecutionLimitExceeded;
-                fixedVarsMoved = AdjustConstraintsForMovedFixedVars();
-            } while (fixedVarsMoved && solution.ExecutionLimitExceeded==false);
+                fixedVarsMoved = AdjustConstraintsForMovedFixedVars(out movedFixedVarCount);
+                adjustmentIterations++;
+                if (movedFixedVarCount > 0 && movedFixedVarCount == previousMovedFixedVarCount)
+                    stalledAdjustmentIterations++;
+                else
+                    stalledAdjustmentIterations = 0;
+                previousMovedFixedVarCount = movedFixedVarCount;
+            } while (fixedVarsMoved && solution.ExecutionLimitExceeded==false &&
+                     adjustmentIterations < MaxFixedVarAdjustmentIterations &&
+                     stalledAdjustmentIterations < MaxStalledAdjustmentIterations &&
+                     movedFixedVarCount > SmallMovedFixedVarCount);
             return solution.ExecutionLimitExceeded == false;
         }
 
@@ -176,9 +195,10 @@ namespace Microsoft.Msagl.Core.ProjectionSolver{
 //            file.Close();
 //        }
 
-        bool AdjustConstraintsForMovedFixedVars(){
+        bool AdjustConstraintsForMovedFixedVars(out int movedFixedVarCount){
             var movedFixedVars=new Set<int>(fixedVars.
                 Where(kv=>!Close(kv.Value, GetVariableResolvedPosition(kv.Key))).Select(p=>p.Key));
+            movedFixedVarCount = movedFixedVars.Count;
             if(movedFixedVars.Count==0)
                 return false;
             return AdjustConstraintsForMovedFixedVarSet(movedFixedVars);

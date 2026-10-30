@@ -1,4 +1,4 @@
-﻿//-----------------------------------------------------------------------
+﻿﻿//-----------------------------------------------------------------------
 // <copyright file="SugiyamaLayoutTests.cs" company="Microsoft">
 //   (c) Microsoft Corporation.  All rights reserved.
 // </copyright>
@@ -68,19 +68,20 @@ namespace Microsoft.Msagl.UnitTests
         #region Test
         [TestMethod]
         [Description("Randomly selects some DOT files and do Sugiyam layout testing")]
-        [DeploymentItem(@"Resources\DotFiles\LevFiles", "Dots")]
         public void RandomDotFileTests() {
             int line, column;
             string msg;
 
-            string fileName = Path.Combine(this.TestContext.TestDir, "Out\\Dots\\fsm.dot");
+            string levDir = GetTestResourcePath("DotFiles", "LevFiles");
+            string fileName = Path.Combine(levDir, "fsm.dot");
             Drawing.Graph drawGraph = Parser.Parse(fileName, out line, out column, out msg);
+            Assert.IsNotNull(drawGraph, $"{fileName} failed at line {line}, col {column}: {msg}");
             drawGraph.CreateGeometryGraph();
             GeometryGraph graph = drawGraph.GeometryGraph;
             GraphGenerator.SetRandomNodeShapes(graph, random);
             LayeredLayout layeredLayout = new LayeredLayout(graph, new SugiyamaLayoutSettings() { BrandesThreshold = 1 });
             layeredLayout.Run();
-            string[] allFiles = Directory.GetFiles(Path.Combine(this.TestContext.TestDir, "Out\\Dots"), "*.dot");
+            string[] allFiles = DotFileTestCorpus.GetDotFiles(levDir);
             List<int> selected = new List<int>();
 
             for (int i = 0; i < 10; i++)
@@ -93,6 +94,7 @@ namespace Microsoft.Msagl.UnitTests
                 selected.Add(next);
                 WriteLine("Now handling dot file: " + allFiles[next]);
                 drawGraph = Parser.Parse(allFiles[next], out line, out column, out msg);
+                Assert.IsNotNull(drawGraph, $"{allFiles[next]} failed at line {line}, col {column}: {msg}");
                 drawGraph.CreateGeometryGraph();
                 graph = drawGraph.GeometryGraph;
                 GraphGenerator.SetRandomNodeShapes(graph, random);

@@ -1,4 +1,4 @@
-//
+﻿//
 // LookaheadScan.cs
 // MSAGL class for handling lookahead reflections in Rectilinear Edge Routing.
 //
@@ -18,20 +18,20 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
     /// whenever we load a side, we check for active lookahead lines within this range.  Since we
     /// are just intersecting rays, we only care about the X (H scan) or Y (V scan) coordinate.
     /// </summary>
-    internal class LookaheadScan : IComparer<BasicReflectionEvent> {
+    public class LookaheadScan : IComparer<BasicReflectionEvent> {
         readonly RbTree<BasicReflectionEvent> eventTree;
         readonly Func<BasicReflectionEvent, bool> findFirstPred;
         readonly ScanDirection scanDirection;
         readonly List<BasicReflectionEvent> staleSites = new List<BasicReflectionEvent>();
         Point findFirstPoint;
 
-        internal LookaheadScan(ScanDirection scanDir) {
+        public LookaheadScan(ScanDirection scanDir) {
             scanDirection = scanDir;
             eventTree = new RbTree<BasicReflectionEvent>(this);
             findFirstPred = new Func<BasicReflectionEvent, bool>(n => CompareToFindFirstPoint(n.Site) >= 0);
         }
 
-        internal void Add(BasicReflectionEvent initialSite) {
+        public void Add(BasicReflectionEvent initialSite) {
             // Assert we can't find it - subsumption should have taken care of that.
             Debug.Assert(null == Find(initialSite.Site), "Should not add the same Lookahead coordinate twice");
             eventTree.Insert(initialSite);
@@ -40,11 +40,11 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
         // Buffer up the events that are known to be stale - that is, will never queued as events because the
         // event-load intersection is the same as the site.
 
-        internal void MarkStaleSite(BasicReflectionEvent siteEvent) {
+        public void MarkStaleSite(BasicReflectionEvent siteEvent) {
             staleSites.Add(siteEvent);
         }
 
-        internal void RemoveStaleSites() {
+        public void RemoveStaleSites() {
             int cSites = staleSites.Count; // for (;;) is faster than IEnumerator for Lists
             if (cSites > 0) {
                 for (int ii = 0; ii < cSites; ++ii) {
@@ -54,7 +54,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             }
         }
 
-        internal void RemoveSitesForFlatBottom(Point low, Point high) {
+        public void RemoveSitesForFlatBottom(Point low, Point high) {
             for (RBNode<BasicReflectionEvent> node = FindFirstInRange(low, high);
                  null != node;
                  node = FindNextInRange(node, high)) {
@@ -63,11 +63,11 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             RemoveStaleSites();
         }
 
-        internal RBNode<BasicReflectionEvent> Find(Point site) {
+        public RBNode<BasicReflectionEvent> Find(Point site) {
             return FindFirstInRange(site, site);
         }
 
-        internal bool RemoveExact(BasicReflectionEvent initialSite) {
+        public bool RemoveExact(BasicReflectionEvent initialSite) {
             RBNode<BasicReflectionEvent> node = eventTree.Find(initialSite);
             if (null != node) {
                 if (node.Item.Site == initialSite.Site) {
@@ -78,7 +78,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             return false;
         }
 
-        internal RBNode<BasicReflectionEvent> FindFirstInRange(Point low, Point high) {
+        public RBNode<BasicReflectionEvent> FindFirstInRange(Point low, Point high) {
             // We only use FindFirstPoint in this routine, to find the first satisfying node,
             // so we don't care that we leave leftovers in it.
             findFirstPoint = low;
@@ -97,7 +97,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             return Compare(treeItem, findFirstPoint);
         }
 
-        internal RBNode<BasicReflectionEvent> FindNextInRange(RBNode<BasicReflectionEvent> prev, Point high) {
+        public RBNode<BasicReflectionEvent> FindNextInRange(RBNode<BasicReflectionEvent> prev, Point high) {
             RBNode<BasicReflectionEvent> nextNode = eventTree.Next(prev);
             if ((null != nextNode) && (Compare(nextNode.Item.Site, high) <= 0)) {
                 return nextNode;
@@ -121,7 +121,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             return scanDirection.CompareScanCoord(lhs.Site, rhs.Site);
         }
 
-        internal int Compare(Point lhs, Point rhs) {
+        public int Compare(Point lhs, Point rhs) {
             return scanDirection.CompareScanCoord(lhs, rhs);
         }
 

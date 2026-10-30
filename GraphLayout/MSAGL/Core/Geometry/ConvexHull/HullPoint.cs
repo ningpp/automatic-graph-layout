@@ -1,22 +1,34 @@
 
 namespace Microsoft.Msagl.Core.Geometry {
-    internal class HullPoint {
+    /// <summary>
+    /// A point of a convex hull computation.
+    /// </summary>
+    public class HullPoint {
         Point point;
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Point Point {
+        /// <summary>
+        /// The point coordinates.
+        /// </summary>
+        public Point Point {
             get { return point; }
             set { point = value; }
         }
         bool deleted;
 
-        internal bool Deleted {
+        /// <summary>
+        /// True if the point was deleted as an inner collinear point.
+        /// </summary>
+        public bool Deleted {
             get { return deleted; }
             set { deleted = value; }
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal HullPoint(Point point) {
+        /// <summary>
+        /// Constructs a hull point.
+        /// </summary>
+        public HullPoint(Point point) {
             this.Point = point;
         }
 

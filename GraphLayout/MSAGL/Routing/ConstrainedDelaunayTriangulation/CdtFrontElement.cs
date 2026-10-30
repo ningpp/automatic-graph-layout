@@ -1,18 +1,18 @@
 ﻿using System.Diagnostics;
 
 namespace Microsoft.Msagl.Routing.ConstrainedDelaunayTriangulation {
-    internal class CdtFrontElement {
+    public class CdtFrontElement {
         //The LeftSite should coincide with the leftmost end of the Edge, and the edge should not be vertical
 
-        internal CdtSite LeftSite;
-        internal CdtEdge Edge;
-        internal CdtSite RightSite;
+        public CdtSite LeftSite;
+        public CdtEdge Edge;
+        public CdtSite RightSite;
 
-        internal double X {
+        public double X {
             get { return LeftSite.Point.X; }
         }
 
-        internal CdtFrontElement(CdtSite leftSite, CdtEdge edge) {
+        public CdtFrontElement(CdtSite leftSite, CdtEdge edge) {
             Debug.Assert(edge.upperSite.Point.X != edge.lowerSite.Point.X &&
                          edge.upperSite.Point.X < edge.lowerSite.Point.X && leftSite == edge.upperSite ||
                          edge.upperSite.Point.X > edge.lowerSite.Point.X && leftSite == edge.lowerSite);

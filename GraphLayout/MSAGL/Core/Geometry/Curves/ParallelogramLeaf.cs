@@ -7,10 +7,10 @@ namespace Microsoft.Msagl.Core.Geometry.Curves {
     /// Is used in curve intersectons routine.
     /// </summary>
     [Serializable]
-    internal class ParallelogramLeaf : ParallelogramNodeOverICurve {
+    public class ParallelogramLeaf : ParallelogramNodeOverICurve {
         double low;
 
-        internal double Low {
+        public double Low {
             get {
                 return low;
             }
@@ -20,7 +20,7 @@ namespace Microsoft.Msagl.Core.Geometry.Curves {
         }
         double high;
 
-        internal double High {
+        public double High {
             get {
                 return high;
             }
@@ -29,7 +29,7 @@ namespace Microsoft.Msagl.Core.Geometry.Curves {
             }
         }
 
-        internal ParallelogramLeaf(double low, double high, Parallelogram box, ICurve seg, double leafBoxesOffset)
+        public ParallelogramLeaf(double low, double high, Parallelogram box, ICurve seg, double leafBoxesOffset)
             : base(seg, leafBoxesOffset) {
             this.low = low;
             this.high = high;
@@ -40,7 +40,7 @@ namespace Microsoft.Msagl.Core.Geometry.Curves {
 
         LineSegment chord;
 
-        internal LineSegment Chord {
+        public LineSegment Chord {
             get { return chord; }
             set {
                 chord = value;

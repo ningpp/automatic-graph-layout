@@ -5,35 +5,35 @@ using Microsoft.Msagl.Routing.ConstrainedDelaunayTriangulation;
 using Microsoft.Msagl.Routing.Visibility;
 
 namespace Microsoft.Msagl.Routing.Spline.Bundling {
-    internal class SdVertex {
-        internal VisibilityVertex VisibilityVertex;
-        internal List<SdBoneEdge> InBoneEdges = new List<SdBoneEdge>();
-        internal List<SdBoneEdge> OutBoneEdges = new List<SdBoneEdge>();
+    public class SdVertex {
+        public VisibilityVertex VisibilityVertex;
+        public List<SdBoneEdge> InBoneEdges = new List<SdBoneEdge>();
+        public List<SdBoneEdge> OutBoneEdges = new List<SdBoneEdge>();
 
-        internal SdVertex Prev {
+        public SdVertex Prev {
             get {
                 if (PrevEdge == null) return null;
                 return PrevEdge.Source == this ? PrevEdge.Target : PrevEdge.Source;
             }
         }
 
-        internal SdBoneEdge PrevEdge { get; set; }
+        public SdBoneEdge PrevEdge { get; set; }
 
-        internal SdVertex(VisibilityVertex visibilityVertex) {
+        public SdVertex(VisibilityVertex visibilityVertex) {
             VisibilityVertex = visibilityVertex;
         }
 
-        internal CdtTriangle Triangle;
+        public CdtTriangle Triangle;
 
-        internal bool IsSourceOfRouting { get; set; }
+        public bool IsSourceOfRouting { get; set; }
 
-        internal bool IsTargetOfRouting { get; set; }
+        public bool IsTargetOfRouting { get; set; }
 
-        internal Point Point { get { return VisibilityVertex.Point; } }
+        public Point Point { get { return VisibilityVertex.Point; } }
 
         double cost;
 
-        internal double Cost {
+        public double Cost {
             get {
                 if (IsSourceOfRouting) return cost;
                 return Prev == null ? double.PositiveInfinity : cost;

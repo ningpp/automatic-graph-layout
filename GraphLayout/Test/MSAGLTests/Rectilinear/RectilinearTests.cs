@@ -852,8 +852,7 @@ namespace Microsoft.Msagl.UnitTests.Rectilinear
         }
 
         [TestMethod]
-        [Ignore]    // TODObug: repeated SolverShell loop in nudger, currently takes 2.5 minutes in release.
-        [Timeout(15 * 1000)]
+        [Timeout(90 * 1000)]
         [Description("Test multiple collinear freeports.")]
         [TestCategory("NonRollingBuildTest")]
         public void Multiple_Collinear_FreePorts_RouteFromAllObstacles()

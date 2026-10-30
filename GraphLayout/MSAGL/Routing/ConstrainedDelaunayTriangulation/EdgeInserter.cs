@@ -6,7 +6,7 @@ using Microsoft.Msagl.Core.DataStructures;
 using Microsoft.Msagl.Core.Geometry.Curves;
 
 namespace Microsoft.Msagl.Routing.ConstrainedDelaunayTriangulation {
-    internal class EdgeInserter {
+    public class EdgeInserter {
         readonly CdtEdge edge;
         readonly Set<CdtTriangle> triangles;
         readonly RbTree<CdtFrontElement> front;

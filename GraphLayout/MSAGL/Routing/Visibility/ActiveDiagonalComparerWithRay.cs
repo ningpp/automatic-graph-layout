@@ -1,15 +1,15 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.Msagl.Core.Geometry;
 using Microsoft.Msagl.Core.Geometry.Curves;
 using Microsoft.Msagl.Core;
 
 namespace Microsoft.Msagl.Routing.Visibility {
-      internal class ActiveDiagonalComparerWithRay: IComparer<Diagonal> {
+      public class ActiveDiagonalComparerWithRay: IComparer<Diagonal> {
 
           Point pointOnTheRay;
 
           [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-          internal Point PointOnTangentAndInsertedDiagonal {
+          public Point PointOnTangentAndInsertedDiagonal {
               get { return pointOnTheRay; }
               set { pointOnTheRay = value; }
           }
@@ -35,7 +35,7 @@ namespace Microsoft.Msagl.Routing.Visibility {
           }
 
           [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-          static internal Point IntersectDiagonalWithRay(Point pivot, Point pointOnRay, Diagonal diagonal ) {
+          static public Point IntersectDiagonalWithRay(Point pivot, Point pointOnRay, Diagonal diagonal ) {
               Point ray=pointOnRay-pivot;
               Point source=diagonal.Start;
               Point target = diagonal.End;

@@ -1,22 +1,22 @@
 ﻿using Microsoft.Msagl.Core.Geometry.Curves;
 
 namespace Microsoft.Msagl.Routing.Spline.Bundling {
-    internal class MetroNodeInfo {
+    public class MetroNodeInfo {
         Metroline metroline;
         Station station;
         PolylinePoint polyPoint;
 
-        internal MetroNodeInfo(Metroline metroline, Station station, PolylinePoint polyPoint) {
+        public MetroNodeInfo(Metroline metroline, Station station, PolylinePoint polyPoint) {
             this.metroline = metroline;
             this.station = station;
             this.polyPoint = polyPoint;
         }
 
-        internal Metroline Metroline {
+        public Metroline Metroline {
             get { return metroline; }
         }
 
-        internal PolylinePoint PolyPoint {
+        public PolylinePoint PolyPoint {
             get { return polyPoint; }
         }
     }

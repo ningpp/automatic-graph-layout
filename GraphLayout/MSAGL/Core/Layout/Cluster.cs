@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -453,7 +453,7 @@ namespace Microsoft.Msagl.Core.Layout {
         ///     adding a node without checking that it is a cluster
         /// </summary>
         /// <param name="node"></param>
-        internal void AddNode(Node node) {
+        public void AddNode(Node node) {
             node.AddClusterParent(this);
             nodes.Add(node);
         }

@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Msagl.Core.Geometry;
@@ -23,7 +23,7 @@ namespace Microsoft.Msagl.Core.Layout.ProximityOverlapRemoval.MinimumSpanningTre
         /// <param name="proximityEdges">list of tuples, each representing an edge with: nodeId1, nodeId2, t(overlapFactor), ideal distance, edge weight.</param>
         /// <param name="sizeId"></par­am>
         /// <returns></returns>
-        static internal List<OverlappedEdge> GetMstOnTuple(List<OverlappedEdge> proximityEdges, int sizeId) {
+        static public List<OverlappedEdge> GetMstOnTuple(List<OverlappedEdge> proximityEdges, int sizeId) {
             if (proximityEdges.Count == 0)
             {
                 return null;

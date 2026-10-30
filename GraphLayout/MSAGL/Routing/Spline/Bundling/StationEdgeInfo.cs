@@ -3,12 +3,12 @@ using Microsoft.Msagl.Core.Geometry;
 using Microsoft.Msagl.Core.Geometry.Curves;
 
 namespace Microsoft.Msagl.Routing.Spline.Bundling {
-    internal class StationEdgeInfo {
+    public class StationEdgeInfo {
 
-        internal int Count {get {return this.Metrolines.Count;} }
-        internal double Width;
+        public int Count {get {return this.Metrolines.Count;} }
+        public double Width;
 
-        internal List<Metroline> Metrolines = new List<Metroline>();
+        public List<Metroline> Metrolines = new List<Metroline>();
 
         #region cache
 

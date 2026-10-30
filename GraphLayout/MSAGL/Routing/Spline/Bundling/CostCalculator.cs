@@ -15,8 +15,8 @@ namespace Microsoft.Msagl.Routing.Spline.Bundling {
     /// <summary>
     /// Calculates the cost of the routing
     /// </summary>
-    internal class CostCalculator {
-        internal const double Inf = 1000000000.0;
+    public class CostCalculator {
+        public const double Inf = 1000000000.0;
 
         readonly MetroGraphData metroGraphData;
         readonly BundlingSettings bundlingSettings;
@@ -29,21 +29,21 @@ namespace Microsoft.Msagl.Routing.Spline.Bundling {
         /// <summary>
         /// Error of ink
         /// </summary>
-        static internal double InkError(double oldInk, double newInk, BundlingSettings bundlingSettings) {
+        static public double InkError(double oldInk, double newInk, BundlingSettings bundlingSettings) {
             return (oldInk - newInk) * bundlingSettings.InkImportance;
         }
 
         /// <summary>
         /// Error of path lengths
         /// </summary>
-        static internal double PathLengthsError(double oldLength, double newLength, double idealLength, BundlingSettings bundlingSettings) {
+        static public double PathLengthsError(double oldLength, double newLength, double idealLength, BundlingSettings bundlingSettings) {
             return (oldLength - newLength) * (bundlingSettings.PathLengthImportance / idealLength);
         }
 
         /// <summary>
         /// Error of hubs
         /// </summary>
-        static internal double RError(double idealR, double nowR, BundlingSettings bundlingSettings) {
+        static public double RError(double idealR, double nowR, BundlingSettings bundlingSettings) {
             if (idealR <= nowR) return 0;
 
             double res = bundlingSettings.HubRepulsionImportance * (1.0 - nowR / idealR) * (idealR - nowR);
@@ -53,7 +53,7 @@ namespace Microsoft.Msagl.Routing.Spline.Bundling {
         /// <summary>
         /// Error of bundles
         /// </summary>
-        static internal double BundleError(double idealWidth, double nowWidth, BundlingSettings bundlingSettings) {
+        static public double BundleError(double idealWidth, double nowWidth, BundlingSettings bundlingSettings) {
             if (idealWidth <= nowWidth) return 0;
 
             double res = bundlingSettings.BundleRepulsionImportance * (1.0 - nowWidth / idealWidth) * (idealWidth - nowWidth);

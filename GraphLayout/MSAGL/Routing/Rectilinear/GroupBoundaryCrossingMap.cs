@@ -1,4 +1,4 @@
-//
+﻿//
 // GroupBoundaryIntersections.cs
 // MSAGL Obstacle class for tracking Group boundary crossings for Rectilinear Edge Routing.
 //
@@ -12,11 +12,11 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
     // A Group is a Shape that has children.
     // This class maps between intersection points on Group boundaries and the groups and crossing
     // directions at those intersection points.
-    internal class GroupBoundaryCrossingMap {
+    public class GroupBoundaryCrossingMap {
         // Note:  Like VisibilityGraph, this does not use PointComparer but assumes already-rounded key values.
         readonly Dictionary<Point, List<GroupBoundaryCrossing>> pointCrossingMap = new Dictionary<Point, List<GroupBoundaryCrossing>>();
 
-        internal GroupBoundaryCrossing AddIntersection(Point intersection, Obstacle group, Direction dirToInside) {
+        public GroupBoundaryCrossing AddIntersection(Point intersection, Obstacle group, Direction dirToInside) {
             List<GroupBoundaryCrossing> crossings;
             if (!pointCrossingMap.TryGetValue(intersection, out crossings)) {
                 crossings = new List<GroupBoundaryCrossing>();
@@ -39,13 +39,13 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             return newCrossing;
         }
 
-        internal void Clear() {
+        public void Clear() {
             pointCrossingMap.Clear();
         }
 
         readonly List<Point> pointList = new List<Point>();
 
-        internal PointAndCrossingsList GetOrderedListBetween(Point start, Point end) {
+        public PointAndCrossingsList GetOrderedListBetween(Point start, Point end) {
             if (0 == pointCrossingMap.Count) {
                 return null;
             }

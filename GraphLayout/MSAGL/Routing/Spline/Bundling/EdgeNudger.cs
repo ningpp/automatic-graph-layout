@@ -10,12 +10,13 @@ using Microsoft.Msagl.Core.Geometry.Curves;
 using Microsoft.Msagl.Core.Layout;
 using Microsoft.Msagl.Core.Routing;
 using Microsoft.Msagl.DebugHelpers;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Microsoft.Msagl.Routing.Spline.Bundling {
     /// <summary>
     /// this class nudges the edges
     /// </summary>
-    internal class EdgeNudger : AlgorithmBase {
+    public class EdgeNudger : AlgorithmBase {
         readonly BundlingSettings bundlingSettings;
         readonly MetroGraphData metroGraphData;
         IMetroMapOrderingAlgorithm metroOrdering;
@@ -278,7 +279,7 @@ namespace Microsoft.Msagl.Routing.Spline.Bundling {
         /// <param name="p4"></param>
         /// <param name="te"></param>
         /// <returns></returns>
-        internal static ICurve BiArc(Point p0, Point ts, Point p4, Point te) {
+        public static ICurve BiArc(Point p0, Point ts, Point p4, Point te) {
             Debug.Assert(ApproximateComparer.Close(ts.LengthSquared, 1));
             Debug.Assert(ApproximateComparer.Close(te.LengthSquared, 1));
             var v = p0 - p4;
@@ -342,7 +343,7 @@ namespace Microsoft.Msagl.Routing.Spline.Bundling {
         /// <param name="b">ba, and bc are tangents to the arc</param>
         /// <param name="c">belongs to the arc, the tangent point of bc</param>
         /// <returns></returns>
-        internal static ICurve ArcOn(Point a, Point b, Point c) {
+        public static ICurve ArcOn(Point a, Point b, Point c) {
             Point center;
             if (Math.Abs(Point.SignedDoubledTriangleArea(a, b, c)) < 0.0001 || !FindArcCenter(a, b, c, out center))
                 return new LineSegment(a, c);
@@ -394,7 +395,7 @@ namespace Microsoft.Msagl.Routing.Spline.Bundling {
 
         #region Bezier segments
 
-        internal static CubicBezierSegment StandardBezier(Point segStart, Point tangentAtStart, Point segEnd, Point tangentAtEnd) {
+        public static CubicBezierSegment StandardBezier(Point segStart, Point tangentAtStart, Point segEnd, Point tangentAtEnd) {
             double len = (segStart - segEnd).Length / 4.0;
             return new CubicBezierSegment(segStart, segStart + tangentAtStart * len, segEnd + tangentAtEnd * len, segEnd);
         }

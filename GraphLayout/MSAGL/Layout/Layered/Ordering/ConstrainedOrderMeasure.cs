@@ -1,9 +1,9 @@
 ﻿namespace Microsoft.Msagl.Layout.Layered {
-    internal class ConstrainedOrderMeasure {
+    public class ConstrainedOrderMeasure {
         readonly int numberOfCrossings;
         //readonly double deviationFromConstraints;
 
-        internal ConstrainedOrderMeasure(int numberOfCrossings) {
+        public ConstrainedOrderMeasure(int numberOfCrossings) {
             this.numberOfCrossings = numberOfCrossings;
           //  this.deviationFromConstraints = deviationFromConstraints;
         }

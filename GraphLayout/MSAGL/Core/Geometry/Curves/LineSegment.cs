@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
@@ -434,7 +434,7 @@ namespace Microsoft.Msagl.Core.Geometry.Curves {
         /// <param name="d"></param>
         /// <param name="parab"></param>
         /// <param name="parcd"></param>
-        internal static double MinDistBetweenLineSegments(Point a, Point b, Point c, Point d, out double parab, out double parcd) {
+        public static double MinDistBetweenLineSegments(Point a, Point b, Point c, Point d, out double parab, out double parcd) {
             Point u = b - a;
             Point v = d - c;
             Point w = a - c;

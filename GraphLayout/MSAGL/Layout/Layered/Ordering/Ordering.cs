@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Msagl.Core;
@@ -8,7 +8,7 @@ namespace Microsoft.Msagl.Layout.Layered {
     /// Following "A technique for Drawing Directed Graphs" of Gansner, Koutsofios, North and Vo
     /// Works on the layered graph. Also see GraphLayout.pdfhttps://www.researchgate.net/profile/Lev_Nachmanson/publication/30509007_Drawing_graphs_with_GLEE/links/54b6b2930cf2e68eb27edf71/Drawing-graphs-with-GLEE.pdf
     /// </summary>
-    internal partial class Ordering : AlgorithmBase{
+    public partial class Ordering : AlgorithmBase{
         #region Fields
 
         bool hasCrossWeights;
@@ -57,7 +57,7 @@ namespace Microsoft.Msagl.Layout.Layered {
 
         int[] X;
 
-        Ordering(ProperLayeredGraph graphPar, bool tryReverse, LayerArrays layerArraysParam, int startOfVirtualNodes, bool hasCrossWeights, SugiyamaLayoutSettings settings) {
+        public Ordering(ProperLayeredGraph graphPar, bool tryReverse, LayerArrays layerArraysParam, int startOfVirtualNodes, bool hasCrossWeights, SugiyamaLayoutSettings settings) {
             this.tryReverse = tryReverse;
             startOfVirtNodes = startOfVirtualNodes;
             layerArrays = layerArraysParam;
@@ -80,7 +80,7 @@ namespace Microsoft.Msagl.Layout.Layered {
             }
         }
 
-        internal static void OrderLayers(ProperLayeredGraph graph,
+        public static void OrderLayers(ProperLayeredGraph graph,
                                          LayerArrays layerArrays,
                                          int startOfVirtualNodes,
                                          SugiyamaLayoutSettings settings, CancelToken cancelToken) {
@@ -101,7 +101,7 @@ namespace Microsoft.Msagl.Layout.Layered {
       if (graph.NumberOfVertices != layering.Length)
         throw new System.Exception("the layering does not correspond to the graph");
       foreach (IntEdge e in graph.Edges)
-        if (layering[e.Source] - layering[e.Target] != 1)
+        internal if (layering[e.Source] - layering[e.Target] != 1)
           throw new System.Exception("the edge in the graph does not span exactly one layer:" + e);
 #endif
 
@@ -154,7 +154,7 @@ namespace Microsoft.Msagl.Layout.Layered {
 #endif
         }
 
-        void Calculate() {
+        public void Calculate() {
             Init();
 
             CloneLayers(layers, ref layerArraysCopy);
@@ -189,7 +189,7 @@ namespace Microsoft.Msagl.Layout.Layered {
             }
         }
 
-        internal static void CloneLayers(int[][] layers, ref int[][] layerArraysCopy) {
+        public static void CloneLayers(int[][] layers, ref int[][] layerArraysCopy) {
             if (layerArraysCopy == null) {
                 layerArraysCopy = (int[][]) layers.Clone();
                 for (int i = 0; i < layers.Length; i++)
@@ -199,11 +199,11 @@ namespace Microsoft.Msagl.Layout.Layered {
                     layers[i].CopyTo(layerArraysCopy[i], 0);
         }
 
-        void Restore() {
+        public void Restore() {
             layerArrays.UpdateLayers(layerArraysCopy);
         }
 
-        void LayerByLayerSweep(bool up) {
+        public void LayerByLayerSweep(bool up) {
             if (up) {
                 for (int i = 1; i < nOfLayers; i++)
                     SweepLayer(i, true);
@@ -223,7 +223,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// <param name="layer"></param>
         /// <param name="upperLayer">upperLayer means if "layer" is the upperLayer 
         /// of the strip</param>
-        void SweepLayer(int layer, bool upperLayer) {
+        public void SweepLayer(int layer, bool upperLayer) {
             this.ProgressStep();
 
             int[] l = layers[layer];
@@ -246,7 +246,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// </summary>
         /// <param name="layerToSort"></param>
         /// <param name="medianValues"></param>
-        void Sort(int layerToSort, float[] medianValues) {
+        public void Sort(int layerToSort, float[] medianValues) {
             var s = new SortedDictionary<float, object>();
             int[] vertices = layers[layerToSort];
             int i = 0;
@@ -315,7 +315,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         }
 
 
-        float WMedian(int node, bool theMedianGoingDown) {
+        public float WMedian(int node, bool theMedianGoingDown) {
             IEnumerable<LayerEdge> edges;
             int p;
             if (theMedianGoingDown) {
@@ -360,7 +360,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// <summary>
         /// Just depth search and assign the index saying when the node was visited
         /// </summary>
-        void Init() {
+        public void Init() {
             var counts = new int[nOfLayers];
 
             //the initial layers are set by following the order of the 
@@ -394,7 +394,7 @@ namespace Microsoft.Msagl.Layout.Layered {
 
         }
 
-        void InitOptimalGroupSizes() {
+        public void InitOptimalGroupSizes() {
             optimalOriginalGroupSize = new double[nOfLayers];
             optimalVirtualGroupSize = new double[nOfLayers];
 
@@ -402,7 +402,7 @@ namespace Microsoft.Msagl.Layout.Layered {
                 InitOptimalGroupSizesForLayer(i);
         }
 
-        void InitOptimalGroupSizesForLayer(int i) {
+        public void InitOptimalGroupSizesForLayer(int i) {
             //count original and virtual nodes
             int originals = 0;
             foreach (int j in layers[i])
@@ -421,7 +421,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         }
 
 
-        internal static int GetCrossingsTotal(ProperLayeredGraph properLayeredGraph, LayerArrays layerArrays) {
+        public static int GetCrossingsTotal(ProperLayeredGraph properLayeredGraph, LayerArrays layerArrays) {
             int x = 0;
             for (int i = 0; i < layerArrays.Layers.Length - 1; i++)
                 x += GetCrossingCountFromStrip(i, properLayeredGraph, layerArrays);
@@ -437,7 +437,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         ///// <param name="layerArrays"></param>
         ///// <param name="bottom">bottom of the strip</param>
         ///// <returns></returns>
-        static int GetCrossingCountFromStrip(int bottom, ProperLayeredGraph properLayeredGraph, LayerArrays layerArrays) {
+        public static int GetCrossingCountFromStrip(int bottom, ProperLayeredGraph properLayeredGraph, LayerArrays layerArrays) {
             int[] topVerts = layerArrays.Layers[bottom + 1];
             int[] bottomVerts = layerArrays.Layers[bottom];
             if (bottomVerts.Length <= topVerts.Length)
@@ -447,7 +447,7 @@ namespace Microsoft.Msagl.Layout.Layered {
                                                                       layerArrays);
         }
 
-        static int GetCrossingCountFromStripWhenTopLayerIsShorter(int[] topVerts, int[] bottomVerts,
+        public static int GetCrossingCountFromStripWhenTopLayerIsShorter(int[] topVerts, int[] bottomVerts,
                                                                   ProperLayeredGraph properLayeredGraph,
                                                                   LayerArrays layerArrays) {
             LayerEdge[] edges = EdgesOfStrip(bottomVerts, properLayeredGraph);
@@ -478,7 +478,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         }
 
 
-        static int GetCrossingCountFromStripWhenBottomLayerIsShorter(int[] bottomVerts,
+        public static int GetCrossingCountFromStripWhenBottomLayerIsShorter(int[] bottomVerts,
                                                                      ProperLayeredGraph properLayeredGraph,
                                                                      LayerArrays layerArrays) {
             LayerEdge[] edges = EdgesOfStrip(bottomVerts, properLayeredGraph);
@@ -509,7 +509,7 @@ namespace Microsoft.Msagl.Layout.Layered {
             return cc;
         }
 
-        static LayerEdge[] EdgesOfStrip(int[] bottomVerts, ProperLayeredGraph properLayeredGraph) {
+        public static LayerEdge[] EdgesOfStrip(int[] bottomVerts, ProperLayeredGraph properLayeredGraph) {
             LayerEdge[] edges = (from v in bottomVerts
                                  from e in properLayeredGraph.InEdges(v)
                                  select e).ToArray();

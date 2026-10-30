@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Msagl.Core.Geometry;
 using Microsoft.Msagl.Routing.Visibility;
@@ -7,10 +7,10 @@ namespace Microsoft.Msagl.Routing.Rectilinear.Nudging {
     /// <summary>
     /// Represent a maximal straight segment of a path
     /// </summary>
-    internal class LongestNudgedSegment : SegmentBase {
+    public class LongestNudgedSegment : SegmentBase {
 
 
-        internal LongestNudgedSegment(int variable) {
+        public LongestNudgedSegment(int variable) {
             Id = variable;
         }
 
@@ -18,25 +18,25 @@ namespace Microsoft.Msagl.Routing.Rectilinear.Nudging {
         /// <summary>
         /// has to be North or East
         /// </summary>
-        internal Direction CompassDirection { get; set; }
+        public Direction CompassDirection { get; set; }
 
         //the segment can go only North or East independently of the edge directions
         readonly List<PathEdge> edges = new List<PathEdge>();
         Point start;
         Point end;
-        internal override Point Start { get { return start; } }
-        internal override Point End { get { return end; } }
+        public override Point Start { get { return start; } }
+        public override Point End { get { return end; } }
 
 
 
         /// <summary>
         /// the list of edges holding the same offset and direction
         /// </summary>
-        internal List<PathEdge> Edges {
+        public List<PathEdge> Edges {
             get { return edges; }
         }
 
-        internal void AddEdge(PathEdge edge) {
+        public void AddEdge(PathEdge edge) {
             if (Edges.Count == 0) {
                 var dir = (edge.Target - edge.Source).CompassDirection;
                 switch (dir) {
@@ -85,12 +85,12 @@ namespace Microsoft.Msagl.Routing.Rectilinear.Nudging {
         /// the segments constraining "this" from the right
         /// </summary>
 
-        internal bool IsFixed {
+        public bool IsFixed {
             get { return isFixed; }
             set { isFixed = value; }
         }
 
-        internal int Id = -1;
+        public int Id = -1;
         
 
         /// <summary>
@@ -101,13 +101,13 @@ namespace Microsoft.Msagl.Routing.Rectilinear.Nudging {
         }
 
 
-        internal double GetLeftBound() {
+        public double GetLeftBound() {
             if (!IsFixed)
                 return Edges.Max(edge => edge.AxisEdge.LeftBound);
             return CompassDirection == Core.Geometry.Direction.North ? Edges[0].Source.X : -Edges[0].Source.Y;
         }
 
-        internal double GetRightBound() {
+        public double GetRightBound() {
             if (!IsFixed)
                 return Edges.Min(edge => edge.AxisEdge.RightBound);
             return Position();
@@ -117,6 +117,6 @@ namespace Microsoft.Msagl.Routing.Rectilinear.Nudging {
             return CompassDirection == Core.Geometry.Direction.North ? Edges[0].Source.X : -Edges[0].Source.Y;
         }
 
-        internal double IdealPosition {get;set;}
+        public double IdealPosition {get;set;}
     }
 }

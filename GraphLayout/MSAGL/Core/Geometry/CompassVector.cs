@@ -1,8 +1,8 @@
-using System;
+﻿using System;
 using System.Diagnostics;
 
 namespace Microsoft.Msagl.Core.Geometry {
-    internal struct CompassVector {
+    public struct CompassVector {
         internal CompassVector(Direction direction)
             : this() {
             Dir = direction;
@@ -93,7 +93,7 @@ namespace Microsoft.Msagl.Core.Geometry {
             return r;
         }
 
-        internal static Direction DirectionsFromPointToPoint(Point a, Point b) {
+        public static Direction DirectionsFromPointToPoint(Point a, Point b) {
             return VectorDirection(a, b);
         }
 
@@ -103,7 +103,7 @@ namespace Microsoft.Msagl.Core.Geometry {
             return dir;
         }
 
-        internal static Direction OppositeDir(Direction direction) {
+        public static Direction OppositeDir(Direction direction) {
             switch (direction) {
                 case Direction.North:
                     return Direction.South;
@@ -118,7 +118,7 @@ namespace Microsoft.Msagl.Core.Geometry {
             }
         }
 
-        internal static bool IsPureDirection(Direction direction) {
+        public static bool IsPureDirection(Direction direction) {
             switch (direction) {
                 case Direction.North:
                     return true;
@@ -133,7 +133,7 @@ namespace Microsoft.Msagl.Core.Geometry {
             }
         }
 
-        internal static bool IsPureDirection(Point a, Point b) {
+        public static bool IsPureDirection(Point a, Point b) {
             return IsPureDirection(DirectionsFromPointToPoint(a, b));
         }
 

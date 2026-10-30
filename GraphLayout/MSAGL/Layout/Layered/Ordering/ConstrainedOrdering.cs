@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -8,13 +8,13 @@ using Microsoft.Msagl.Core.Layout;
 using Microsoft.Msagl.Core.ProjectionSolver;
 
 namespace Microsoft.Msagl.Layout.Layered {
-    internal class ConstrainedOrdering {
+    public class ConstrainedOrdering {
         readonly GeometryGraph geometryGraph;
         readonly BasicGraph<Node, PolyIntEdge> intGraph;
-        internal ProperLayeredGraph ProperLayeredGraph;
+        public ProperLayeredGraph ProperLayeredGraph;
         readonly int[] initialLayering;
         LayerInfo[] layerInfos;
-        internal LayerArrays LayerArrays;
+        public LayerArrays LayerArrays;
         readonly HorizontalConstraintsForSugiyama horizontalConstraints;
         int numberOfNodesOfProperGraph;
         readonly Database database;
@@ -40,11 +40,11 @@ namespace Microsoft.Msagl.Layout.Layered {
             }
         }
 
-        double NodeSeparation() {
+        public double NodeSeparation() {
             return settings.NodeSeparation;
         }
 
-        internal ConstrainedOrdering(
+        public ConstrainedOrdering(
             GeometryGraph geomGraph,
             BasicGraph<Node, PolyIntEdge> basicIntGraph,
             int[] layering,
@@ -80,16 +80,16 @@ namespace Microsoft.Msagl.Layout.Layered {
 
         bool LayersAreDoubled { get; set; }
 
-        bool NeedToInsertLayers(int[] layering) {
+        public bool NeedToInsertLayers(int[] layering) {
             return ExistsShortLabeledEdge(layering, intGraph.Edges) ||
                    ExistsShortMultiEdge(layering, database.Multiedges);
         }
 
-        static bool ExistsShortMultiEdge(int[] layering, Dictionary<IntPair, List<PolyIntEdge>> multiedges) {
+        public static bool ExistsShortMultiEdge(int[] layering, Dictionary<IntPair, List<PolyIntEdge>> multiedges) {
             return multiedges.Any(multiedge => multiedge.Value.Count > 2 && layering[multiedge.Key.x] == 1 + layering[multiedge.Key.y]);
         }
 
-        internal void Calculate() {
+        public void Calculate() {
             AllocateXPositions();
             var originalGraph = intGraph.Nodes[0].GeometryParent as GeometryGraph;
             LayeredLayoutEngine.CalculateAnchorSizes(database, out database.anchors, ProperLayeredGraph, originalGraph, intGraph, settings);
@@ -98,25 +98,25 @@ namespace Microsoft.Msagl.Layout.Layered {
         }
 
         
-        ConstrainedOrderMeasure CreateMeasure() {
+        public ConstrainedOrderMeasure CreateMeasure() {
             return new ConstrainedOrderMeasure(Ordering.GetCrossingsTotal(ProperLayeredGraph, LayerArrays));
         }
 
-        bool HasCrossWeights() {
+        public bool HasCrossWeights() {
             return ProperLayeredGraph.Edges.Any(le => le.CrossingWeight != 1);
         }
 
-        static bool ExistsShortLabeledEdge(int[] layering, IEnumerable<PolyIntEdge> edges) {
+        public static bool ExistsShortLabeledEdge(int[] layering, IEnumerable<PolyIntEdge> edges) {
             return edges.Any(edge => layering[edge.Source] == layering[edge.Target] + 1 && edge.Edge.Label != null);
         }
 
-        void AllocateXPositions() {
+        public void AllocateXPositions() {
             xPositions = new double[NumberOfLayers][];
             for (int i = 0; i < NumberOfLayers; i++)
                 xPositions[i] = new double[LayerArrays.Layers[i].Length];
         }
 
-        void Order() {
+        public void Order() {
             CreateInitialOrderInLayers();
             TryPushingOutStrangersFromHorizontalBlocks();
             int n = 5;
@@ -140,7 +140,7 @@ namespace Microsoft.Msagl.Layout.Layered {
             }
         }
 
-        void SetXPositions() {
+        public void SetXPositions() {
             SolverShell solver = InitSolverWithoutOrder();
             ImproveWithAdjacentSwaps();
             PutLayerNodeSeparationsIntoSolver(solver);
@@ -151,7 +151,7 @@ namespace Microsoft.Msagl.Layout.Layered {
 
         }
 
-        SolverShell InitSolverWithoutOrder() {
+        public SolverShell InitSolverWithoutOrder() {
             var solver=new SolverShell();
             InitSolverVars(solver);
             
@@ -163,40 +163,40 @@ namespace Microsoft.Msagl.Layout.Layered {
             return solver;
         }
 
-        void SortLayers(SolverShell solver) {
+        public void SortLayers(SolverShell solver) {
             for (int i = 0; i < LayerArrays.Layers.Length; i++)
                 SortLayerBasedOnSolution(LayerArrays.Layers[i], solver);
         }
 
-        void AddGoalsToKeepFlatEdgesShort(SolverShell solver) {
+        public void AddGoalsToKeepFlatEdgesShort(SolverShell solver) {
             foreach (var layerInfo in layerInfos)
                 AddGoalToKeepFlatEdgesShortOnBlockLevel(layerInfo, solver);
         }
 
-        void InitSolverVars(SolverShell solver) {
+        public void InitSolverVars(SolverShell solver) {
             for (int i = 0; i < LayerArrays.Y.Length; i++)
                 solver.AddVariableWithIdealPosition(i, 0);
         }
 
-        void AddGoalsToKeepProperEdgesShort(SolverShell solver) {
+        public void AddGoalsToKeepProperEdgesShort(SolverShell solver) {
             foreach (var edge in ProperLayeredGraph.Edges)
                 solver.AddGoalTwoVariablesAreClose(edge.Source, edge.Target, PositionOverBaricenterWeight);
 
         }
 
-        void PutVerticalConstraintsIntoSolver(SolverShell solver) {
+        public void PutVerticalConstraintsIntoSolver(SolverShell solver) {
             foreach (var pair in horizontalConstraints.VerticalInts) {
                 solver.AddGoalTwoVariablesAreClose(pair.Item1, pair.Item2, ConstrainedVarWeight);
             }
         }
 
-        void PutLeftRightConstraintsIntoSolver(SolverShell solver) {
+        public void PutLeftRightConstraintsIntoSolver(SolverShell solver) {
             foreach (var pair in horizontalConstraints.LeftRighInts) {
                 solver.AddLeftRightSeparationConstraint(pair.Item1, pair.Item2, SimpleGapBetweenTwoNodes(pair.Item1, pair.Item2));
             }
         }
 
-        void PutLayerNodeSeparationsIntoSolver(SolverShell solver) {
+        public void PutLayerNodeSeparationsIntoSolver(SolverShell solver) {
             foreach (var layer in LayerArrays.Layers) {
                 for (int i = 0; i < layer.Length - 1; i++) {
                     int l = layer[i];
@@ -206,15 +206,15 @@ namespace Microsoft.Msagl.Layout.Layered {
             }
         }
 
-        void ImproveWithAdjacentSwaps() {
+        public void ImproveWithAdjacentSwaps() {
             adjSwapper.DoSwaps();
         }
 
-        void TryPushingOutStrangersFromHorizontalBlocks() {
+        public void TryPushingOutStrangersFromHorizontalBlocks() {
 
         }
 
-        void CreateInitialOrderInLayers() {
+        public void CreateInitialOrderInLayers() {
             //the idea is to topologically ordering all nodes horizontally, by using vertical components, then fill the layers according to this order
             Dictionary<int, int> nodesToVerticalComponentsRoots = CreateVerticalComponents();
             IEnumerable<IntPair> liftedLeftRightRelations = LiftLeftRightRelationsToComponentRoots(nodesToVerticalComponentsRoots).ToArray();
@@ -223,7 +223,7 @@ namespace Microsoft.Msagl.Layout.Layered {
             LayerArrays.UpdateXFromLayers();
         }
 
-        void FillLayersWithVerticalComponentsOrder(int[] order, Dictionary<int, int> nodesToVerticalComponentsRoots) {
+        public void FillLayersWithVerticalComponentsOrder(int[] order, Dictionary<int, int> nodesToVerticalComponentsRoots) {
             Dictionary<int, List<int>> componentRootsToComponents = CreateComponentRootsToComponentsMap(nodesToVerticalComponentsRoots);
             var alreadyInLayers = new bool[LayerArrays.Y.Length];
             var runninglayerCounts = new int[LayerArrays.Layers.Length];
@@ -235,7 +235,7 @@ namespace Microsoft.Msagl.Layout.Layered {
 
         }
 
-        IEnumerable<int> EnumerateVertComponent(Dictionary<int, List<int>> componentRootsToComponents, int vertCompRoot) {
+        public IEnumerable<int> EnumerateVertComponent(Dictionary<int, List<int>> componentRootsToComponents, int vertCompRoot) {
             List<int> compList;
             if (componentRootsToComponents.TryGetValue(vertCompRoot, out compList)) {
                 foreach (var i in compList)
@@ -246,12 +246,12 @@ namespace Microsoft.Msagl.Layout.Layered {
         }
 
 
-        void PutVerticalComponentIntoLayers(IEnumerable<int> vertComponent, int[] runningLayerCounts, bool[] alreadyInLayers) {
+        public void PutVerticalComponentIntoLayers(IEnumerable<int> vertComponent, int[] runningLayerCounts, bool[] alreadyInLayers) {
             foreach (var i in vertComponent)
                 AddVertToLayers(i, runningLayerCounts, alreadyInLayers);
         }
 
-        void AddVertToLayers(int i, int[] runningLayerCounts, bool[] alreadyInLayers) {
+        public void AddVertToLayers(int i, int[] runningLayerCounts, bool[] alreadyInLayers) {
             if (alreadyInLayers[i])
                 return;
             int layerIndex = LayerArrays.Y[i];
@@ -271,7 +271,7 @@ namespace Microsoft.Msagl.Layout.Layered {
             runningLayerCounts[layerIndex] = xIndex;
         }
 
-        static Dictionary<int, List<int>> CreateComponentRootsToComponentsMap(Dictionary<int, int> nodesToVerticalComponentsRoots) {
+        public static Dictionary<int, List<int>> CreateComponentRootsToComponentsMap(Dictionary<int, int> nodesToVerticalComponentsRoots) {
             var d = new Dictionary<int, List<int>>();
             foreach (var kv in nodesToVerticalComponentsRoots) {
                 int i = kv.Key;
@@ -285,7 +285,7 @@ namespace Microsoft.Msagl.Layout.Layered {
             return d;
         }
 
-        IEnumerable<IntPair> LiftLeftRightRelationsToComponentRoots(Dictionary<int, int> nodesToVerticalComponentsRoots) {
+        public IEnumerable<IntPair> LiftLeftRightRelationsToComponentRoots(Dictionary<int, int> nodesToVerticalComponentsRoots) {
             foreach (var pair in horizontalConstraints.LeftRighInts)
                 yield return new IntPair(GetFromDictionaryOrIdentical(nodesToVerticalComponentsRoots, pair.Item1),
                     GetFromDictionaryOrIdentical(nodesToVerticalComponentsRoots, pair.Item2));
@@ -294,7 +294,7 @@ namespace Microsoft.Msagl.Layout.Layered {
                     GetFromDictionaryOrIdentical(nodesToVerticalComponentsRoots, pair.Item2));
         }
 
-        static int GetFromDictionaryOrIdentical(Dictionary<int, int> d, int key) {
+        public static int GetFromDictionaryOrIdentical(Dictionary<int, int> d, int key) {
             int i;
             if (d.TryGetValue(key, out i))
                 return i;
@@ -305,7 +305,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// These blocks are connected components in the vertical constraints. They don't necesserely span consequent layers.
         /// </summary>
         /// <returns></returns>
-        Dictionary<int, int> CreateVerticalComponents() {
+        public Dictionary<int, int> CreateVerticalComponents() {
             var vertGraph = new BasicGraphOnEdges<PolyIntEdge>(from pair in horizontalConstraints.VerticalInts select new PolyIntEdge(pair.Item1, pair.Item2));
             var verticalComponents = ConnectedComponentCalculator<PolyIntEdge>.GetComponents(vertGraph);
             var nodesToComponentRoots = new Dictionary<int, int>();
@@ -323,18 +323,18 @@ namespace Microsoft.Msagl.Layout.Layered {
             return nodesToComponentRoots;
         }
 
-        void RestoreState() {
+        public void RestoreState() {
             LayerArrays.UpdateLayers(yetBestLayers);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledCode")]
-        void Show() {
+        public void Show() {
             SugiyamaLayoutSettings.ShowDatabase(database);
         }
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "System.Diagnostics.Debug.Write(System.String)"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledCode")]
-        static void PrintPositions(double[] positions) {
+        public static void PrintPositions(double[] positions) {
             for (int j = 0; j < positions.Length; j++)
                 System.Diagnostics.Debug.Write(" " + positions[j]);
             System.Diagnostics.Debug.WriteLine("");
@@ -342,7 +342,7 @@ namespace Microsoft.Msagl.Layout.Layered {
 
 
 
-        void SortLayerBasedOnSolution(int[] layer, SolverShell solver) {
+        public void SortLayerBasedOnSolution(int[] layer, SolverShell solver) {
             int length = layer.Length;
             var positions = new double[length];
             int k = 0;
@@ -358,12 +358,12 @@ namespace Microsoft.Msagl.Layout.Layered {
         const double ConstrainedVarWeight = 10e6;
         const double PositionOverBaricenterWeight = 5;
 
-        static int NodeToBlockRootSoftOnLayerInfo(LayerInfo layerInfo, int node) {
+        public static int NodeToBlockRootSoftOnLayerInfo(LayerInfo layerInfo, int node) {
             int root;
             return layerInfo.nodeToBlockRoot.TryGetValue(node, out root) ? root : node;
         }
 
-        static void AddGoalToKeepFlatEdgesShortOnBlockLevel(LayerInfo layerInfo, SolverShell solver) {
+        public static void AddGoalToKeepFlatEdgesShortOnBlockLevel(LayerInfo layerInfo, SolverShell solver) {
             if (layerInfo != null)
                 foreach (var couple in layerInfo.flatEdges) {
                     int sourceBlockRoot = NodeToBlockRootSoftOnLayerInfo(layerInfo, couple.Item1);
@@ -373,32 +373,32 @@ namespace Microsoft.Msagl.Layout.Layered {
                 }
         }
 
-        static bool NodeIsConstrainedBelow(int v, LayerInfo layerInfo) {
+        public static bool NodeIsConstrainedBelow(int v, LayerInfo layerInfo) {
             if (layerInfo == null)
                 return false;
             return layerInfo.constrainedFromBelow.ContainsKey(v);
         }
 
-        static bool NodeIsConstrainedAbove(int v, LayerInfo layerInfo) {
+        public static bool NodeIsConstrainedAbove(int v, LayerInfo layerInfo) {
             if (layerInfo == null)
                 return false;
             return layerInfo.constrainedFromAbove.ContainsKey(v);
         }
 
-        internal static bool BelongsToNeighbBlock(int p, LayerInfo layerInfo) {
+        public static bool BelongsToNeighbBlock(int p, LayerInfo layerInfo) {
             return layerInfo != null && (layerInfo.nodeToBlockRoot.ContainsKey(p) || layerInfo.neigBlocks.ContainsKey(p));
             //p is a root of the block
         }
 
-        static bool NodesAreConstrainedBelow(int leftNode, int rightNode, LayerInfo layerInfo) {
+        public static bool NodesAreConstrainedBelow(int leftNode, int rightNode, LayerInfo layerInfo) {
             return NodeIsConstrainedBelow(leftNode, layerInfo) && NodeIsConstrainedBelow(rightNode, layerInfo);
         }
 
-        static bool NodesAreConstrainedAbove(int leftNode, int rightNode, LayerInfo layerInfo) {
+        public static bool NodesAreConstrainedAbove(int leftNode, int rightNode, LayerInfo layerInfo) {
             return NodeIsConstrainedAbove(leftNode, layerInfo) && NodeIsConstrainedAbove(rightNode, layerInfo);
         }
 
-        double GetGapFromNodeNodesConstrainedBelow(int leftNode, int rightNode, LayerInfo layerInfo,
+        public double GetGapFromNodeNodesConstrainedBelow(int leftNode, int rightNode, LayerInfo layerInfo,
                                                           int layerIndex) {
             double gap = SimpleGapBetweenTwoNodes(leftNode, rightNode);
             leftNode = layerInfo.constrainedFromBelow[leftNode];
@@ -410,7 +410,7 @@ namespace Microsoft.Msagl.Layout.Layered {
             return Math.Max(gap, SimpleGapBetweenTwoNodes(leftNode, rightNode));
         }
 
-        double GetGapFromNodeNodesConstrainedAbove(int leftNode, int rightNode, LayerInfo layerInfo,
+        public double GetGapFromNodeNodesConstrainedAbove(int leftNode, int rightNode, LayerInfo layerInfo,
                                                           int layerIndex) {
             double gap = SimpleGapBetweenTwoNodes(leftNode, rightNode);
             leftNode = layerInfo.constrainedFromAbove[leftNode];
@@ -422,13 +422,13 @@ namespace Microsoft.Msagl.Layout.Layered {
             return Math.Max(gap, SimpleGapBetweenTwoNodes(leftNode, rightNode));
         }
 
-        double SimpleGapBetweenTwoNodes(int leftNode, int rightNode) {
+        public double SimpleGapBetweenTwoNodes(int leftNode, int rightNode) {
             return database.anchors[leftNode].RightAnchor +
                    NodeSeparation() + database.anchors[rightNode].LeftAnchor;
         }
 
         
-        void PrepareProperLayeredGraphAndFillLayerInfos() {
+        public void PrepareProperLayeredGraphAndFillLayerInfos() {
             layerInfos = new LayerInfo[NumberOfLayers];
             CreateProperLayeredGraph();
             CreateExtendedLayerArrays();
@@ -439,7 +439,7 @@ namespace Microsoft.Msagl.Layout.Layered {
             FillBlockRootToVertConstrainedNode();
         }
 
-        void FillBlockRootToVertConstrainedNode() {
+        public void FillBlockRootToVertConstrainedNode() {
             foreach (LayerInfo layerInfo in layerInfos)
                 foreach (int v in VertConstrainedNodesOfLayer(layerInfo)) {
                     int blockRoot;
@@ -448,7 +448,7 @@ namespace Microsoft.Msagl.Layout.Layered {
                 }
         }
 
-        static bool TryGetBlockRoot(int v, out int blockRoot, LayerInfo layerInfo) {
+        public static bool TryGetBlockRoot(int v, out int blockRoot, LayerInfo layerInfo) {
             if (layerInfo.nodeToBlockRoot.TryGetValue(v, out blockRoot))
                 return true;
             if (layerInfo.neigBlocks.ContainsKey(v)) {
@@ -458,7 +458,7 @@ namespace Microsoft.Msagl.Layout.Layered {
             return false;
         }
 
-        static IEnumerable<int> VertConstrainedNodesOfLayer(LayerInfo layerInfo) {
+        public static IEnumerable<int> VertConstrainedNodesOfLayer(LayerInfo layerInfo) {
             if (layerInfo != null) {
                 foreach (int v in layerInfo.constrainedFromAbove.Keys)
                     yield return v;
@@ -468,7 +468,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         }
 
 
-        void CreateExtendedLayerArrays() {
+        public void CreateExtendedLayerArrays() {
             var layeringExt = new int[numberOfNodesOfProperGraph];
             Array.Copy(initialLayering, layeringExt, initialLayering.Length);
             foreach (PolyIntEdge edge in ProperLayeredGraph.BaseGraph.Edges) {
@@ -482,14 +482,14 @@ namespace Microsoft.Msagl.Layout.Layered {
             LayerArrays = new LayerArrays(layeringExt);
         }
 
-        void CreateProperLayeredGraph() {
+        public void CreateProperLayeredGraph() {
             IEnumerable<PolyIntEdge> edges = CreatePathEdgesOnIntGraph();
             var nodeCount = Math.Max(intGraph.NodeCount, BasicGraph<Node, PolyIntEdge>.VertexCount(edges));
             var baseGraph = new BasicGraph<Node, PolyIntEdge>(edges, nodeCount) { Nodes = intGraph.Nodes };
             ProperLayeredGraph = new ProperLayeredGraph(baseGraph);
         }
 
-        IEnumerable<PolyIntEdge> CreatePathEdgesOnIntGraph() {
+        public IEnumerable<PolyIntEdge> CreatePathEdgesOnIntGraph() {
             numberOfNodesOfProperGraph = intGraph.NodeCount;
             var ret = new List<PolyIntEdge>();
             foreach (PolyIntEdge ie in intGraph.Edges) {
@@ -505,7 +505,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         }
 
 
-        void CreateLayerEdgesUnderIntEdge(PolyIntEdge ie) {
+        public void CreateLayerEdgesUnderIntEdge(PolyIntEdge ie) {
             int source = ie.Source;
             int target = ie.Target;
 
@@ -524,7 +524,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         }
 
 
-        void FillAboveBelow() {
+        public void FillAboveBelow() {
             foreach (PolyIntEdge ie in verticalEdges) {
                 foreach (LayerEdge le in ie.LayerEdges) {
                     int upper = le.Source;
@@ -537,7 +537,7 @@ namespace Microsoft.Msagl.Layout.Layered {
                 RegisterAboveBelowOnConstrainedUpperLower(p.Item1, p.Item2);
         }
 
-        void RegisterAboveBelowOnConstrainedUpperLower(int upper, int lower) {
+        public void RegisterAboveBelowOnConstrainedUpperLower(int upper, int lower) {
             LayerInfo topLayerInfo = GetOrCreateLayerInfo(LayerArrays.Y[upper]);
             LayerInfo bottomLayerInfo = GetOrCreateLayerInfo(LayerArrays.Y[lower]);
 
@@ -545,7 +545,7 @@ namespace Microsoft.Msagl.Layout.Layered {
             bottomLayerInfo.constrainedFromAbove[lower] = upper;
         }
 
-        void FillFlatEdges() {
+        public void FillFlatEdges() {
             foreach (PolyIntEdge edge in intGraph.Edges) {
                 int l = initialLayering[edge.Source];
                 if (l == initialLayering[edge.Target]) {
@@ -554,7 +554,7 @@ namespace Microsoft.Msagl.Layout.Layered {
             }
         }
 
-        void FillLeftRightPairs() {
+        public void FillLeftRightPairs() {
             foreach (var p in horizontalConstraints.LeftRighInts) {
                 LayerInfo layerInfo = GetOrCreateLayerInfo(initialLayering[p.Item1]);
                 layerInfo.leftRight.Insert(p);
@@ -566,12 +566,12 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// </summary>
         /// <param name="layerNumber"></param>
         /// <returns></returns>
-        LayerInfo GetOrCreateLayerInfo(int layerNumber) {
+        public LayerInfo GetOrCreateLayerInfo(int layerNumber) {
             LayerInfo layerInfo = layerInfos[layerNumber] ?? (layerInfos[layerNumber] = new LayerInfo());
             return layerInfo;
         }
 
-        void FillBlockRootToBlock() {
+        public void FillBlockRootToBlock() {
             foreach (var p in horizontalConstraints.BlockRootToBlock) {
                 LayerInfo layerInfo = GetOrCreateLayerInfo(initialLayering[p.Key]);
                 layerInfo.neigBlocks[p.Key] = p.Value;

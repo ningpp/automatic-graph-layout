@@ -1,4 +1,4 @@
-//
+﻿//
 // FullVisibilityGraphGenerator.cs
 // MSAGL base class to create the visibility graph consisting of all ScanSegment intersections for Rectilinear Edge Routing.
 //
@@ -16,7 +16,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
     // X for Hscan, Y for Vscan) to handle reflections from non-orthogonal obstacle sides, 
     // and lookback scans that have not had their reflections calculated because they reflect
     // backward from the scanline and thus must be picked up on a subsequent perpendicular sweep.
-    internal class FullVisibilityGraphGenerator : VisibilityGraphGenerator {
+    public class FullVisibilityGraphGenerator : VisibilityGraphGenerator {
         internal FullVisibilityGraphGenerator() : base(wantReflections:true) {
         }
 
@@ -28,7 +28,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
         /// Generate the visibility graph along which edges will be routed.
         /// </summary>
         /// <returns></returns>
-        internal override void GenerateVisibilityGraph() {
+        public override void GenerateVisibilityGraph() {
             if (null == ObsTree.Root) {
                 return;
             }

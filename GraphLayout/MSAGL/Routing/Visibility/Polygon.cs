@@ -1,4 +1,4 @@
-using System;
+﻿﻿using System;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -17,14 +17,14 @@ namespace Microsoft.Msagl.Routing.Visibility {
     public class Polygon {
         Polyline polyline;
 
-        internal Polyline Polyline {
+        public Polyline Polyline {
             get { return polyline; }
             set { polyline = value; }
         }
 
         readonly PolylinePoint[] points;
 
-        internal Polygon(Polyline polyline) {
+        public Polygon(Polyline polyline) {
             this.polyline = polyline;
             points = new PolylinePoint[polyline.Count];
             int i = 0;
@@ -34,17 +34,17 @@ namespace Microsoft.Msagl.Routing.Visibility {
 
         }
 
-        internal int Next(int i) {
+        public int Next(int i) {
             return Module(i + 1);
         }
 
-        internal int Prev(int i) {
+        public int Prev(int i) {
             return Module(i - 1);
         }
 
-        internal int Count { get { return Polyline.Count; } }
+        public int Count { get { return Polyline.Count; } }
 
-        internal int Module(int i) {
+        public int Module(int i) {
             if (i < 0)
                 return i + Count;
             if (i < Count)
@@ -52,7 +52,7 @@ namespace Microsoft.Msagl.Routing.Visibility {
             return i - Count;
         }
 
-        internal PolylinePoint this[int i] {
+        public PolylinePoint this[int i] {
             get {
                 return points[Module(i)];
             }
@@ -63,7 +63,7 @@ namespace Microsoft.Msagl.Routing.Visibility {
         //    return new LineSegment(pivot, Pnt(p));
         //}
 
-        internal Point Pnt(int i) {
+        public Point Pnt(int i) {
             return this[i].Point;
         }
 
@@ -78,7 +78,7 @@ namespace Microsoft.Msagl.Routing.Visibility {
         /// <param name="p1"></param>
         /// <param name="p2"></param>
         /// <returns></returns>
-        internal int Median(int p1, int p2) {
+        public int Median(int p1, int p2) {
             System.Diagnostics.Debug.Assert(p1 != p2);//otherwise we do not know what arc is mean: the whole one or just the point
             if (p2 > p1)
                 return (p2 + p1) / 2;
@@ -95,7 +95,7 @@ namespace Microsoft.Msagl.Routing.Visibility {
         /// <param name="bisectorPivot"></param>
         /// <param name="bisectorRay"></param>
         /// <returns></returns>
-        internal int FindTheFurthestVertexFromBisector(int p1, int p2, Point bisectorPivot, Point bisectorRay) {
+        public int FindTheFurthestVertexFromBisector(int p1, int p2, Point bisectorPivot, Point bisectorRay) {
             Point directionToTheHill = bisectorRay.Rotate(Math.PI / 2);
             if ((polyline.StartPoint.Point - bisectorPivot) * directionToTheHill < 0)
                 directionToTheHill = -directionToTheHill;
@@ -186,7 +186,7 @@ namespace Microsoft.Msagl.Routing.Visibility {
             return res;
         }
 
-        internal void GetTangentPoints(out int leftTangentPoint, out int rightTangentPoint, Point point) {
+        public void GetTangentPoints(out int leftTangentPoint, out int rightTangentPoint, Point point) {
             var bimodalSequence = new BimodalSequence(GetSequenceDelegate(point), Count);
             leftTangentPoint = bimodalSequence.FindMaximum();
             rightTangentPoint = bimodalSequence.FindMinimum();

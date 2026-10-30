@@ -1,4 +1,4 @@
-//
+﻿//
 // Shape.cs
 // MSAGL Shape class for Rectilinear Edge Routing.
 //
@@ -83,9 +83,9 @@ namespace Microsoft.Msagl.Routing {
             get { return children.Count > 0; }
         }
 
-        internal bool IsTransparent { get; set; }
+        public bool IsTransparent { get; set; }
 
-        internal IEnumerable<Shape> Descendants {
+        public IEnumerable<Shape> Descendants {
             get {
                 var q = new Queue<Shape>();
                 foreach (var shape in Children)
@@ -99,7 +99,7 @@ namespace Microsoft.Msagl.Routing {
             }
         }
 
-        internal IEnumerable<Shape> Ancestors {
+        public IEnumerable<Shape> Ancestors {
             get {
                 var q = new Queue<Shape>();
                 foreach (var shape in Parents)

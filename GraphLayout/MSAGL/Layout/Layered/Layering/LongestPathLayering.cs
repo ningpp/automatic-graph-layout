@@ -1,4 +1,4 @@
-#region Using directives
+﻿#region Using directives
 
 
 
@@ -11,7 +11,7 @@ namespace Microsoft.Msagl.Layout.Layered {
     /// <summary>
     /// Layering the DAG by longest path
     /// </summary>
-    internal class LongestPathLayering : LayerCalculator {
+    public class LongestPathLayering : LayerCalculator {
 
         BasicGraphOnEdges<PolyIntEdge> graph;
 
@@ -35,7 +35,7 @@ namespace Microsoft.Msagl.Layout.Layered {
 
         }
 
-        internal LongestPathLayering(BasicGraphOnEdges<PolyIntEdge> graph){
+        public LongestPathLayering(BasicGraphOnEdges<PolyIntEdge> graph){
             this.graph=graph;
         }
         

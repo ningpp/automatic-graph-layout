@@ -6,7 +6,7 @@ using Microsoft.Msagl.Core.Geometry;
 using Microsoft.Msagl.Core.Layout;
 
 namespace Microsoft.Msagl.Layout.LargeGraphLayout {
-    internal class ShortestPartRouterForLg {
+    public class ShortestPartRouterForLg {
         readonly Node source;
         readonly Node target;
         GenericBinaryHeapPriorityQueue<Node> queue = new GenericBinaryHeapPriorityQueue<Node>();
@@ -18,8 +18,8 @@ namespace Microsoft.Msagl.Layout.LargeGraphLayout {
         bool ignoreInteresingEdgesFunc;
         Func<Node,LgNodeInfo> geomNodeToLgNode;
 
-        internal Func<Node,Node, bool> EdgeIsInterestingFunc { get; set; }
-        internal bool ConsiderOnlyInterestingEdges { get; set; }
+        public Func<Node,Node, bool> EdgeIsInterestingFunc { get; set; }
+        public bool ConsiderOnlyInterestingEdges { get; set; }
 
 
         public ShortestPartRouterForLg(Node source, Node target, Func<Node, LgNodeInfo> geomNodeToLgNode) {

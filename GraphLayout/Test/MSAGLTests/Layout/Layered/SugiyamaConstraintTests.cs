@@ -118,7 +118,7 @@ namespace Microsoft.Msagl.UnitTests
         }
 
         [TestMethod]
-        [Ignore, WorkItem(444585)]
+        [WorkItem(444585)]
         [Description("a, b, c, d each on their own layer, a.X<b.X, b.X<c.X, d.X>c.X")]
         public void StaircaseLayoutWithConstraints()
         {
@@ -183,7 +183,6 @@ namespace Microsoft.Msagl.UnitTests
         }
 
         [TestMethod]
-        [Ignore]
         [WorkItem(444690)]
         [Description("Test Sugiyama constraints with transformation case")]
         public void ConstraintWithTransformation()
@@ -209,9 +208,11 @@ namespace Microsoft.Msagl.UnitTests
 
             ShowGraphInDebugViewer(graph);
 
-            SugiyamaValidation.ValidateUpDownConstraint(nodes[0], nodes[1]);
-            SugiyamaValidation.ValidateLeftRightConstraint(nodes[3], nodes[4]);
-            SugiyamaValidation.ValidateUpDownVerticalConstraint(nodes[0], nodes[3]);
+            // The graph is laid out in a rotated (left-to-right) coordinate system, so validate the
+            // constraints in the transformed output space rather than in the natural up/down axes.
+            SugiyamaValidation.ValidateUpDownConstraint(nodes[0], nodes[1], settings.Transformation);
+            SugiyamaValidation.ValidateLeftRightConstraint(nodes[3], nodes[4], settings.Transformation);
+            SugiyamaValidation.ValidateUpDownVerticalConstraint(nodes[0], nodes[3], settings.Transformation);
             SugiyamaValidation.ValidateNeighborConstraint(graph, nodes[2], nodes[4], settings);
         }
 

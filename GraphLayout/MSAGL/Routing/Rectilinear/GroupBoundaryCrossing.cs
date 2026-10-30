@@ -1,4 +1,4 @@
-//
+﻿//
 // GroupBoundaryCrossing.cs
 // MSAGL Obstacle class for a Group boundary crossing for Rectilinear Edge Routing.
 //
@@ -12,22 +12,22 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
     // This class defines a single crossing of a group boundary, from a point on the group boundary.
     // It is intended as the Value of a GroupBoundaryCrossingMap entry, or as an element in a VisiblityEdge.GroupCrossings
     // array, so the actual crossing coordinates are not included.
-    internal class GroupBoundaryCrossing {
+    public class GroupBoundaryCrossing {
         // The group to which this applies.
-        internal Obstacle Group { get; set; }
+        public Obstacle Group { get; set; }
 
         // The direction from the vertex on the group boundary toward the inside of the group.
-        internal Direction DirectionToInside { get; private set; }
+        public Direction DirectionToInside { get; private set; }
 
-        internal GroupBoundaryCrossing(Obstacle group, Direction dirToInside) {
+        public GroupBoundaryCrossing(Obstacle group, Direction dirToInside) {
             Debug.Assert(CompassVector.IsPureDirection(dirToInside), "Impure direction");
             this.Group = group;
             this.DirectionToInside = dirToInside;
         }
 
-        static internal double BoundaryWidth { get { return ApproximateComparer.DistanceEpsilon; } }
+        static public double BoundaryWidth { get { return ApproximateComparer.DistanceEpsilon; } }
 
-        internal Point GetInteriorVertexPoint(Point outerVertex) {
+        public Point GetInteriorVertexPoint(Point outerVertex) {
             return ApproximateComparer.Round(outerVertex + (CompassVector.ToPoint(DirectionToInside) * BoundaryWidth));
         }
 

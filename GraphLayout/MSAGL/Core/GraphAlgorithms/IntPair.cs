@@ -70,10 +70,14 @@ namespace Microsoft.Msagl.Core.GraphAlgorithms {
             return pair1 < pair0;
         }
         public static bool operator==(IntPair pair0, IntPair pair1) {
-            return pair1.x == pair0.x && pair1.y == pair0.y;
+            if (ReferenceEquals(pair0, pair1))
+                return true;
+            if (ReferenceEquals(pair0, null) || ReferenceEquals(pair1, null))
+                return false;
+            return pair0.x == pair1.x && pair0.y == pair1.y;
         }
         public static bool operator !=(IntPair pair0, IntPair pair1) {
-            return pair1.x != pair0.x || pair1.y != pair0.y;
+            return !(pair0 == pair1);
         }
 
 

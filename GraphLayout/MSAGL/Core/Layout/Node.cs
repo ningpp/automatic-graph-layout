@@ -153,9 +153,15 @@ namespace Microsoft.Msagl.Core.Layout {
         public void AddClusterParent(Cluster parent)
         {
             ValidateArg.IsNotNull(parent, "parent");
-            Debug.Assert(this.clusterParent == null);
 
-            Debug.Assert(parent != this);
+            if (this.clusterParent != null) {
+                throw new InvalidOperationException("A node can only have one cluster parent.");
+            }
+
+            if (parent == this) {
+                throw new InvalidOperationException("A node cannot be its own cluster parent.");
+            }
+
             clusterParent = parent;
         }
 

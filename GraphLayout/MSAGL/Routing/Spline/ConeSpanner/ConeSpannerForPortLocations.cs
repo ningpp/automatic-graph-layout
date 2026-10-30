@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Microsoft.Msagl.Core;
 using Microsoft.Msagl.Core.Geometry;
@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Microsoft.Msagl.Routing.Spline.ConeSpanner
 {
-    internal class ConeSpannerForPortLocations : AlgorithmBase {
+    public class ConeSpannerForPortLocations : AlgorithmBase {
 
         readonly IEnumerable<Polyline> obstacles;
         // double coneAngle = Math.PI / 18;// ten degrees
@@ -19,7 +19,7 @@ namespace Microsoft.Msagl.Routing.Spline.ConeSpanner
         //double coneAngle = Math.PI / 4;// 45 degrees
         //double coneAngle = Math.PI / 2;// 90 degrees!
 
-        internal ConeSpannerForPortLocations(IEnumerable<Polyline> obstacles, VisibilityGraph visibilityGraph,
+        public ConeSpannerForPortLocations(IEnumerable<Polyline> obstacles, VisibilityGraph visibilityGraph,
             IEnumerable<Point> portLocationsPointSet) {
             PortLocations = portLocationsPointSet;
             this.obstacles = VisibilityGraph.OrientHolesClockwise(obstacles);
@@ -30,7 +30,7 @@ namespace Microsoft.Msagl.Routing.Spline.ConeSpanner
 
         public VisibilityGraph VisibilityGraph { get; private set; }
 
-        internal static int GetTotalSteps(double coneAngle)
+        public static int GetTotalSteps(double coneAngle)
         {
             return (int)(2 * Math.PI / coneAngle);
         }

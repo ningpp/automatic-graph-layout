@@ -25,7 +25,6 @@ namespace Microsoft.Msagl.Core
             this.progressRatio = 0;
             this.localStepCount = 0;
 
-            this.cancelToken = threadStaticCancelToken;
             this.ThrowIfCanceled();
 
             this.ProgressSteps(0); // Initial progress
@@ -55,7 +54,7 @@ namespace Microsoft.Msagl.Core
             }
             finally
             {
-                threadStaticCancelToken = oldCancelToken;
+                this.cancelToken = oldCancelToken;
             }
         }
 
@@ -75,10 +74,9 @@ namespace Microsoft.Msagl.Core
         /// <returns>old cancel token</returns>
         public CancelToken SetCancelToken(CancelToken cancelToken)
         {
+            CancelToken oldCancelToken = this.cancelToken;
             this.cancelToken = cancelToken;
             this.ThrowIfCanceled();
-            CancelToken oldCancelToken = threadStaticCancelToken;
-            threadStaticCancelToken = cancelToken;
             return oldCancelToken;
         }
 
@@ -113,14 +111,7 @@ namespace Microsoft.Msagl.Core
         }
 
         /// <summary>
-        /// The current cancel token - one per thread, cached by cancelToken, below.
-        /// </summary>
-        [ThreadStatic]
-        private static CancelToken threadStaticCancelToken;
-
-        /// <summary>
-        /// ThreadStatic field above has about 10X the lookup cost of a local field, so we
-        /// cache its value in cancelToken
+        /// The current cancel token.
         /// </summary>
         private volatile CancelToken cancelToken;
         

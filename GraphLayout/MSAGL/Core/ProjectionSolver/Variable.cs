@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Variable.cs" company="Microsoft">
 //   (c) Microsoft Corporation.  All rights reserved.
 // </copyright>
@@ -104,12 +104,12 @@ namespace Microsoft.Msagl.Core.ProjectionSolver
         }
         private int activeConstraintCount;
 
-        internal struct NeighborAndWeight
+        public struct NeighborAndWeight
         {
-            internal Variable Neighbor { get; private set; }
-            internal double Weight { get; private set; }
+            public Variable Neighbor { get; private set; }
+            public double Weight { get; private set; }
 
-            internal NeighborAndWeight(Variable neighbor, double weight) : this()
+            public NeighborAndWeight(Variable neighbor, double weight) : this()
             {
                 this.Neighbor = neighbor;
                 this.Weight = weight;
@@ -117,7 +117,7 @@ namespace Microsoft.Msagl.Core.ProjectionSolver
         }
         
         // The (x1-x2)^2 neighbor relationships: Key == NeighborVar, Value == Weight of relationship
-        internal List<NeighborAndWeight> Neighbors { get; private set; }
+        public List<NeighborAndWeight> Neighbors { get; private set; }
 
         internal Variable(uint ordinal, Object userData, double desiredPos, double weight, double scale)
         {

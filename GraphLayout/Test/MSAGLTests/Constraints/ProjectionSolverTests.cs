@@ -19,7 +19,6 @@ namespace Microsoft.Msagl.UnitTests.Constraints
     ///  File-independent tests for ProjectionSolver.
     /// </summary>
     [TestClass]
-    [Ignore]
     public class ProjectionSolverTests : ProjectionSolverVerifier
     {
         [TestMethod]
@@ -1157,7 +1156,7 @@ namespace Microsoft.Msagl.UnitTests.Constraints
         }
 
         [TestMethod]
-        [Ignore] // TODOunit: scaling apparently required; the high weight of var 2 causes it to swamp the stepsize
+        // TODOunit: scaling apparently required; the high weight of var 2 causes it to swamp the stepsize
         [Timeout(2000)]
         [Description("Test of zero-width constraint with a heavy neighbor")]
         public void Test_Qpsc_Zero_Gap_Heavy_Neighbor()
@@ -1186,14 +1185,14 @@ namespace Microsoft.Msagl.UnitTests.Constraints
             var constraintDefs = new[] { new ConstraintDef(variableDefs[1], variableDefs[0], 0.0) };
             var neighborDefs = new[] { new NeighborDef(variableDefs[2], variableDefs[1], 1.0) };
 
-            GoalFunctionValueX = 42;    // placeholder value; fill in when activated via -verbose 1
+            GoalFunctionValueX = -6400000021.333331;    // Test_Qpsc_Zero_Gap_Heavy_Neighbor
             Validate.IsTrue(
                     CheckResult(variableDefs, constraintDefs, neighborDefs, expectedPositionsX, true /* fCheckResults */),
                     FailureString);
         }
 
         [TestMethod]
-        [Ignore] // TODOunit: scaling apparently required, for the same reason as Test_QPSC_Zero_Gap_Heavy_Neighbor
+        // TODOunit: scaling apparently required, for the same reason as Test_QPSC_Zero_Gap_Heavy_Neighbor
         [Timeout(2000)]
         [Description("Test of nonzero-width constraint with a heavy neighbor")]
         public void Test_Qpsc_Four_Gap_Heavy_Neighbor()
@@ -1218,7 +1217,7 @@ namespace Microsoft.Msagl.UnitTests.Constraints
             var constraintDefs = new[] { new ConstraintDef(variableDefs[0], variableDefs[1], 4.0) };
             var neighborDefs = new[] { new NeighborDef(variableDefs[2], variableDefs[0], 1.0) };
 
-            GoalFunctionValueX = 42;    // placeholder value; fill in when activated via -verbose 1
+            GoalFunctionValueX = -6400000007.999999;    // Test_Qpsc_Four_Gap_Heavy_Neighbor
             Validate.IsTrue(
                     CheckResult(variableDefs, constraintDefs, neighborDefs, expectedPositionsX, true /* fCheckResults */),
                     FailureString);

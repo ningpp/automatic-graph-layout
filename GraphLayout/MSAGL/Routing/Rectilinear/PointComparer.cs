@@ -1,17 +1,17 @@
-using System;
+﻿using System;
 using System.Diagnostics;
 using Microsoft.Msagl.Core.Geometry;
 using Microsoft.Msagl.Routing.Visibility;
 
 namespace Microsoft.Msagl.Routing.Rectilinear {
-    internal class PointComparer {
+    public class PointComparer {
         // Due to the vagaries of rounding, we may encounter a result that is not quite 0
         // when subtracting two numbers that are close.
 // ReSharper disable InconsistentNaming
         private static readonly double differenceEpsilon = ApproximateComparer.DistanceEpsilon / 2;
 // ReSharper restore InconsistentNaming
 
-        static internal double DifferenceEpsilon {
+        static public double DifferenceEpsilon {
             get { return differenceEpsilon; }
         }
 
@@ -121,13 +121,13 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
         #region Direction_Utilities
 
         // These call through to CompassVector methods, assuming operands that use PointComparer rounding.
-        internal static Direction GetDirections(Point a, Point b) {
+        public static Direction GetDirections(Point a, Point b) {
             Assert_Rounded(a);
             Assert_Rounded(b);
             return CompassVector.DirectionsFromPointToPoint(a, b);
         }
 
-        internal static Direction GetPureDirection(Point a, Point b) {
+        public static Direction GetPureDirection(Point a, Point b) {
             Assert_Rounded(a);
             Assert_Rounded(b);
             Direction dir = GetDirections(a, b);
@@ -135,16 +135,16 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             return dir;
         }
 
-        internal static bool IsPureDirection(Point a, Point b) {
+        public static bool IsPureDirection(Point a, Point b) {
             Assert_Rounded(a);
             Assert_Rounded(b);
             return CompassVector.IsPureDirection(GetDirections(a, b));
         }
-        internal static bool IsPureDirection(Direction dir) {
+        public static bool IsPureDirection(Direction dir) {
             return CompassVector.IsPureDirection(dir);
         }
 
-        internal static bool IsPureLower(Point a, Point b) {
+        public static bool IsPureLower(Point a, Point b) {
             Assert_Rounded(a);
             Assert_Rounded(b);
 
@@ -154,7 +154,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             return (Direction.East == dir) || (Direction.North == dir);
         }
 
-        static internal Direction GetPureDirection(VisibilityVertex first, VisibilityVertex second) {
+        static public Direction GetPureDirection(VisibilityVertex first, VisibilityVertex second) {
             Assert_Rounded(first.Point);
             Assert_Rounded(second.Point);
             return GetPureDirection(first.Point, second.Point);

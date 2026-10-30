@@ -1,9 +1,9 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Microsoft.Msagl.Core.DataStructures;
 
 namespace Microsoft.Msagl.Layout.Layered {
-    internal class LayerInfo {
+    public class LayerInfo {
         /// <summary>
         /// constrained on the level of neighBlocks
         /// </summary>

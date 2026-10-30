@@ -24,15 +24,15 @@ namespace Microsoft.Msagl.Core.DataStructures {
         /// it is a mapping from queue elements and their correspondent HeapElements
         /// </summary>
         readonly Dictionary<T, GenericHeapElement<T>> cache;
-        internal int Count { get { return heapSize; } }
+        public int Count { get { return heapSize; } }
         int heapSize;
 
-        internal bool ContainsElement(T key) {
+        public bool ContainsElement(T key) {
             return cache.ContainsKey(key);
         }
 
 
-        internal GenericBinaryHeapPriorityQueue() {
+        public GenericBinaryHeapPriorityQueue() {
             cache = new Dictionary<T, GenericHeapElement<T>>();
             A = new GenericHeapElement<T>[InitialHeapCapacity + 1];
         }
@@ -47,7 +47,7 @@ namespace Microsoft.Msagl.Core.DataStructures {
 
 
 
-        internal void Enqueue(T element, double priority) {
+        public void Enqueue(T element, double priority) {
             if (heapSize == A.Length - 1) {
                 var newA = new GenericHeapElement<T>[A.Length * 2];
                 Array.Copy(A, 1, newA, 1, heapSize);
@@ -63,7 +63,7 @@ namespace Microsoft.Msagl.Core.DataStructures {
             }          
         }
 
-        internal bool IsEmpty() {
+        public bool IsEmpty() {
             return heapSize == 0;
         }
 
@@ -72,7 +72,7 @@ namespace Microsoft.Msagl.Core.DataStructures {
             h.indexToA = i;
         }
 
-        internal T Dequeue() {
+        public T Dequeue() {
             if (heapSize == 0)
                 throw new InvalidOperationException();
 
@@ -84,7 +84,7 @@ namespace Microsoft.Msagl.Core.DataStructures {
 
         }
 
-        internal T Dequeue(out double priority) {
+        public T Dequeue(out double priority) {
             if (heapSize == 0) throw new InvalidOperationException();
 
             var ret = A[1].v;
@@ -125,7 +125,7 @@ namespace Microsoft.Msagl.Core.DataStructures {
         /// sets the object priority to c
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal void DecreasePriority(T element, double newPriority)
+        public void DecreasePriority(T element, double newPriority)
         {
             GenericHeapElement<T> h;
             //ignore the element if it is not in the queue

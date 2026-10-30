@@ -1,8 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<OutputType>Library</OutputType>
-		<TargetFrameworks>netstandard2.0</TargetFrameworks>
-		<RuntimeIdentifiers>win</RuntimeIdentifiers>
+		<TargetFrameworks>net10.0</TargetFrameworks>
 	  <RootNamespace>Dot2Graph</RootNamespace>
     <AssemblyName>Dot2Graph</AssemblyName>
     <Platforms>AnyCPU;x86;x64</Platforms>

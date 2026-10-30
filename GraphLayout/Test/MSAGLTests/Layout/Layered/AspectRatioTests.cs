@@ -1,4 +1,4 @@
-﻿//-----------------------------------------------------------------------
+﻿﻿//-----------------------------------------------------------------------
 // <copyright file="AspectRatioTests.cs" company="Microsoft">
 //   (c) Microsoft Corporation.  All rights reserved.
 // </copyright>
@@ -17,8 +17,6 @@ namespace Microsoft.Msagl.UnitTests
     /// Test class for manipulating the aspect ratio of sugiyama style graphs.
     /// </summary>
     [TestClass]
-    [Ignore]
-    [DeploymentItem(@"Resources\DotFiles\LevFiles\chat.dot", "Dots")]
     public class AspectRatioTests : MsaglTestBase
     {
         
@@ -27,7 +25,7 @@ namespace Microsoft.Msagl.UnitTests
         public void WideRatioSimpleStretch()
         {
             // Setup
-            string filePath = Path.Combine(this.TestContext.TestDir, "Out\\Dots", "chat.dot");
+            string filePath = Path.Combine(GetTestResourcePath("DotFiles", "LevFiles"), "chat.dot");
             GeometryGraph graph = this.LoadGraph(filePath);
             SugiyamaLayoutSettings settings = new SugiyamaLayoutSettings();
             settings.AspectRatio = 10.0;
@@ -45,7 +43,7 @@ namespace Microsoft.Msagl.UnitTests
         public void TallRatioSimpleStretch()
         {
             // Setup
-            string filePath = Path.Combine(this.TestContext.TestDir, "Out\\Dots", "chat.dot");
+            string filePath = Path.Combine(GetTestResourcePath("DotFiles", "LevFiles"), "chat.dot");
             GeometryGraph graph = this.LoadGraph(filePath);
             SugiyamaLayoutSettings settings = new SugiyamaLayoutSettings();
             settings.AspectRatio = 0.25;

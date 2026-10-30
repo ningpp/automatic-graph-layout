@@ -2,9 +2,9 @@
 using Microsoft.Msagl.Core;
 
 namespace Microsoft.Msagl.Layout.Layered {
-    internal class EdgeComparerBySource : IComparer<LayerEdge> {
+    public class EdgeComparerBySource : IComparer<LayerEdge> {
         int[] X;
-        internal EdgeComparerBySource(int[] X) {
+        public EdgeComparerBySource(int[] X) {
             this.X = X;
         }
 

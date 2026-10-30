@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Text.Json;
+using Newtonsoft.Json;
 
 namespace Microsoft.Msagl.DebugHelpers{
     /// <summary>
@@ -30,14 +30,9 @@ namespace Microsoft.Msagl.DebugHelpers{
         ///<param name="fileName"></param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static void WriteToFile(IEnumerable<DebugCurve> debugCurves, string fileName) {
-            var options = new JsonSerializerOptions
-            {
-                WriteIndented = true
-            };
-
             try
             {
-                string jsonString = JsonSerializer.Serialize(new DebugCurveCollection(debugCurves), options);
+                string jsonString = JsonConvert.SerializeObject(new DebugCurveCollection(debugCurves), Formatting.Indented);
                 File.WriteAllText(fileName, jsonString);
             }
             catch (Exception e)
@@ -54,7 +49,7 @@ namespace Microsoft.Msagl.DebugHelpers{
             try
             {
                 string jsonString = File.ReadAllText(fileName);
-                var debugCurveCollection = JsonSerializer.Deserialize<DebugCurveCollection>(jsonString);
+                var debugCurveCollection = JsonConvert.DeserializeObject<DebugCurveCollection>(jsonString);
                 return new List<DebugCurve>(debugCurveCollection.DebugCurvesArray);
             }
             catch (Exception e)

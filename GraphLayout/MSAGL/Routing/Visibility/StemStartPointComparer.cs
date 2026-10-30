@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Microsoft.Msagl.Core.Geometry;
 using Microsoft.Msagl.Core.Geometry.Curves;
@@ -9,7 +9,7 @@ namespace Microsoft.Msagl.Routing.Visibility {
     /// compares couples only by looking at the couple first point
     /// we need the couple to hold the stem
     /// </summary>
-    internal class StemStartPointComparer : IComparer<Stem> {
+    public class StemStartPointComparer : IComparer<Stem> {
         Point pivot;
 
         int IComparer<Stem>.Compare(Stem i, Stem j) {
@@ -27,7 +27,7 @@ namespace Microsoft.Msagl.Routing.Visibility {
 
         }
 
-        internal static int CompareVectorsByAngleToXAxis(Point a, Point b) {
+        public static int CompareVectorsByAngleToXAxis(Point a, Point b) {
             if (a.Y >= 0) {
                 if (b.Y < 0)
                     return -1;
@@ -74,7 +74,7 @@ namespace Microsoft.Msagl.Routing.Visibility {
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal StemStartPointComparer(Point pivotPoint) {
+        public StemStartPointComparer(Point pivotPoint) {
             this.pivot = pivotPoint;
         }
 

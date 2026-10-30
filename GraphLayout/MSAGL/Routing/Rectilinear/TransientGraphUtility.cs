@@ -9,6 +9,7 @@ using System.Linq;
 using Microsoft.Msagl.Core.Geometry;
 using Microsoft.Msagl.Core.Geometry.Curves;
 using Microsoft.Msagl.Routing.Visibility;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Microsoft.Msagl.Routing.Rectilinear {
     using DebugHelpers;
@@ -18,7 +19,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
         internal List<VisibilityVertexRectilinear> AddedVertices = new List<VisibilityVertexRectilinear>();
 
         // Edges added to the graph for routing.
-        internal List<TollFreeVisibilityEdge> AddedEdges = new List<TollFreeVisibilityEdge>();
+        public List<TollFreeVisibilityEdge> AddedEdges = new List<TollFreeVisibilityEdge>();
 
         // Edges joining two non-transient vertices; these must be replaced.
         readonly List<VisibilityEdge> edgesToRestore = new List<VisibilityEdge>();

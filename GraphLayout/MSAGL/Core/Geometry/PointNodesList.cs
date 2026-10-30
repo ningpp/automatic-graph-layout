@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 
 namespace Microsoft.Msagl.Core.Geometry {
-    internal class PointNodesList : IEnumerator<Point>, IEnumerable<Point> {
+    public class PointNodesList : IEnumerator<Point>, IEnumerable<Point> {
         CornerSite current, head;
 
         CornerSite Head {
             get { return head; }
         }
 
-        internal PointNodesList(CornerSite pointNode) {
+        public PointNodesList(CornerSite pointNode) {
             head = pointNode;
         }
 

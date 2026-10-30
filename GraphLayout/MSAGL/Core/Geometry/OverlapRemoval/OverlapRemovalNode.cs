@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="OverlapRemovalNode.cs" company="Microsoft">
 //   (c) Microsoft Corporation.  All rights reserved.
 // </copyright>
@@ -49,12 +49,12 @@ namespace Microsoft.Msagl.Core.Geometry
 
         // Set and retrieved during Cluster.GenerateFromEvents.
         internal List<OverlapRemovalNode> LeftNeighbors { get; set; }
-        internal List<OverlapRemovalNode> RightNeighbors { get; set; }
+        public List<OverlapRemovalNode> RightNeighbors { get; set; }
 
         // If these are set, it means that during the horizontal pass we deferred a node's constraint
         // generation to the vertical pass, so we can't jump out of neighbour evaluation on that node.
-        internal bool DeferredLeftNeighborToV { get; set; }
-        internal bool DeferredRightNeighborToV { get; set; }
+        public bool DeferredLeftNeighborToV { get; set; }
+        public bool DeferredRightNeighborToV { get; set; }
 
         // These track the (P)erpendicular coordinates to the Variable's coordinates.
         // This is to order the Events, and for horizontal constraint generation, is
@@ -122,7 +122,7 @@ namespace Microsoft.Msagl.Core.Geometry
         public double Weight { get; internal set; }
 
         // This identifies the node for consistent-sorting purposes in the Event list.
-        internal uint Id { get; private set; }
+        public uint Id { get; private set; }
 
         // This is the normal node ctor, from ConstraintGenerator.
         internal OverlapRemovalNode(uint id, object userData, double position, double positionP,
@@ -204,7 +204,7 @@ namespace Microsoft.Msagl.Core.Geometry
         }
 
         // Overridden by Cluster.  Called after Solve(); sets the Node position to that of its Variable.
-        internal virtual void UpdateFromVariable()
+        public virtual void UpdateFromVariable()
         {
             // If the Variable is null then we were already updated from an earlier cluster in
             // another hierarchy.

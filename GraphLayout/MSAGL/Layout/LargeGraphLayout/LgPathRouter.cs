@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -14,7 +14,7 @@ using Microsoft.Msagl.Routing.Visibility;
 using SymmetricSegment = Microsoft.Msagl.Core.DataStructures.SymmetricTuple<Microsoft.Msagl.Core.Geometry.Point>;
 namespace Microsoft.Msagl.Layout.LargeGraphLayout
 {
-    internal class LgPathRouter
+    public class LgPathRouter
     {
         VisibilityGraph _visGraph; // = new VisibilityGraph();
         internal const double searchEps = 1e-5;
@@ -23,13 +23,13 @@ namespace Microsoft.Msagl.Layout.LargeGraphLayout
         readonly Dictionary<VisibilityEdge, int> _usedEdges = new Dictionary<VisibilityEdge, int>();
 
         readonly Set<VisibilityEdge> _edgesOnOldTrajectories = new Set<VisibilityEdge>();
-        internal VisibilityGraph VisGraph
+        public VisibilityGraph VisGraph
         {
             get { return _visGraph; }
             set { _visGraph = value; }
         }
 
-        internal LgPathRouter()
+        public LgPathRouter()
         {
             _visGraph = new VisibilityGraph();
         }
@@ -39,7 +39,7 @@ namespace Microsoft.Msagl.Layout.LargeGraphLayout
             return _edgesOnOldTrajectories.Contains(e);
         }
 
-        internal void MarkEdgeUsed(Point p0, Point p1)
+        public void MarkEdgeUsed(Point p0, Point p1)
         {
             var e = FindEdge(p0, p1);
             int usage;
@@ -49,13 +49,13 @@ namespace Microsoft.Msagl.Layout.LargeGraphLayout
                 _usedEdges[e]++;
         }
 
-        internal void MarkEdgeAsEdgeOnOldTrajectory(Point p0, Point p1)
+        public void MarkEdgeAsEdgeOnOldTrajectory(Point p0, Point p1)
         {
             var e = FindEdge(p0, p1);
             _edgesOnOldTrajectories.Insert(e);
         }
 
-        internal bool IsEdgeUsed(VisibilityEdge e)
+        public bool IsEdgeUsed(VisibilityEdge e)
         {
             int usage;
             if (!_usedEdges.TryGetValue(e, out usage))
@@ -63,19 +63,19 @@ namespace Microsoft.Msagl.Layout.LargeGraphLayout
             return usage > 0;
         }
 
-        internal void MarkEdgesUsedAlongPath(List<Point> path)
+        public void MarkEdgesUsedAlongPath(List<Point> path)
         {
             for (var i = 0; i < path.Count - 1; i++)
                 MarkEdgeUsed(path[i], path[i + 1]);
         }
 
-        internal void MarkEdgesAlongPathAsEdgesOnOldTrajectories(List<Point> path)
+        public void MarkEdgesAlongPathAsEdgesOnOldTrajectories(List<Point> path)
         {
             for (var i = 0; i < path.Count - 1; i++)
                 MarkEdgeAsEdgeOnOldTrajectory(path[i], path[i + 1]);
         }
 
-        internal VisibilityEdge AddVisGraphEdge(Point ep0, Point ep1)
+        public VisibilityEdge AddVisGraphEdge(Point ep0, Point ep1)
         {
             var v0 = GetOrFindVisibilityVertex(ep0) ?? AddNewVertex(ep0);
             var v1 = GetOrFindVisibilityVertex(ep1) ?? AddNewVertex(ep1);
@@ -83,7 +83,7 @@ namespace Microsoft.Msagl.Layout.LargeGraphLayout
         }
 
 
-        internal void AddVisGraphEdgesFromNodeCenterToNodeBorder(LgNodeInfo nodeInfo)
+        public void AddVisGraphEdgesFromNodeCenterToNodeBorder(LgNodeInfo nodeInfo)
         {
             var vc = VisGraph.AddVertex(nodeInfo.Center);
             vc.IsTerminal = true; // we don't need to register this node in the tree
@@ -95,7 +95,7 @@ namespace Microsoft.Msagl.Layout.LargeGraphLayout
             }
         }
 
-        internal void RemoveVisGraphVertex(Point p)
+        public void RemoveVisGraphVertex(Point p)
         {
             var v = _visGraph.FindVertex(p);
             if (v == null) return;
@@ -216,7 +216,7 @@ namespace Microsoft.Msagl.Layout.LargeGraphLayout
             return node.BoundaryOnLayer.PolylinePoints.Select(pp => pp.Point).ToArray();
         }
 
-        internal List<Point> GetPath(VisibilityVertex vs, VisibilityVertex vt,
+        public List<Point> GetPath(VisibilityVertex vs, VisibilityVertex vt,
             bool shrinkDistances)
         {
             var pathPoints = new List<Point>();
@@ -243,7 +243,7 @@ namespace Microsoft.Msagl.Layout.LargeGraphLayout
             vs.IsShortestPathTerminal = vt.IsShortestPathTerminal = false;
             return pathPoints;
         }
-        internal List<Point> GetPath(VisibilityVertex vs, VisibilityVertex vt,
+        public List<Point> GetPath(VisibilityVertex vs, VisibilityVertex vt,
             bool shrinkDistances, Tiling g)
         {
             var pathPoints = new List<Point>();
@@ -296,7 +296,7 @@ namespace Microsoft.Msagl.Layout.LargeGraphLayout
             return v1 == null ? null : _visGraph.FindEdge(v0.Point, v1.Point);
         }
 
-        internal List<Point> GetPath(LgNodeInfo s, LgNodeInfo t, bool shrinkDistances)
+        public List<Point> GetPath(LgNodeInfo s, LgNodeInfo t, bool shrinkDistances)
         {
             var vs = VisGraph.FindVertex(s.Center);
             Debug.Assert(vs != null);
@@ -306,7 +306,7 @@ namespace Microsoft.Msagl.Layout.LargeGraphLayout
         }
 
 
-        internal List<Point> GetPath(LgNodeInfo s, LgNodeInfo t, bool shrinkDistances, Tiling g)
+        public List<Point> GetPath(LgNodeInfo s, LgNodeInfo t, bool shrinkDistances, Tiling g)
         {
             var vs = VisGraph.FindVertex(g.nodeToLoc[s.GeometryNode]);
             Debug.Assert(vs != null);
@@ -314,7 +314,7 @@ namespace Microsoft.Msagl.Layout.LargeGraphLayout
             Debug.Assert(vt != null);
             return GetPath(vs, vt, shrinkDistances, g);
         }
-        internal List<VisibilityVertex> GetAllVertices()
+        public List<VisibilityVertex> GetAllVertices()
         {
             return (_visGraph.Vertices()).ToList();
         }
@@ -327,13 +327,13 @@ namespace Microsoft.Msagl.Layout.LargeGraphLayout
         }
 
 
-        internal IEnumerable<VisibilityEdge> GetAllEdgesVisibilityEdges()
+        public IEnumerable<VisibilityEdge> GetAllEdgesVisibilityEdges()
         {
             return _visGraph.Edges;
         }
 
 
-        internal bool ExistsEdge(Point s, Point t)
+        public bool ExistsEdge(Point s, Point t)
         {
             var p0 = GetOrFindVisibilityVertex(s);
             if (p0 == null) return false;
@@ -459,17 +459,17 @@ namespace Microsoft.Msagl.Layout.LargeGraphLayout
             }
         }
 
-        internal bool ContainsVertex(Point point)
+        public bool ContainsVertex(Point point)
         {
             return VisGraph.FindVertex(point) != null;
         }
 
-        internal VisibilityVertex FindVertex(Point point)
+        public VisibilityVertex FindVertex(Point point)
         {
             return VisGraph.FindVertex(point);
         }
 
-        internal void RemoveEdge(Point a, Point b)
+        public void RemoveEdge(Point a, Point b)
         {
             var e = VisGraph.FindEdge(a, b);
             _usedEdges.Remove(e);
@@ -479,7 +479,7 @@ namespace Microsoft.Msagl.Layout.LargeGraphLayout
             _visGraph.RemoveEdge(e.Source, e.Target);
         }
 
-        internal void RemoveVisibilityEdges(List<VisibilityEdge> edgesToRemove)
+        public void RemoveVisibilityEdges(List<VisibilityEdge> edgesToRemove)
         {
             foreach (var e in edgesToRemove)
             {
@@ -517,12 +517,12 @@ namespace Microsoft.Msagl.Layout.LargeGraphLayout
                    (e.Source.IsShortestPathTerminal || e.Target.IsShortestPathTerminal);
         }
 
-        internal void ClearUsedEdges()
+        public void ClearUsedEdges()
         {
             _usedEdges.Clear();
         }
 
-        internal void DiminishUsed(Point a, Point b)
+        public void DiminishUsed(Point a, Point b)
         {
             var e = VisGraph.FindEdge(a, b);
             if (e == null) return;

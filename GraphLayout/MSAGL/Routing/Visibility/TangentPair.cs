@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Diagnostics;
 using Microsoft.Msagl.Core.DataStructures;
 using Microsoft.Msagl.Core.Geometry;
@@ -9,26 +9,26 @@ namespace Microsoft.Msagl.Routing.Visibility {
     /// calculates the pair of tangent line segments between two convex non-intersecting polygons H and Q
     /// we suppose that polygons are clockwise oriented
     /// </summary>
-    internal class TangentPair {
+    public class TangentPair {
         //left tangent means that the polygon lies to the left of the tangent
         //right tangent means that the polygon lies to the right of the tangent
         //the first element of a couple referse to P and the second to Q
         //the left at P and left at Q tangent
         Polygon P;
         Polygon Q;
-        internal Tuple<int, int> leftPLeftQ;
+        public Tuple<int, int> leftPLeftQ;
         //the left at P and right at Q tangent        
-        internal Tuple<int, int> leftPRightQ;
+        public Tuple<int, int> leftPRightQ;
         bool lowerBranchOnQ;
         //the right at P and left at Q tangent
-        internal Tuple<int, int> rightPLeftQ;
+        public Tuple<int, int> rightPLeftQ;
         //the right at P and right at Q tangent
-        internal Tuple<int, int> rightPRightQ;
+        public Tuple<int, int> rightPRightQ;
 
 
         bool upperBranchOnP;
 
-        internal TangentPair(Polygon polygonP, Polygon polygonQ) {
+        public TangentPair(Polygon polygonP, Polygon polygonQ) {
             PPolygon = polygonP;
             QPolygon = polygonQ;
         }
@@ -39,12 +39,12 @@ namespace Microsoft.Msagl.Routing.Visibility {
         }
 */
 
-        internal Polygon PPolygon {
+        public Polygon PPolygon {
 //            get { return P; }
             set { P = value; }
         }
 
-        internal Polygon QPolygon {
+        public Polygon QPolygon {
 //            get { return Q; }
             set { Q = value; }
         }
@@ -193,7 +193,7 @@ namespace Microsoft.Msagl.Routing.Visibility {
         /// <param name="p2">the closest feature end</param>
         /// <param name="q1">the closest feature end</param>
         /// <param name="q2">the closest feature start</param>
-        internal void FindDividingBisector(out Point bisectorPivot, out Point bisectorRay,
+        public void FindDividingBisector(out Point bisectorPivot, out Point bisectorRay,
                                            out int p1, out int p2, out int q1, out int q2) {
             Point pClosest;
             Point qClosest;
@@ -208,7 +208,7 @@ namespace Microsoft.Msagl.Routing.Visibility {
         }
 
 
-        internal void FindClosestPoints(out Point pClosest, out Point qClosest) {
+        public void FindClosestPoints(out Point pClosest, out Point qClosest) {
             int p1, p2, q1, q2;
             FindClosestFeatures(out p1, out p2, out q1, out q2, out pClosest, out qClosest);
         }
@@ -579,7 +579,7 @@ namespace Microsoft.Msagl.Routing.Visibility {
             return false;
         }
 
-        internal void CalculateLeftTangents() {
+        public void CalculateLeftTangents() {
             Point bisectorPivot;
             Point bisectorRay;
             int p1;
@@ -617,7 +617,7 @@ namespace Microsoft.Msagl.Routing.Visibility {
         //    return false;
         //}
 
-        internal void CalculateRightTangents() {
+        public void CalculateRightTangents() {
             Point bisectorPivot;
             Point bisectorRay;
             int p1;

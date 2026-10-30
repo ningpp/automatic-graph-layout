@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,7 +48,7 @@ namespace Microsoft.Msagl.Core.Layout {
             }
         }
 
-        internal Rectangle boundingBox;
+        public Rectangle boundingBox;
 
         /// <summary>
         /// Bounding box of the graph

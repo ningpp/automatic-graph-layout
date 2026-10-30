@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using Microsoft.Msagl.Core.DataStructures;
 
@@ -7,7 +7,7 @@ namespace Microsoft.Msagl.Core.GraphAlgorithms {
     /// <summary>
     /// The base class for graphs: layering and ordering work on an instance of this class.
     /// </summary>
-    internal class BasicGraphOnEdges<TEdge> where TEdge : IEdge {
+    public class BasicGraphOnEdges<TEdge> where TEdge : IEdge {
         protected List<TEdge> edges;
         TEdge[][] inEdges;
         int numberOfVertices;
@@ -17,18 +17,18 @@ namespace Microsoft.Msagl.Core.GraphAlgorithms {
         /// <summary>
         /// a default constructor
         /// </summary>
-        internal BasicGraphOnEdges() {
+        public BasicGraphOnEdges() {
             SetEdges(new List<TEdge>(), 0);
         }
 
-        internal BasicGraphOnEdges(IEnumerable<TEdge> edges) : this(edges, VertexCount(edges)) {}
+        public BasicGraphOnEdges(IEnumerable<TEdge> edges) : this(edges, VertexCount(edges)) {}
 
         /// <summary>
         /// constructor
         /// </summary>
         /// <param name="edges"></param>
         /// <param name="numberOfVerts"></param>
-        internal BasicGraphOnEdges(IEnumerable<TEdge> edges, int numberOfVerts) {
+        public BasicGraphOnEdges(IEnumerable<TEdge> edges, int numberOfVerts) {
             SetEdges(edges, numberOfVerts);
         }
 
@@ -36,7 +36,7 @@ namespace Microsoft.Msagl.Core.GraphAlgorithms {
         /// <summary>
         /// returning number of vertices of the graph
         /// </summary>
-        internal int NodeCount {
+        public int NodeCount {
             get { return numberOfVertices; }
         }
 
@@ -51,7 +51,7 @@ namespace Microsoft.Msagl.Core.GraphAlgorithms {
         /// the method is not efficient, takes linear time
         /// </summary>
         /// <param name="edge"></param>
-        internal void RemoveEdge(TEdge edge) {
+        public void RemoveEdge(TEdge edge) {
             edges.Remove(edge);
             if (edge.Source != edge.Target) {
                 TEdge[] edgesToChange = outEdges[edge.Source];
@@ -78,7 +78,7 @@ namespace Microsoft.Msagl.Core.GraphAlgorithms {
         /// </summary>
         /// <param name="edges"></param>
         /// <returns></returns>
-        internal static int VertexCount(IEnumerable edges) {
+        public static int VertexCount(IEnumerable edges) {
             int nov = 0;
             foreach (TEdge ie in edges) {
                 if (ie.Source >= nov)
@@ -98,7 +98,7 @@ namespace Microsoft.Msagl.Core.GraphAlgorithms {
             return outEdges[vertex];
         }
 
-        internal IList<TEdge> SelfEdges(int vertex) {
+        public IList<TEdge> SelfEdges(int vertex) {
             return selfEdges[vertex];
         }
 
@@ -116,7 +116,7 @@ namespace Microsoft.Msagl.Core.GraphAlgorithms {
         /// </summary>
         /// <param name="valEdges"></param>
         /// <param name="nov">number of vertices</param>
-        internal void SetEdges(IEnumerable<TEdge> valEdges, int nov) {
+        public void SetEdges(IEnumerable<TEdge> valEdges, int nov) {
             edges = valEdges as List<TEdge> ?? new List<TEdge>(valEdges);
 
             numberOfVertices = nov;
@@ -172,7 +172,7 @@ namespace Microsoft.Msagl.Core.GraphAlgorithms {
         /// this function is extremely non-efficient and is called only when adding virtual edges
         /// </summary>
         /// <param name="e"></param>
-        internal void AddEdge(TEdge e) {
+        public void AddEdge(TEdge e) {
             Edges.Add(e);
             AddEdgeToInEdges(e, e.Target);
             AddEdgeToOutEdges(e, e.Source);
@@ -208,7 +208,7 @@ namespace Microsoft.Msagl.Core.GraphAlgorithms {
         /// We assume that the graph is connected here
         /// </summary>
         /// <returns></returns>
-        internal IEnumerable<int> NodesOfConnectedGraph() {
+        public IEnumerable<int> NodesOfConnectedGraph() {
             if (edges.Count > 0) {
                 var enqueed = new Set<int>();
                 var q = new Queue<int>();

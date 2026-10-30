@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Microsoft.Msagl.Core.GraphAlgorithms;
 
 namespace Microsoft.Msagl.Layout.Layered {
@@ -6,18 +6,18 @@ namespace Microsoft.Msagl.Layout.Layered {
     /// Differs from IntEdge in containing a flag indicating belonging to the tree
     /// and containing the cut value
     /// </summary>
-    internal class NetworkEdge : PolyIntEdge {
+    public class NetworkEdge : PolyIntEdge {
 
-        internal const int Infinity = Int32.MaxValue;
-        internal NetworkEdge(PolyIntEdge e)
+        public const int Infinity = Int32.MaxValue;
+        public NetworkEdge(PolyIntEdge e)
             : base(e.Source, e.Target) {
             Weight = e.Weight;
             Separation = e.Separation;
         }
-        internal bool inTree;
+        public bool inTree;
         int cut = Infinity;
 
-        internal int Cut {
+        public int Cut {
             get { return cut; }
             set { cut = value; }
         }

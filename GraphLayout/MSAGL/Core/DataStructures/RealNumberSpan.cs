@@ -5,13 +5,22 @@ namespace Microsoft.Msagl.Core.DataStructures {
     /// this class behaves like one dimensional bounding box
     /// </summary>
     public class RealNumberSpan{
-        internal RealNumberSpan(){
+        /// <summary>
+        /// Constructs an empty span.
+        /// </summary>
+        public RealNumberSpan(){
             IsEmpty = true;
         }
 
-        internal bool IsEmpty { get; set; }
+        /// <summary>
+        /// True if no values have been added to the span.
+        /// </summary>
+        public bool IsEmpty { get; set; }
 
-        internal void AddValue(double x){
+        /// <summary>
+        /// Adds a value to the span, extending the minimum or maximum if needed.
+        /// </summary>
+        public void AddValue(double x){
             if(IsEmpty){
                 Min = Max = x;
                 IsEmpty = false;
@@ -21,8 +30,14 @@ namespace Microsoft.Msagl.Core.DataStructures {
                 Max = x;
         }
 
-        internal double Min { get; set; }
-        internal double Max { get; set; }
+        /// <summary>
+        /// The minimum value of the span.
+        /// </summary>
+        public double Min { get; set; }
+        /// <summary>
+        /// The maximum value of the span.
+        /// </summary>
+        public double Max { get; set; }
         /// <summary>
         /// 
         /// </summary>

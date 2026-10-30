@@ -1,22 +1,22 @@
-using System;
+﻿using System;
 
 namespace Microsoft.Msagl.Layout.Layered {
     /// <summary>
     /// Keeps all information about the hierarchy of layers
     /// </summary>
-    internal class LayerArrays {
+    public class LayerArrays {
 
-        internal int[] Y;
+        public int[] Y;
 
         int[] verticesToX;
 
         int[][] layers;
 
-        internal LayerArrays(int[] verticesToLayers) {
+        public LayerArrays(int[] verticesToLayers) {
             Initialize(verticesToLayers);
         }
 
-        internal void Initialize(int[] verticesToLayers) {
+        public void Initialize(int[] verticesToLayers) {
             this.Y = verticesToLayers;
             this.verticesToX = null;
             this.layers = null;
@@ -26,7 +26,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// Returns the same arrays but with no empty layers.
         /// </summary>
         /// <returns></returns>
-        internal LayerArrays DropEmptyLayers() {
+        public LayerArrays DropEmptyLayers() {
             int[] drop = new int[this.Layers.Length];
             int dropVal = 0;
             for (int i = 0; i < this.Layers.Length; i++) {
@@ -58,7 +58,7 @@ namespace Microsoft.Msagl.Layout.Layered {
 
         }
 
-        internal void UpdateLayers(int[][] ulayers) {
+        public void UpdateLayers(int[][] ulayers) {
 
             if (layers == null)
                 InitLayers();
@@ -70,7 +70,7 @@ namespace Microsoft.Msagl.Layout.Layered {
 
         }
 
-        internal void UpdateXFromLayers() {
+        public void UpdateXFromLayers() {
 
             if (layers == null)
                 InitLayers();
@@ -90,7 +90,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// gives the order of the vertices in the y-layer
         /// </summary>
         /// <value></value>
-        internal int[] X {
+        public int[] X {
             get {
                 if (verticesToX != null)
                     return verticesToX;
@@ -110,7 +110,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// returns the layer hierarchy where the order of the layers is reversed
         /// </summary>
         /// <returns></returns>
-        internal LayerArrays ReversedClone() {
+        public LayerArrays ReversedClone() {
             int[] rv = new int[Y.Length];
             int lastLayer = Layers.Length - 1; //call Layers to ensure that the layers are calculated
             for (int i = 0; i < Y.Length; i++)
@@ -123,7 +123,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// <summary>
         /// Layers[i] is the array of vertices of i-th layer
         /// </summary>
-        internal int[][] Layers {
+        public int[][] Layers {
             get {
                 if (layers != null)
                     return layers;

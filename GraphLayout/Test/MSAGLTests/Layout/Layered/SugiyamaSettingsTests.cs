@@ -35,7 +35,6 @@ namespace Microsoft.Msagl.UnitTests
         }
 
         [TestMethod]
-        [Ignore] // Serialization/Deserialization doesn't currently work
         [Description("Verifies that SugiyamaLayoutSettings serialize and deserialize correctly.")]
         public void SerializeDeserialize()
         {

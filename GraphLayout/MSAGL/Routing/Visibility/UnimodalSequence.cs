@@ -7,14 +7,14 @@ namespace Microsoft.Msagl.Routing.Visibility {
     /// decreasing (respectively, increasing) on [m + 1, n-1]
     /// No three sequential elements have the same value
     /// </summary>
-    internal class UnimodalSequence {
+    public class UnimodalSequence {
 
         Func<int,double> sequence;
 
         /// <summary>
         /// the sequence values
         /// </summary>
-        internal Func<int,double> Sequence {
+        public Func<int,double> Sequence {
             get { return sequence; }
             set { sequence = value; }
         }
@@ -23,21 +23,21 @@ namespace Microsoft.Msagl.Routing.Visibility {
         /// <summary>
         /// the length of the sequence: the sequence starts from 0
         /// </summary>
-        internal int Length {
+        public int Length {
             get { return length; }
             set { length = value; }
         }
 
-        internal UnimodalSequence(Func<int,double> sequenceDelegate, int length) {
+        public UnimodalSequence(Func<int,double> sequenceDelegate, int length) {
             this.Sequence = sequenceDelegate;
             this.Length = length;
         }
 
-        internal enum Behavior {
+        public enum Behavior {
             Increasing, Decreasing, Extremum,
         }
 
-        internal int FindMinimum() {
+        public int FindMinimum() {
             //find out first that the minimum is inside of the domain
             int a = 0;
             int b = Length - 1;
@@ -88,7 +88,7 @@ namespace Microsoft.Msagl.Routing.Visibility {
             return delLeft > 0 ? Behavior.Increasing : Behavior.Decreasing;
         }
 
-        internal int FindMaximum() {
+        public int FindMaximum() {
             //find out first that the maximum is inside of the domain
             int a = 0;
             int b = Length - 1;

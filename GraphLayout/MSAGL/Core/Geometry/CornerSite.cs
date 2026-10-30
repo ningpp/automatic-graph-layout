@@ -81,7 +81,7 @@ namespace Microsoft.Msagl.Core.Geometry {
             get { return next; }
             set { next = value; }
         }
-        internal CornerSite() { }
+        public CornerSite() { }
         /// <summary>
         /// the constructor
         /// </summary>
@@ -119,7 +119,7 @@ namespace Microsoft.Msagl.Core.Geometry {
             next.prev = this;
         }
         
-        internal double Turn {
+        public double Turn {
             get {
                 if (this.Next == null || this.Previous == null)
                     return 0;
@@ -127,7 +127,7 @@ namespace Microsoft.Msagl.Core.Geometry {
             }
         }
 
-        internal CornerSite Clone() {
+        public CornerSite Clone() {
             CornerSite s = new CornerSite();
             s.PreviousBezierSegmentFitCoefficient = PreviousBezierSegmentFitCoefficient;
             s.Point = Point;

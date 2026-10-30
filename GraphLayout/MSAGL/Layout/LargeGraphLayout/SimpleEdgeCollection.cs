@@ -1,11 +1,11 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Msagl.Core.Layout;
 
 namespace Microsoft.Msagl.Layout.LargeGraphLayout {
-    internal class SimpleEdgeCollection : EdgeCollection {
+    public class SimpleEdgeCollection : EdgeCollection {
         readonly List<Edge> edges;
 
         public SimpleEdgeCollection(IEnumerable<Edge> collectionEdges) : base(null) {

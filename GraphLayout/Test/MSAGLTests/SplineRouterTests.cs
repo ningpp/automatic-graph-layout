@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using Microsoft.Msagl.GraphViewerGdi;
 using Microsoft.Msagl.Core;
 using Microsoft.Msagl.Core.DataStructures;
 using Microsoft.Msagl.Core.Geometry;
@@ -32,7 +31,7 @@ namespace Microsoft.Msagl.UnitTests
     /// Test class for methods inside EdgeRouterHelper
     /// </summary>
     [TestClass]
-    [DeploymentItem(@"Resources\MSAGLGeometryGraphs")]
+    [DeploymentItem("Resources/MSAGLGeometryGraphs")]
     public class SplineRouterTests : MsaglTestBase
     {
         [TestMethod]
@@ -116,11 +115,6 @@ namespace Microsoft.Msagl.UnitTests
 
         private static void CheckEdgesForOverlapWithNodes(double tightPadding, GeometryGraph graph)
         {
-            if (!DontShowTheDebugViewer())
-            {
-                DisplayGeometryGraph.SetShowFunctions();
-            }
-
             foreach (var e in graph.Edges.Where(e=>!MultiEdge(e)))//avoid checking multi-edges since they routed as bundles and can slightly go over the nodes
             {
                 Assert.IsNotNull(e.EdgeGeometry, "EdgeGeometry is null");
@@ -202,7 +196,6 @@ namespace Microsoft.Msagl.UnitTests
 
         [TestMethod]
         public void DoubleEdge() {
-            GraphViewerGdi.DisplayGeometryGraph.SetShowFunctions();
             var g = new GeometryGraph();
             var a = new Node {
                 BoundaryCurve = CurveFactory.CreateRectangleWithRoundedCorners(
@@ -229,13 +222,10 @@ namespace Microsoft.Msagl.UnitTests
             var sr = new SplineRouter(g, 2, 4, Math.PI / 6);
             sr.Run();
 //            GraphViewerGdi.DisplayGeometryGraph.ShowGraph(g);
-  GraphViewerGdi.DisplayGeometryGraph.SetShowFunctions();
-
 
         }
         [TestMethod]
         public void OneEdgeWithObstacle() {
-            GraphViewerGdi.DisplayGeometryGraph.SetShowFunctions();
             var g = new GeometryGraph();
             var a = new Node {
                 BoundaryCurve = CurveFactory.CreateRectangleWithRoundedCorners(
@@ -272,7 +262,6 @@ namespace Microsoft.Msagl.UnitTests
         }
         [TestMethod]
         public void OneEdgeWithTwoObstacles() {
-            GraphViewerGdi.DisplayGeometryGraph.SetShowFunctions();
             var g = new GeometryGraph();
             var a = new Node {
                 BoundaryCurve = CurveFactory.CreateRectangleWithRoundedCorners(
@@ -350,9 +339,7 @@ namespace Microsoft.Msagl.UnitTests
         
         [TestMethod]
         [Description("the run does not stop")]
-        [Ignore] // it is a flaky test
         public void BundlingBug1GeomGraph() {
-            DisplayGeometryGraph.SetShowFunctions();
             var graph = GeometryGraphReader.CreateFromFile(GetGeomGraphFileName("bug1.msagl.geom"));
             var settings = new BundlingSettings();
             var router = new SplineRouter(graph, 0.1, 0.75, Math.PI / 6, settings);
@@ -363,7 +350,6 @@ namespace Microsoft.Msagl.UnitTests
         [TestMethod]
         [Description("the run does not stop")]
         public void Clusterabc() {
-                DisplayGeometryGraph.SetShowFunctions();
             var geometryGraph = new GeometryGraph();
             geometryGraph.RootCluster = new Cluster();
             var a = new Node();
@@ -489,13 +475,6 @@ namespace Microsoft.Msagl.UnitTests
 
             SplineRouter splineRouter = new SplineRouter(graph, Padding/3, Padding, Math.PI / 6);
             splineRouter.Run();
-            if (!DontShowTheDebugViewer())
-            {
-                graph.UpdateBoundingBox();
-                DisplayGeometryGraph.ShowGraph(graph);                
-            }
-
-            
         }
 //        [WorkItem(535708)]
 //        [TestMethod]

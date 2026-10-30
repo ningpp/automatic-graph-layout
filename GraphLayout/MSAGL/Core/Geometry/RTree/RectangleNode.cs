@@ -1,4 +1,4 @@
-#region Using directives
+﻿#region Using directives
 
 using System;
 using System.Collections.Generic;
@@ -219,7 +219,7 @@ namespace Microsoft.Msagl.Core.Geometry {
         /// <param name="hitTest"></param>
         /// <param name="hitRectangle"></param>
         /// <returns></returns>
-        internal void VisitTree(Func<T, HitTestBehavior> hitTest, IRectangle<P> hitRectangle) {
+        public void VisitTree(Func<T, HitTestBehavior> hitTest, IRectangle<P> hitRectangle) {
             VisitTreeStatic(this, hitTest, hitRectangle);
         }
 

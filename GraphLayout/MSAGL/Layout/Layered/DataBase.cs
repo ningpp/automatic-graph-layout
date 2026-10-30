@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Msagl.Core.DataStructures;
 using Microsoft.Msagl.Core.GraphAlgorithms;
@@ -31,7 +31,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// </summary>
         Dictionary<IntPair, List<PolyIntEdge>> multiedges = new Dictionary<IntPair, List<PolyIntEdge>>();
 
-        internal IEnumerable<PolyIntEdge> AllIntEdges {
+        public IEnumerable<PolyIntEdge> AllIntEdges {
             get {
                 foreach (List<PolyIntEdge> l in Multiedges.Values)
                     foreach (PolyIntEdge e in l)
@@ -53,7 +53,7 @@ namespace Microsoft.Msagl.Layout.Layered {
             set { anchors = value; }
         }
 
-        internal void AddFeedbackSet(IEnumerable<IEdge> edges) {
+        public void AddFeedbackSet(IEnumerable<IEdge> edges) {
             foreach (IEdge e in edges) {
                 IntPair ip = new IntPair(e.Source, e.Target);
                 IntPair ipr = new IntPair(e.Target, e.Source);
@@ -72,7 +72,7 @@ namespace Microsoft.Msagl.Layout.Layered {
             }
         }
 
-        internal IEnumerable<List<PolyIntEdge>> RegularMultiedges {
+        public IEnumerable<List<PolyIntEdge>> RegularMultiedges {
             get {
                 foreach (KeyValuePair<IntPair, List<PolyIntEdge>>
                         kv in Multiedges)
@@ -91,12 +91,12 @@ namespace Microsoft.Msagl.Layout.Layered {
         }
 
 
-        internal List<PolyIntEdge> GetMultiedge(int source, int target) {
+        public List<PolyIntEdge> GetMultiedge(int source, int target) {
             return GetMultiedge(new IntPair(source, target));
         }
 
 
-        internal List<PolyIntEdge> GetMultiedge(IntPair ip) {
+        public List<PolyIntEdge> GetMultiedge(IntPair ip) {
             if (multiedges.ContainsKey(ip))
                 return multiedges[ip];
 
@@ -104,7 +104,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         }
 
 
-        internal void RegisterOriginalEdgeInMultiedges(PolyIntEdge edge) {
+        public void RegisterOriginalEdgeInMultiedges(PolyIntEdge edge) {
             IntPair ip = new IntPair(edge.Source, edge.Target);
             List<PolyIntEdge> o;
             if (multiedges.ContainsKey(ip) == false)
@@ -115,7 +115,7 @@ namespace Microsoft.Msagl.Layout.Layered {
             o.Add(edge);
         }
 
-        internal IEnumerable<PolyIntEdge> SkeletonEdges() {
+        public IEnumerable<PolyIntEdge> SkeletonEdges() {
             return from kv in Multiedges where kv.Key.x != kv.Key.y select kv.Value[0];
         }
         }

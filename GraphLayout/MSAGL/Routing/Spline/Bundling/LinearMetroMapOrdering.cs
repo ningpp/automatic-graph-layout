@@ -29,7 +29,7 @@ namespace Microsoft.Msagl.Routing.Spline.Bundling {
         /// <summary>
         /// Initialize bundle graph and build the ordering
         /// </summary>
-        internal LinearMetroMapOrdering(List<Metroline> MetrolinesGlobal, Dictionary<Point, Station> pointToIndex) {
+        public LinearMetroMapOrdering(List<Metroline> MetrolinesGlobal, Dictionary<Point, Station> pointToIndex) {
             this.MetrolinesGlobal = MetrolinesGlobal;
 
             ConvertParameters(pointToIndex);

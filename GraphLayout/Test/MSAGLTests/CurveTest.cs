@@ -7,7 +7,6 @@
 using System.Collections.Generic;
 using Microsoft.Msagl.Core.Layout;
 using Microsoft.Msagl.DebugHelpers;
-using Microsoft.Msagl.GraphViewerGdi;
 
 using System;
 using System.IO;
@@ -168,7 +167,6 @@ namespace Microsoft.Msagl.UnitTests {
 
         [TestMethod]
         public void PolygonPolygonDistanceTest0() {
-            DisplayGeometryGraph.SetShowFunctions();
             Polyline pl1;
             Polyline pl2;
             Polyline pl3;
@@ -234,7 +232,6 @@ namespace Microsoft.Msagl.UnitTests {
 
         [TestMethod]
         public void PolygonPolygonDistanceTest() {
-            GraphViewerGdi.DisplayGeometryGraph.SetShowFunctions();
             var a = new Polygon(new Polyline(new[] { new Point(0, 0), new Point(0, 100), new Point(42, 109), new Point(100, 100), new Point(100, 0) }));
             var b = new Polygon(new Polyline(new[] { new Point(-2, 105), new Point(50, 130) }));
             Point p0, p1;
@@ -257,7 +254,6 @@ namespace Microsoft.Msagl.UnitTests {
 
         [TestMethod]
         public void PolygonPolygonDistanceTest2() {
-            GraphViewerGdi.DisplayGeometryGraph.SetShowFunctions();
             var a = new Polyline(new[] {   new Point(-3397.10020369428, 993.94470736826),
                                             new Point(-3426.74057842555, 1014.3329144183),
                                             new Point(-3426.74057842555, 1045.96907990543),
@@ -293,10 +289,6 @@ namespace Microsoft.Msagl.UnitTests {
         [TestMethod]
         [Description("Testing Curve.CurveIsInsideOther ")]
         public void CurveIsInsideOfAnother() {
-            if (!MsaglTestBase.DontShowTheDebugViewer()) {
-                DisplayGeometryGraph.SetShowFunctions();
-            }
-
             var smallEllipse = CurveFactory.CreateEllipse(10, 10, new Point());
             var ellipse = CurveFactory.CreateEllipse(50, 40, new Point());
             var rect = CurveFactory.CreateRectangle(100, 80, new Point());
@@ -354,7 +346,6 @@ namespace Microsoft.Msagl.UnitTests {
         [TestMethod]
         [Description("Testing ICurve.Length for Curve")]
         public void LengthTestingForCurve() {
-            GraphViewerGdi.DisplayGeometryGraph.SetShowFunctions();
             var curve = new Curve(Getsegs());
             var lengths = new List<double>();
             foreach (var seg in curve.Segments) {
@@ -413,10 +404,6 @@ namespace Microsoft.Msagl.UnitTests {
         [TestMethod]
         [Description("Testing ICurve.ClosestParameterWithinBounds ")]
         public void ClosestParameterWithinBounds() {
-            if (!MsaglTestBase.DontShowTheDebugViewer()) {
-                DisplayGeometryGraph.SetShowFunctions();
-            }
-
             var ellipse = CurveFactory.CreateEllipse(8, 10, new Point());
             var point = new Point(20, 1);
             var t = ellipse.ClosestParameter(point);
@@ -481,10 +468,6 @@ namespace Microsoft.Msagl.UnitTests {
         [TestMethod]
         [Description("Testing Ellipse.BoundingBox ")]
         public void EllipseBoundingBox() {
-            if (!MsaglTestBase.DontShowTheDebugViewer()) {
-                DisplayGeometryGraph.SetShowFunctions();
-            }
-
             Ellipse ell = new Ellipse(Math.PI / 6, Math.PI / 4, new Point(10, 0), new Point(0, 5), new Point(1, 1));
             TestEllipseBoxOnEllipse(ell);
             ell = new Ellipse(Math.PI / 6, 2 * Math.PI / 4, new Point(10, 0), new Point(0, 5), new Point(1, 1));

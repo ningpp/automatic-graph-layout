@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Microsoft.Msagl.Core.DataStructures {
 
     [Serializable]
-    internal class RbTree<T> : IEnumerable<T> {
+    public class RbTree<T> : IEnumerable<T> {
   
         /// <summary>
         /// find the first, minimal, node in the tree such that predicate holds
@@ -13,7 +13,7 @@ namespace Microsoft.Msagl.Core.DataStructures {
         /// so the predicate values have a form (false, false, ..., false, true, true, ..., true)
         /// </param>
         /// <returns>the first node where predicate holds or null</returns>
-        internal RBNode<T> FindFirst(Func<T, bool> predicate) {
+        public RBNode<T> FindFirst(Func<T, bool> predicate) {
             return FindFirst(root, predicate);
         }
 
@@ -34,7 +34,7 @@ namespace Microsoft.Msagl.Core.DataStructures {
         /// so the predicate values on the tree have a form (true, true, ..., true, false, false, ..., false)
         /// </param>
         /// <returns>the last node where predicate holds or null</returns>
-        internal RBNode<T> FindLast(Func<T,bool> predicate) {
+        public RBNode<T> FindLast(Func<T,bool> predicate) {
             return FindLast(root, predicate);
         }
 
@@ -59,12 +59,21 @@ namespace Microsoft.Msagl.Core.DataStructures {
 
         RBNode<T> nil;
 
-        internal RBNode<T> Nil { get { return nil; } }
+        /// <summary>
+        /// The nil node of the tree.
+        /// </summary>
+        public RBNode<T> Nil { get { return nil; } }
 
         RBNode<T> root;
-        internal RBNode<T> Root { get { return root; } }
+        /// <summary>
+        /// The root node of the tree, or the nil node if the tree is empty.
+        /// </summary>
+        public RBNode<T> Root { get { return root; } }
 
-        internal RBNode<T> Next(RBNode<T> x) {
+        /// <summary>
+        /// The successor of the node in the sorted order, or null if the node is the maximum.
+        /// </summary>
+        public RBNode<T> Next(RBNode<T> x) {
             if (x.right != nil)
                 return TreeMinimum(x.right);
             RBNode<T> y = x.parent;
@@ -79,7 +88,10 @@ namespace Microsoft.Msagl.Core.DataStructures {
             return y != nil ? y : null;
         }
 
-        internal RBNode<T> Previous(RBNode<T> x) {
+        /// <summary>
+        /// The predecessor of the node in the sorted order, or null if the node is the minimum.
+        /// </summary>
+        public RBNode<T> Previous(RBNode<T> x) {
             if (x.left != nil)
                 return TreeMaximum(x.left);
             RBNode<T> y = x.parent;
@@ -96,7 +108,10 @@ namespace Microsoft.Msagl.Core.DataStructures {
             return ToNull(x);
         }
 
-        internal RBNode<T> TreeMinimum() {
+        /// <summary>
+        /// The minimal node of the tree, or null if the tree is empty.
+        /// </summary>
+        public RBNode<T> TreeMinimum() {
             return TreeMinimum(root);
         }
 
@@ -107,7 +122,10 @@ namespace Microsoft.Msagl.Core.DataStructures {
             return ToNull(x);
         }
 
-        internal RBNode<T> TreeMaximum() {
+        /// <summary>
+        /// The maximal node of the tree, or null if the tree is empty.
+        /// </summary>
+        public RBNode<T> TreeMaximum() {
             return TreeMaximum(root);
         }
 
@@ -128,7 +146,10 @@ namespace Microsoft.Msagl.Core.DataStructures {
         }
 
 
-        internal RBNode<T> DeleteSubtree(RBNode<T> z) {
+        /// <summary>
+        /// Deletes the subtree rooted at the given node without adjusting the count.
+        /// </summary>
+        public RBNode<T> DeleteSubtree(RBNode<T> z) {
             System.Diagnostics.Debug.Assert(z != nil);
 
             RBNode<T> y;
@@ -167,7 +188,10 @@ namespace Microsoft.Msagl.Core.DataStructures {
         int count;
         public int Count { get { return count; } }
 
-        internal RBNode<T> Remove(T i) {
+        /// <summary>
+        /// Removes the item from the tree, or returns null if the item is not present.
+        /// </summary>
+        public RBNode<T> Remove(T i) {
             RBNode<T> n = Find(i);
             if (n != null) {
                 count--;
@@ -176,7 +200,10 @@ namespace Microsoft.Msagl.Core.DataStructures {
             return null;
         }
 
-        internal void DeleteNodeInternal(RBNode<T> x) {
+        /// <summary>
+        /// Deletes the given node from the tree and decrements the count.
+        /// </summary>
+        public void DeleteNodeInternal(RBNode<T> x) {
             count--;
             DeleteSubtree(x);
         }
@@ -189,7 +216,10 @@ namespace Microsoft.Msagl.Core.DataStructures {
             return ToNull(x);
         }
 
-        internal RBNode<T> Find(T i) {
+        /// <summary>
+        /// Finds the node with the given item, or null if the item is not present.
+        /// </summary>
+        public RBNode<T> Find(T i) {
             return Find(root, i);
         }
 
@@ -248,7 +278,10 @@ namespace Microsoft.Msagl.Core.DataStructures {
             x.color = RBColor.Black;
         }
 
-        internal bool IsEmpty() { return root == nil; }
+        /// <summary>
+        /// Returns true if the tree contains no elements.
+        /// </summary>
+        public bool IsEmpty() { return root == nil; }
 
         RBNode<T> TreeInsert(T z) {
             var y = nil;
@@ -319,7 +352,10 @@ namespace Microsoft.Msagl.Core.DataStructures {
             root.color = RBColor.Black;
         }
 
-        internal RBNode<T> Insert(T v) {
+        /// <summary>
+        /// Inserts the item into the tree and returns the node holding it.
+        /// </summary>
+        public RBNode<T> Insert(T v) {
             RBNode<T> x = TreeInsert(v);
             InsertPrivate(x);
             return ToNull(x);
@@ -360,16 +396,26 @@ namespace Microsoft.Msagl.Core.DataStructures {
 
         }
 
-        internal RbTree(Func<T, T, int> func) : this(new ComparerOnDelegate<T>(func)) {}
+        /// <summary>
+        /// Constructs a tree with a comparison function.
+        /// </summary>
+        public RbTree(Func<T, T, int> func) : this(new ComparerOnDelegate<T>(func)) {}
 
 
-        internal RbTree(IComparer<T> comparer) {
+        /// <summary>
+        /// Constructs a tree with a comparer.
+        /// </summary>
+        public RbTree(IComparer<T> comparer) {
             Clear();
             this.comparer = comparer;
         }
 
-        internal void Clear() {
+        /// <summary>
+        /// Removes all elements from the tree.
+        /// </summary>
+        public void Clear() {
             root = nil = new RBNode<T>(RBColor.Black);
+            count = 0;
         }
 
         #region IEnumerable Members

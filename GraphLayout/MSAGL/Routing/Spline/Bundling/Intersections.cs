@@ -14,7 +14,7 @@ namespace Microsoft.Msagl.Routing.Spline.Bundling {
     /// <summary>
     /// Check intersections between hubs and obstacles with kd-tree
     /// </summary>
-    internal class Intersections {
+    public class Intersections {
         readonly MetroGraphData metroGraphData;
         readonly BundlingSettings bundlingSettings;
         Func<Station, Set<Polyline>> obstaclesToIgnore;
@@ -31,7 +31,7 @@ namespace Microsoft.Msagl.Routing.Spline.Bundling {
             this.obstacleTree = obstacleTree;
         }
 
-        internal Set<Polyline> ObstaclesToIgnoreForBundle(Station node, Station adj) {
+        public Set<Polyline> ObstaclesToIgnoreForBundle(Station node, Station adj) {
             if (node != null && adj != null)
                 return obstaclesToIgnore(node) + obstaclesToIgnore(adj);
 
@@ -44,20 +44,20 @@ namespace Microsoft.Msagl.Routing.Spline.Bundling {
 
         #region Intersections with hub
 
-        internal bool HubAvoidsObstacles(Station node, Point center, double upperBound,
+        public bool HubAvoidsObstacles(Station node, Point center, double upperBound,
             out List<Tuple<Polyline, Point>> touchedObstacles) {
             touchedObstacles = new List<Tuple<Polyline, Point>>();
             double minimalDistance = upperBound;
             return IntersectCircleWithTree(obstacleTree, center, upperBound, obstaclesToIgnore(node), touchedObstacles, ref minimalDistance);
         }
 
-        internal bool HubAvoidsObstacles(Point center, double upperBound, Set<Polyline> obstaclesToIgnore) {
+        public bool HubAvoidsObstacles(Point center, double upperBound, Set<Polyline> obstaclesToIgnore) {
             List<Tuple<Polyline, Point>> touchedObstacles;
             double minimalDistance;
             return HubAvoidsObstacles(center, upperBound, obstaclesToIgnore, out touchedObstacles, out minimalDistance);
         }
 
-        internal double GetMinimalDistanceToObstacles(Station node, Point nodePosition, double upperBound) {
+        public double GetMinimalDistanceToObstacles(Station node, Point nodePosition, double upperBound) {
             List<Tuple<Polyline, Point>> touchedObstacles = new List<Tuple<Polyline, Point>>();
             double minimalDistance = upperBound;
             if (!IntersectCircleWithTree(obstacleTree, nodePosition, upperBound, obstaclesToIgnore(node), touchedObstacles, ref minimalDistance))
@@ -116,13 +116,13 @@ namespace Microsoft.Msagl.Routing.Spline.Bundling {
         /// faster way to check segment-polyline intersection
         /// NOTE: polyline points should be oriented clockwise
         /// </summary>
-        internal static bool LineSegmentIntersectPolyline(Point start, Point end, Polyline poly) {
+        public static bool LineSegmentIntersectPolyline(Point start, Point end, Polyline poly) {
             return Curve.CurveCurveIntersectionOne(new LineSegment(start, end), poly, false) != null;
             
         }
 
 
-        static internal Polyline Create4gon(Point apex, Point baseCenter, double width1, double width2) {
+        static public Polyline Create4gon(Point apex, Point baseCenter, double width1, double width2) {
             var norm = (baseCenter - apex).Normalize();
             norm = new Point(norm.Y, -norm.X);
             return new Polyline(apex + norm * width1 / 2, apex - norm * width1 / 2, baseCenter - norm * width2 / 2, baseCenter + norm * width2 / 2) { Closed = true };
@@ -214,13 +214,6 @@ namespace Microsoft.Msagl.Routing.Spline.Bundling {
         bool EdgeIsLegal(Station stationA, Station stationB, Point a, Point b) {
             var crossings = InteractiveEdgeRouter.IntersectionsOfLineAndRectangleNodeOverPolyline(new LineSegment(a, b), obstacleTree);
             Set<Polyline> obstaclesToIgnoreForBundle = ObstaclesToIgnoreForBundle(stationA, stationB);
-            if (crossings.Count < 0) {
-                var l = new List<DebugCurve>();
-                var crossingSet = new Set<ICurve>(crossings.Select(ii => ii.Segment1));
-                l.AddRange(crossingSet.Select(p=>new DebugCurve(100,1,"red",p)));
-                l.AddRange(obstaclesToIgnoreForBundle.Select(p=>new DebugCurve(100,0.5,"green",p)));
-                LayoutAlgorithmSettings.ShowDebugCurvesEnumeration(l);
-            }
             return crossings.All(intersectionInfo => obstaclesToIgnoreForBundle.Contains((Polyline)intersectionInfo.Segment1));
         }
 

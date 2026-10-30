@@ -520,6 +520,8 @@ namespace Microsoft.Msagl.DebugHelpers.Persistence
                 XmlWriter.WriteAttributeString(attrString, PointToString((Point)val));
             else if (val is Double)
                 XmlWriter.WriteAttributeString(attrString, DoubleToString((double)val));
+            else if (val is bool)
+                XmlWriter.WriteAttributeString(attrString, (bool)val ? "true" : "false");
             else
                 XmlWriter.WriteAttributeString(attrString, val.ToString());
         }
@@ -916,7 +918,7 @@ namespace Microsoft.Msagl.DebugHelpers.Persistence
         /// <param name="element"></param>
         void WriteStringElement(GeometryToken tokens, double element)
         {
-            XmlWriter.WriteElementString(tokens.ToString(), XmlConvert.ToString(element));
+            XmlWriter.WriteElementString(FirstCharToLower(tokens), XmlConvert.ToString(element));
         }
 
         /// <summary>
@@ -967,6 +969,8 @@ namespace Microsoft.Msagl.DebugHelpers.Persistence
             WriteAttribute(GeometryToken.LayoutAlgorithmType, GeometryToken.SugiyamaLayoutSettings);
             WriteAttribute(GeometryToken.MinNodeWidth, sugiyama.MinNodeWidth);
             WriteAttribute(GeometryToken.MinNodeHeight, sugiyama.MinNodeHeight);
+            WriteAttribute(GeometryToken.MinimalWidth, sugiyama.MinimalWidth);
+            WriteAttribute(GeometryToken.MinimalHeight, sugiyama.MinimalHeight);
             WriteAttribute(GeometryToken.AspectRatio, sugiyama.AspectRatio);
             WriteAttribute(GeometryToken.NodeSeparation, sugiyama.NodeSeparation);
             WriteAttribute(GeometryToken.Reporting, sugiyama.Reporting);
@@ -979,9 +983,9 @@ namespace Microsoft.Msagl.DebugHelpers.Persistence
             WriteAttribute(GeometryToken.LabelCornersPreserveCoefficient,
                                sugiyama.LabelCornersPreserveCoefficient);
             WriteAttribute(GeometryToken.BrandesThreshold, sugiyama.BrandesThreshold);
+            WriteAttribute(GeometryToken.LayeringOnly, sugiyama.LayeringOnly);
             WriteAttribute(GeometryToken.LayerSeparation, sugiyama.LayerSeparation);
             WriteTransformation(sugiyama.Transformation);
         }
     }
 }
-

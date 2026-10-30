@@ -1,32 +1,32 @@
-using Microsoft.Msagl.Core.Geometry;
+﻿using Microsoft.Msagl.Core.Geometry;
 using Microsoft.Msagl.Core.Geometry.Curves;
 
 namespace Microsoft.Msagl.Routing.Spline.ConeSpanner {
-    internal class Cone {
+    public class Cone {
         bool removed;
 
-        internal bool Removed {
+        public bool Removed {
             get { return removed; }
             set { removed = value; }
         }
         Point apex;
         readonly IConeSweeper coneSweeper;
 
-        internal Cone(Point apex, IConeSweeper coneSweeper) {
+        public Cone(Point apex, IConeSweeper coneSweeper) {
             this.apex = apex;
             this.coneSweeper = coneSweeper;
         }
 
-        internal Point Apex {
+        public Point Apex {
             get { return apex; }
             set { apex = value; }
         }
 
-        internal Point RightSideDirection {
+        public Point RightSideDirection {
             get { return coneSweeper.ConeRightSideDirection; }
         }
 
-        internal Point LeftSideDirection {
+        public Point LeftSideDirection {
             get { return coneSweeper.ConeLeftSideDirection; }
         }
 
@@ -34,7 +34,7 @@ namespace Microsoft.Msagl.Routing.Spline.ConeSpanner {
 
         private ConeSide rightSide;
 
-        internal ConeSide RightSide {
+        public ConeSide RightSide {
             get { return rightSide; }
             set { rightSide = value;
             rightSide.Cone = this;
@@ -42,7 +42,7 @@ namespace Microsoft.Msagl.Routing.Spline.ConeSpanner {
         }
         private ConeSide leftSide;
 
-        internal ConeSide LeftSide {
+        public ConeSide LeftSide {
             get { return leftSide; }
             set { 
                 leftSide = value;

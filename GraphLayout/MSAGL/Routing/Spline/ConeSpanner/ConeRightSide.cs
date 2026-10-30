@@ -1,16 +1,16 @@
-using Microsoft.Msagl.Core.Geometry;
+﻿using Microsoft.Msagl.Core.Geometry;
 
 namespace Microsoft.Msagl.Routing.Spline.ConeSpanner {
-    internal class ConeRightSide:ConeSide {
-        internal ConeRightSide(Cone cone) {
+    public class ConeRightSide:ConeSide {
+        public ConeRightSide(Cone cone) {
             this.Cone = cone; 
         }
 
-        internal override Point Start {
+        public override Point Start {
             get { return Cone.Apex; }
         }
 
-        internal override Point Direction {
+        public override Point Direction {
             get { return Cone.RightSideDirection; }
         }
 

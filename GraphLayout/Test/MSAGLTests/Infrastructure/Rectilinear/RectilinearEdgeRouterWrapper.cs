@@ -97,14 +97,14 @@ namespace Microsoft.Msagl.UnitTests.Rectilinear
             }
         }
 
-        internal override void InitObstacleTree()
+        public override void InitObstacleTree()
         {
             base.InitObstacleTree();
             this.ShowObstacleTree();
             this.allObstacleHierarchy = ObstacleTree.CalculateHierarchy(this.ObsTree.GetAllObstacles());
         }
 
-        internal override void CreateVisibilityGraph()
+        public override void CreateVisibilityGraph()
         {
             base.CreateVisibilityGraph();
 
@@ -116,7 +116,7 @@ namespace Microsoft.Msagl.UnitTests.Rectilinear
             }
         }
 
-        internal override void GeneratePaths() 
+        public override void GeneratePaths() 
         {
             if (!this.NoPorts) 
             {
@@ -124,7 +124,7 @@ namespace Microsoft.Msagl.UnitTests.Rectilinear
             }
         }
 
-        internal override void SpliceVisibilityAndGeneratePath(MsmtRectilinearPath shortestPathRouter, Path edgePath)
+        public override void SpliceVisibilityAndGeneratePath(MsmtRectilinearPath shortestPathRouter, Path edgePath)
         {
             // VisibilityGraph.EdgeCount now sums through all edges so only do it if we're verifying.
             int edgesBefore = -1;
@@ -176,7 +176,7 @@ namespace Microsoft.Msagl.UnitTests.Rectilinear
             }
         }
 
-        internal override bool GeneratePath(MsmtRectilinearPath shortestPathRouter, Path edgePath, bool lastChance = false)
+        public override bool GeneratePath(MsmtRectilinearPath shortestPathRouter, Path edgePath, bool lastChance = false)
         {
             Validate.IsNotNull(edgePath, "EdgePath should not be null");
             this.VerifySpliceEdges(edgePath.EdgeGeometry);
@@ -384,7 +384,7 @@ namespace Microsoft.Msagl.UnitTests.Rectilinear
             return isInside || isWithinTolerance;
         }
 
-        internal override void GeneratePathThroughVisibilityIntersection(Path edgePath, Point[] intersectPoints)
+        public override void GeneratePathThroughVisibilityIntersection(Path edgePath, Point[] intersectPoints)
         {
             Validate.IsNotNull(edgePath, "EdgePath should not be null");
             this.ShowVisibilityGraph(/*isForPath:*/ true, "VG before RER.GeneratePathThroughVisibilityIntersection");
@@ -404,7 +404,7 @@ namespace Microsoft.Msagl.UnitTests.Rectilinear
             }
         }
 
-        internal override void RetryPathsWithAdditionalGroupsEnabled(
+        public override void RetryPathsWithAdditionalGroupsEnabled(
             MsmtRectilinearPath shortestPathRouter, Path edgePath)
         {
             if (this.WantPaths)
@@ -413,7 +413,7 @@ namespace Microsoft.Msagl.UnitTests.Rectilinear
             }
         }
 
-        internal override void NudgePaths(IEnumerable<Path> edgePaths)
+        public override void NudgePaths(IEnumerable<Path> edgePaths)
         {
             Validate.IsNotNull(edgePaths, "edgePaths should not be null");
             if (this.WantPaths)
@@ -441,7 +441,7 @@ namespace Microsoft.Msagl.UnitTests.Rectilinear
                 }
             }
         }
-internal override void FinaliseEdgeGeometries()
+        public override void FinaliseEdgeGeometries()
         {
             if (this.WantPaths)
             {

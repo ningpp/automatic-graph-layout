@@ -9,7 +9,7 @@ using Microsoft.Msagl.Core.Layout;
 using Microsoft.Msagl.DebugHelpers;
 
 namespace Microsoft.Msagl.Routing.Spline.Bundling {
-    internal class FlipSwitcher {
+    public class FlipSwitcher {
         readonly MetroGraphData metroGraphData;
 
         Dictionary<Polyline, EdgeGeometry> polylineToEdgeGeom = new Dictionary<Polyline, EdgeGeometry>();
@@ -262,13 +262,15 @@ namespace Microsoft.Msagl.Routing.Spline.Bundling {
                     dc.Add(new DebugCurve("red", CurveFactory.CreateCircle(10, b1.Point)));
                     LayoutAlgorithmSettings.ShowDebugCurvesEnumeration(dc);
                 } */
-                Debug.Assert(left0 != 0 && left1 != 0);
+                if (left0 == 0 || left1 == 0)
+                    return 1; // collinear at the shared point: not a crossing we can flip
                 return left0 == left1 ? 1 : 2;
             }
             else {
                 int left0 = Point.GetOrientationOf3Vectors(a0p.Point - a0.Point, a0n.Point - a0.Point, b0n.Point - a0.Point);
                 int left1 = Point.GetOrientationOf3Vectors(a1n.Point - a1.Point, b1p.Point - a1.Point, a1p.Point - a1.Point);
-                Debug.Assert(left0 != 0 && left1 != 0);
+                if (left0 == 0 || left1 == 0)
+                    return 1; // collinear at the shared point: not a crossing we can flip
                 return left0 == left1 ? 1 : 2;
             }
         }

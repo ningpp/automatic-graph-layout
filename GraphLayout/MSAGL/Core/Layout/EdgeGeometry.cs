@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
@@ -20,7 +20,7 @@ namespace Microsoft.Msagl.Core.Layout {
         public EdgeGeometry() {
         }
 
-        internal EdgeGeometry(Port sourcePort, Port targetPort) {
+        public EdgeGeometry(Port sourcePort, Port targetPort) {
             SourcePort = sourcePort;
             TargetPort = targetPort;
         }
@@ -97,7 +97,7 @@ namespace Microsoft.Msagl.Core.Layout {
             }
         }
         
-        internal void SetSmoothedPolylineAndCurve(SmoothedPolyline poly) {
+        public void SetSmoothedPolylineAndCurve(SmoothedPolyline poly) {
             SmoothedPolyline = poly;
             Curve = poly.CreateCurve();
         }
@@ -125,7 +125,7 @@ namespace Microsoft.Msagl.Core.Layout {
 
         }
 
-        internal double GetMaxArrowheadLength() {
+        public double GetMaxArrowheadLength() {
             double l = 0;
             if (SourceArrowhead != null)
                 l = SourceArrowhead.Length;

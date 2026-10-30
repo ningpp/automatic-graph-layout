@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
 namespace Microsoft.Msagl.Core.GraphAlgorithms {
-    internal class BasicGraph<TNode, TEdge> : BasicGraphOnEdges<TEdge> where TEdge : IEdge
+    public class BasicGraph<TNode, TEdge> : BasicGraphOnEdges<TEdge> where TEdge : IEdge
     {
         
         /// <summary>
@@ -9,7 +9,7 @@ namespace Microsoft.Msagl.Core.GraphAlgorithms {
         /// </summary>
         /// <param name="edges"></param>
         /// <param name="numberOfVerts"></param>
-        internal BasicGraph(IEnumerable<TEdge> edges, int numberOfVerts) : base(edges, numberOfVerts)
+        public BasicGraph(IEnumerable<TEdge> edges, int numberOfVerts) : base(edges, numberOfVerts)
         {
         }
 

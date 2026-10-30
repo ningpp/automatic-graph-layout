@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.Msagl.Core.Geometry;
 using Microsoft.Msagl.Core.Geometry.Curves;
@@ -7,17 +7,17 @@ using Microsoft.Msagl.DebugHelpers;
 using Microsoft.Msagl.Routing.ConstrainedDelaunayTriangulation;
 
 namespace Microsoft.Msagl.Routing.Spline.Bundling {
-    internal class CdtThreader {
+    public class CdtThreader {
         readonly Point start;
         readonly Point end;
         int positiveSign;
         int negativeSign;
         CdtEdge currentPiercedEdge;
-        internal CdtEdge CurrentPiercedEdge {get { return currentPiercedEdge; } }
+        public CdtEdge CurrentPiercedEdge {get { return currentPiercedEdge; } }
         CdtTriangle currentTriangle;
-        internal CdtTriangle CurrentTriangle { get { return currentTriangle; } }
+        public CdtTriangle CurrentTriangle { get { return currentTriangle; } }
 
-        internal CdtThreader(CdtTriangle startTriangle,Point start,Point end) {
+        public CdtThreader(CdtTriangle startTriangle,Point start,Point end) {
             Debug.Assert(PointLocationForTriangle(start, startTriangle) != PointLocation.Outside);
             currentTriangle = startTriangle;
             this.start = start;
@@ -25,13 +25,13 @@ namespace Microsoft.Msagl.Routing.Spline.Bundling {
         }
 
 #if TEST_MSAGL || DEVTRACE
-        internal IEnumerable<CdtTriangle> Triangles() {
+        public IEnumerable<CdtTriangle> Triangles() {
             while(MoveNext())
                 yield return CurrentTriangle;
         }
 #endif
 
-        internal CdtEdge FindFirstPiercedEdge() {
+        public CdtEdge FindFirstPiercedEdge() {
             Debug.Assert(PointLocationForTriangle(start, currentTriangle) != PointLocation.Outside);
             Debug.Assert(PointLocationForTriangle(end, currentTriangle) == PointLocation.Outside);
 
@@ -83,7 +83,7 @@ namespace Microsoft.Msagl.Routing.Spline.Bundling {
             return currentTriangle.Edges[2];
         }
 
-        internal static PointLocation PointLocationForTriangle(Point p, CdtTriangle triangle) {
+        public static PointLocation PointLocationForTriangle(Point p, CdtTriangle triangle) {
             bool seenBoundary = false;
             for (int i = 0; i < 3; i++) {
                 var area = Point.SignedDoubledTriangleArea(p, triangle.Sites[i].Point, triangle.Sites[i + 1].Point);
@@ -97,7 +97,7 @@ namespace Microsoft.Msagl.Routing.Spline.Bundling {
         }
 
 
-        internal void FindNextPierced() {
+        public void FindNextPierced() {
             Debug.Assert(negativeSign < positiveSign);
             /*List<DebugCurve> l = null;
             if (db) {
@@ -183,14 +183,14 @@ namespace Microsoft.Msagl.Routing.Spline.Bundling {
 //            }
 //        }
 
-        internal int GetHyperplaneSign(CdtSite cdtSite) {
+        public int GetHyperplaneSign(CdtSite cdtSite) {
             var area = Point.SignedDoubledTriangleArea(start, cdtSite.Point, end);
             if (area > ApproximateComparer.DistanceEpsilon) return 1;
             if (area < -ApproximateComparer.DistanceEpsilon) return -1;
             return 0;
         }
 
-        internal bool MoveNext() {
+        public bool MoveNext() {
             if (currentPiercedEdge == null)
                 currentPiercedEdge = FindFirstPiercedEdge();
             else

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Msagl.Core;
@@ -77,7 +77,7 @@ namespace Microsoft.Msagl.Layout.MDS {
         /// <param name="settings">The settings for the algorithm.</param>
         /// <param name="x">Coordinate vector.</param>
         /// <param name="y">Coordinate vector.</param>
-        internal static void LayoutGraphWithMds(GeometryGraph geometryGraph, MdsLayoutSettings settings, out double[] x, out double[] y) {            
+        public static void LayoutGraphWithMds(GeometryGraph geometryGraph, MdsLayoutSettings settings, out double[] x, out double[] y) {            
             x = new double[geometryGraph.Nodes.Count];
             y = new double[geometryGraph.Nodes.Count];
             if (geometryGraph.Nodes.Count == 0) return;

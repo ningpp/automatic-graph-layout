@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -51,7 +51,7 @@ namespace Microsoft.Msagl.Layout.LargeGraphLayout {
         /// </summary>
         bool _runInParallel = true;
 
-        RailGraph _railGraph;
+        public RailGraph _railGraph;
         Rectangle _visibleRectangle;
 
         public Dictionary<LgNodeInfo, LabelPlacement> SelectedNodeLabels = new Dictionary<LgNodeInfo, LabelPlacement>();

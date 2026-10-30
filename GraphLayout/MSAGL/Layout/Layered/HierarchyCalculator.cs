@@ -3,12 +3,12 @@ using Microsoft.Msagl.Core.Geometry.Curves;
 
 namespace Microsoft.Msagl.Layout.Layered {
     
-    internal class HierarchyCalculator {
+    public class HierarchyCalculator {
 
         List<ParallelogramNode> initialNodes;
         int groupSplitThreshold = 2;
         
-        internal static ParallelogramNode Calculate(List<ParallelogramNode> nodes, int groupSplitThresholdPar){
+        public static ParallelogramNode Calculate(List<ParallelogramNode> nodes, int groupSplitThresholdPar){
             HierarchyCalculator calc=new HierarchyCalculator(nodes,groupSplitThresholdPar);
             return calc.Calculate();
         }

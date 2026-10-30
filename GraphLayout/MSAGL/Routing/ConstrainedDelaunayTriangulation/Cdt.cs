@@ -1,4 +1,4 @@
-/*
+﻿﻿/*
 Following "Sweep-line algorithm for constrained Delaunay triangulation", by Domiter and Zalik
 */
 
@@ -119,7 +119,7 @@ namespace Microsoft.Msagl.Routing.ConstrainedDelaunayTriangulation {
         }
 
 
-        static internal CdtEdge GetOrCreateEdge(CdtSite a, CdtSite b) {
+        static public CdtEdge GetOrCreateEdge(CdtSite a, CdtSite b) {
             if (Above(a.Point, b.Point) == 1) {
                 var e = a.EdgeBetweenUpperSiteAndLowerSite(b);
                 if (e != null)
@@ -152,7 +152,28 @@ namespace Microsoft.Msagl.Routing.ConstrainedDelaunayTriangulation {
         /// </summary>
         protected override void RunInternal() {
             Initialization();
+            if (InputIsDegenerate()) {
+                sweeper = new CdtSweeper(new List<CdtSite>(), null, null, GetOrCreateEdge);
+                return;
+            }
             SweepAndFinalize();
+        }
+
+        bool InputIsDegenerate() {
+            // A triangulation requires at least three non-collinear points.  Fewer than three
+            // points (after duplicate removal) or an all-collinear set has no area to triangulate;
+            // returning an empty result is safer than constructing a degenerate sentinel triangle.
+            if (allInputSites.Count < 3)
+                return true;
+
+            var firstPoint = allInputSites[0].Point;
+            var secondPoint = allInputSites[1].Point;
+            foreach (var site in allInputSites) {
+                if (Point.GetTriangleOrientation(firstPoint, secondPoint, site.Point) !=
+                    TriangleOrientation.Collinear)
+                    return false;
+            }
+            return true;
         }
 
 
@@ -192,7 +213,7 @@ namespace Microsoft.Msagl.Routing.ConstrainedDelaunayTriangulation {
         /// <param name="a"></param>
         /// <param name="b"></param>
         /// <returns>1 if a is above b, 0 if points are the same and -1 if a is below b</returns>
-        static internal int Above(CdtSite a, CdtSite b) {
+        static public int Above(CdtSite a, CdtSite b) {
             var del = a.Point.Y - b.Point.Y;
             if (del > 0)
                 return 1;
@@ -202,7 +223,7 @@ namespace Microsoft.Msagl.Routing.ConstrainedDelaunayTriangulation {
             return del > 0 ? -1 : (del < 0 ? 1 : 0); //for a horizontal edge the point with the smaller X is the upper point
         }
 
-        internal void RestoreEdgeCapacities() {
+        public void RestoreEdgeCapacities() {
             foreach (var site in allInputSites)
                 foreach (var e in site.Edges)
                     if (!e.Constrained) //do not care of constrained edges
@@ -231,7 +252,7 @@ namespace Microsoft.Msagl.Routing.ConstrainedDelaunayTriangulation {
             return PointsToSites[point];
         }
 
-        internal static bool PointIsInsideOfTriangle(Point point, CdtTriangle t) {
+        public static bool PointIsInsideOfTriangle(Point point, CdtTriangle t) {
             for (int i = 0; i < 3; i++) {
                 var a = t.Sites[i].Point;
                 var b = t.Sites[i + 1].Point;
@@ -243,7 +264,7 @@ namespace Microsoft.Msagl.Routing.ConstrainedDelaunayTriangulation {
 
         RectangleNode<CdtTriangle,Point> cdtTree = null;
 
-        internal RectangleNode<CdtTriangle,Point> GetCdtTree() {
+        public RectangleNode<CdtTriangle,Point> GetCdtTree() {
             if (cdtTree == null) {
                 cdtTree = RectangleNode<CdtTriangle,Point>.CreateRectangleNodeOnEnumeration(GetTriangles().Select(t => new RectangleNode<CdtTriangle,Point>(t, t.BoundingBox())));
             }

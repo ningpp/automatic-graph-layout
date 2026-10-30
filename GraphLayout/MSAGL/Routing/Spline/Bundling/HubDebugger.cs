@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using Microsoft.Msagl.Core.DataStructures;
@@ -6,6 +6,7 @@ using Microsoft.Msagl.Core.Geometry;
 using Microsoft.Msagl.Core.Geometry.Curves;
 using Microsoft.Msagl.Core.Layout;
 using Microsoft.Msagl.DebugHelpers;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Msagl.Core.Routing;
 
 namespace Microsoft.Msagl.Routing.Spline.Bundling {

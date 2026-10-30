@@ -3,17 +3,17 @@ namespace Microsoft.Msagl.Core.Geometry.Curves {
     /// <summary>
     /// used to calculate the around curve 
     /// </summary>
-    internal class CurveTangent {
-        internal Point touchPoint;
+    public class CurveTangent {
+        public Point touchPoint;
 
-        internal Point direction;
+        public Point direction;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="touch"></param>
         /// <param name="direction"></param>
-        internal CurveTangent(Point touch, Point direction) {
+        public CurveTangent(Point touch, Point direction) {
             this.touchPoint = touch;
             this.direction = direction;
         }

@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Block.cs" company="Microsoft">
 //   (c) Microsoft Corporation.  All rights reserved.
 // </copyright>
@@ -74,7 +74,7 @@ namespace Microsoft.Msagl.Core.ProjectionSolver
         readonly ConstraintVector allConstraints;
 
 #if VERIFY || VERBOSE
-        internal uint Id { get; private set; }
+        public uint Id { get; private set; }
 #endif // VERIFY || VERBOSE
 
         internal Block(Variable initialVariable, ConstraintVector allConstraints

@@ -14,42 +14,42 @@ namespace Microsoft.Msagl.Layout.LargeGraphLayout {
     /// class keeping a level info
     /// </summary>
     public class LgLevel {
-        internal readonly Dictionary<SymmetricSegment, Rail> _railDictionary =
+        public readonly Dictionary<SymmetricSegment, Rail> _railDictionary =
             new Dictionary<SymmetricSegment, Rail>();
 
-        internal Dictionary<SymmetricSegment, Rail> RailDictionary {
+        public Dictionary<SymmetricSegment, Rail> RailDictionary {
             get { return _railDictionary; }
         }
 
-        internal readonly Dictionary<Edge, Set<Rail>> _railsOfEdges = new Dictionary<Edge, Set<Rail>>();
-        internal Set<Rail> HighlightedRails = new Set<Rail>();
-        internal readonly int ZoomLevel;
+        public readonly Dictionary<Edge, Set<Rail>> _railsOfEdges = new Dictionary<Edge, Set<Rail>>();
+        public Set<Rail> HighlightedRails = new Set<Rail>();
+        public readonly int ZoomLevel;
         readonly GeometryGraph _geomGraph;
-        internal RTree<Rail,Point> _railTree = new RTree<Rail,Point>();
-        internal RTree<Rail,Point> RailTree {
+        public RTree<Rail,Point> _railTree = new RTree<Rail,Point>();
+        public RTree<Rail,Point> RailTree {
             get { return _railTree; }
         }
 
         RTree<LgNodeInfo, Point> _nodeInfoTree = new RTree<LgNodeInfo, Point>();
 
-        internal readonly Dictionary<Edge, List<Rail>> _orderedRailsOfEdges = new Dictionary<Edge, List<Rail>>();
+        public readonly Dictionary<Edge, List<Rail>> _orderedRailsOfEdges = new Dictionary<Edge, List<Rail>>();
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="zoomLevel"></param>
         /// <param name="geomGraph">needed only for statistics</param>
-        internal LgLevel(int zoomLevel, GeometryGraph geomGraph) {
+        public LgLevel(int zoomLevel, GeometryGraph geomGraph) {
             _geomGraph = geomGraph;
             ZoomLevel = zoomLevel;
         }
 
-        internal RTree<LgNodeInfo, Point> NodeInfoTree {
+        public RTree<LgNodeInfo, Point> NodeInfoTree {
             get { return _nodeInfoTree; }            
         }
 
 
-        internal void CreateEmptyRailTree() {
+        public void CreateEmptyRailTree() {
             _railTree = new RTree<Rail,Point>();
         }
 
@@ -119,14 +119,14 @@ namespace Microsoft.Msagl.Layout.LargeGraphLayout {
             return rail;
         }
         
-        internal IEnumerable<Rail> GetRailsIntersectingRect(Rectangle visibleRectange) {
+        public IEnumerable<Rail> GetRailsIntersectingRect(Rectangle visibleRectange) {
             var ret = new Set<Rail>();
             foreach (var rail in _railTree.GetAllIntersecting(visibleRectange))
                 ret.Insert(rail);
             return ret;
         }
 
-        internal List<Edge> GetEdgesPassingThroughRail(Rail rail) {
+        public List<Edge> GetEdgesPassingThroughRail(Rail rail) {
             return (from kv in _railsOfEdges where kv.Value.Contains(rail) select kv.Key).ToList();
         }
 
@@ -164,7 +164,7 @@ namespace Microsoft.Msagl.Layout.LargeGraphLayout {
             _railDictionary.Remove(new SymmetricSegment(p0, p1));
         }
 
-        internal bool PrintQuota(IEnumerable<Node> nodes, int NodeQuota, int RailQuota)
+        public bool PrintQuota(IEnumerable<Node> nodes, int NodeQuota, int RailQuota)
         {
             tileTableForStatistic.Clear();
             foreach (var rail in _railDictionary.Values)
@@ -192,7 +192,7 @@ namespace Microsoft.Msagl.Layout.LargeGraphLayout {
             return false;
         }
 
-        internal bool QuotaSatisfied(IEnumerable<Node> nodes, int NodeQuota, int RailQuota)
+        public bool QuotaSatisfied(IEnumerable<Node> nodes, int NodeQuota, int RailQuota)
         {
             tileTableForStatistic.Clear();
             foreach (var rail in _railDictionary.Values)
@@ -221,7 +221,7 @@ namespace Microsoft.Msagl.Layout.LargeGraphLayout {
 
         #region Statistics
 
-        internal void RunLevelStatistics(IEnumerable<Node> nodes) {
+        public void RunLevelStatistics(IEnumerable<Node> nodes) {
             System.Diagnostics.Debug.WriteLine("running stats");
 
             foreach (var rail in _railDictionary.Values)
@@ -327,7 +327,7 @@ namespace Microsoft.Msagl.Layout.LargeGraphLayout {
         #endregion
 
 
-        internal void AddRail(Rail rail) {
+        public void AddRail(Rail rail) {
             if (AddRailToDictionary(rail))
                 AddRailToRtree(rail);
         }
@@ -361,7 +361,7 @@ namespace Microsoft.Msagl.Layout.LargeGraphLayout {
             return !NodeInfoTree.OneIntersecting(tileBox, out lg);
         }
 
-        internal void RemoveFromRailEdges(List<SymmetricTuple<LgNodeInfo>> removeList) {
+        public void RemoveFromRailEdges(List<SymmetricTuple<LgNodeInfo>> removeList) {
             foreach (var symmetricTuple in removeList)
                 RemoveTupleFromRailEdges(symmetricTuple);
         }

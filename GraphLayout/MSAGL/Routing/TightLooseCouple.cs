@@ -1,15 +1,15 @@
-﻿using System;
+﻿﻿using System;
 using Microsoft.Msagl.Core.Geometry.Curves;
 
 namespace Microsoft.Msagl.Routing {
     /// <summary>
     /// an utility class to keep different polylines created around a shape
     /// </summary>
-    internal class TightLooseCouple {
-        internal Polyline TightPolyline { get; set; }
-        internal Shape LooseShape { get; set; }
+    public class TightLooseCouple {
+        public Polyline TightPolyline { get; set; }
+        public Shape LooseShape { get; set; }
 
-        internal TightLooseCouple() { }
+        public TightLooseCouple() { }
 
         public TightLooseCouple(Polyline tightPolyline, Shape looseShape, double distance) {
             TightPolyline = tightPolyline;
@@ -19,9 +19,16 @@ namespace Microsoft.Msagl.Routing {
         /// <summary>
         /// the loose polyline has been created with this distance
         /// </summary>
-        internal double Distance { get; set; }
+        public double Distance { get; set; }
         public override string ToString() {
-            return (TightPolyline == null ? "null" : TightPolyline.ToString().Substring(0, 5)) + "," + (LooseShape == null ? "null" : LooseShape.ToString().Substring(0, 5));
+            return Prefix(TightPolyline) + "," + Prefix(LooseShape);
+        }
+
+        static string Prefix(object value) {
+            if (value == null)
+                return "null";
+            var text = value.ToString();
+            return text == null ? "null" : text.Substring(0, Math.Min(5, text.Length));
         }
     }
 }

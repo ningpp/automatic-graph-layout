@@ -8,7 +8,7 @@ namespace Microsoft.Msagl.Prototype.LayoutEditing {
     /// </summary>
     public class NodeRestoreData:RestoreData {
         
-        internal NodeRestoreData(ICurve boundaryCurve) {
+        public NodeRestoreData(ICurve boundaryCurve) {
             this.boundaryCurve = boundaryCurve;
         }
 

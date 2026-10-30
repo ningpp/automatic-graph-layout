@@ -1,6 +1,6 @@
-namespace Microsoft.Msagl.Routing
+﻿namespace Microsoft.Msagl.Routing
 {
-    internal enum NodeKind {
+    public enum NodeKind {
         Top,
         Internal,
         Bottom

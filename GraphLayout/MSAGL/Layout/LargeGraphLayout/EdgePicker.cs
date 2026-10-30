@@ -1,11 +1,11 @@
-﻿using Microsoft.Msagl.Core.Layout;
+﻿﻿using Microsoft.Msagl.Core.Layout;
 
 namespace Microsoft.Msagl.Layout.LargeGraphLayout {
-    internal class EdgePicker {
+    public class EdgePicker {
         readonly LgData lgData;
         readonly IZoomLevelCalculator nodeZoomLevelCalculator;
         readonly int _nodeCountOnLevel;
-        internal static void SetEdgeInfosZoomLevelsAndIcreaseRanks(LgData lgData,
+        public static void SetEdgeInfosZoomLevelsAndIcreaseRanks(LgData lgData,
                                                     IZoomLevelCalculator nodeZoomLevelCalculator,
                                                     int nodeCountOnLevel) {
             var edgePicker = new EdgePicker(lgData, nodeZoomLevelCalculator, nodeCountOnLevel);

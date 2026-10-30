@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -71,7 +71,7 @@ namespace Microsoft.Msagl.Routing {
 
     internal bool AllowedShootingStraightLines = true;
 
-    internal double MultiEdgesSeparation {
+    public double MultiEdgesSeparation {
       get { return multiEdgesSeparation; }
       set { multiEdgesSeparation = value; }
     }
@@ -123,7 +123,7 @@ namespace Microsoft.Msagl.Routing {
 
     readonly Edge[] _edges;
 
-    internal Action<Edge> ReplaceEdgeByRails;
+    public Action<Edge> ReplaceEdgeByRails;
 
     /// <summary>
     /// 
@@ -1043,7 +1043,7 @@ namespace Microsoft.Msagl.Routing {
     }
 
 
-    internal static Dictionary<Shape, Set<Shape>> GetAncestorSetsMap(IEnumerable<Shape> shapes) {
+    public static Dictionary<Shape, Set<Shape>> GetAncestorSetsMap(IEnumerable<Shape> shapes) {
       var ancSets = new Dictionary<Shape, Set<Shape>>();
       foreach (var child in shapes.Where(child => !ancSets.ContainsKey(child)))
         ancSets[child] = GetAncestorSet(child, ancSets);
@@ -1061,7 +1061,7 @@ namespace Microsoft.Msagl.Routing {
       return ret;
     }
 
-    static internal void CreatePortsIfNeeded(IEnumerable<Edge> edges) {
+    static public void CreatePortsIfNeeded(IEnumerable<Edge> edges) {
       foreach (var edge in edges) {
         if (edge.SourcePort == null) {
           var e = edge;

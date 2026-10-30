@@ -11,7 +11,7 @@ using Microsoft.Msagl.Routing.Visibility;
 using Microsoft.Msagl.Core.DataStructures;
 
 namespace Microsoft.Msagl.Routing.Spline.Bundling {
-    internal class BundleBasesCalculator {
+    public class BundleBasesCalculator {
         readonly IMetroMapOrderingAlgorithm metroOrdering;
         readonly MetroGraphData metroGraphData;
         readonly BundlingSettings bundlingSettings;

@@ -319,58 +319,5 @@ namespace Microsoft.Msagl.Miscellaneous.ConstrainedSkeleton
             }
         }
 
-
-        public void LaunchTriangleExe(string pathExe, string arguments)
-        {
-#if !SHARPKIT
-            const string triangleMessage =
-                "Cannot start Triangle.exe To build Triangle.exe, please open http://www.cs.cmu.edu/~quake/triangle.html and build it by following the instructions from the site. Copy Triange.exe to a directory in your PATH." +
-                "Unfortunately we cannot distribute Triangle.exe because of the license restrictions.";
-            ProcessStartInfo startInfo = new ProcessStartInfo
-            {
-                CreateNoWindow = false,
-                UseShellExecute = false,
-                FileName = pathExe,
-                WindowStyle = ProcessWindowStyle.Hidden,
-                Arguments = arguments
-            };
-
-            try
-            {
-                using (Process exeProcess = Process.Start(startInfo))
-                {
-                    if (exeProcess == null)
-                    {
-                        Environment.Exit(1);
-                    }
-                    exeProcess.WaitForExit();
-                    if (exeProcess.ExitCode != 0)
-                        Environment.Exit(exeProcess.ExitCode);
-                }
-            }
-            catch (Exception e)
-            {
-                System.Diagnostics.Debug.WriteLine(e.Message);
-                System.Diagnostics.Debug.WriteLine(triangleMessage);
-                System.Diagnostics.Debug.WriteLine("Exiting now.");
-                Environment.Exit(1);
-            }
-#endif
-        }
-
-        internal void ReadTriangleOutputAndPopulateTheLevelVisibilityGraphFromTriangulation()
-        {
-            string outPath = Path.Combine(Path.GetTempPath(), "pointssegments" + _random.Next(10000));
-            SaveInputFilePoly(outPath + ".poly");
-            const string exePath = "triangle.exe";
-            string arguments = outPath + ".poly -c -q10 -S100000000";
-            LaunchTriangleExe(exePath, arguments);
-            LoadOutputFileNode(outPath + ".1.node");
-            LoadOutputFileSides(outPath + ".1.ele");
-            File.Delete(outPath + ".poly");
-            File.Delete(outPath + ".1.node");
-            File.Delete(outPath + ".1.ele");
-            File.Delete(outPath + ".1.poly");
-        }
     }
 }

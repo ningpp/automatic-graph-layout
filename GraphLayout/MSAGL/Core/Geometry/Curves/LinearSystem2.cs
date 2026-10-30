@@ -1,10 +1,10 @@
-using System;
+﻿using System;
 
 namespace Microsoft.Msagl.Core.Geometry.Curves {
     /// <summary>
     /// solves a linear system of two equations with to unknown variables
     /// </summary>
-    internal class LinearSystem2 {
+    public class LinearSystem2 {
         LinearSystem2() { }
         static double eps = 1.0E-8;
 
@@ -13,7 +13,7 @@ namespace Microsoft.Msagl.Core.Geometry.Curves {
          //   set { LinearSystem2.eps = value; }
         }
 
-        internal static bool Solve(double a00, double a01, double b0, double a10, double a11, double b1, out double x, out double y) {
+        public static bool Solve(double a00, double a01, double b0, double a10, double a11, double b1, out double x, out double y) {
             double d = a00 * a11 - a10 * a01;
 
             if (Math.Abs(d) < Eps) {

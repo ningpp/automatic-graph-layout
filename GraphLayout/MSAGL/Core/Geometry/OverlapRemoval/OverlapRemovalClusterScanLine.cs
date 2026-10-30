@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="OverlapRemovalClusterScanLine.cs" company="Microsoft">
 //   (c) Microsoft Corporation.  All rights reserved.
 // </copyright>
@@ -31,7 +31,7 @@ namespace Microsoft.Msagl.Core.Geometry
             // between the current node and the node with the further midpoint).
              readonly RbTree<OverlapRemovalNode> nodeTree = new RbTree<OverlapRemovalNode>((lhs, rhs)=> lhs.CompareTo(rhs));
 
-            internal void Insert(OverlapRemovalNode node)
+            public void Insert(OverlapRemovalNode node)
             {
                 Debug.Assert(null == this.nodeTree.Find(node), "node already exists in the rbtree");
 

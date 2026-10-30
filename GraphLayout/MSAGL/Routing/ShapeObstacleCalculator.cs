@@ -13,13 +13,13 @@ namespace Microsoft.Msagl.Routing {
     /// The class calculates obstacles under the shape.
     /// We assume that the boundaries are not set for the shape children yet
     /// </summary>
-    internal class ShapeObstacleCalculator {
+    public class ShapeObstacleCalculator {
         RectangleNode<Polyline,Point> tightHierarchy;
         RectangleNode<TightLooseCouple,Point> coupleHierarchy;
 
         public RectangleNode<Shape,Point> RootOfLooseHierarchy { get; set; }
 
-        internal ShapeObstacleCalculator(Shape shape, double tightPadding, double loosePadding, 
+        public ShapeObstacleCalculator(Shape shape, double tightPadding, double loosePadding, 
             Dictionary<Shape, TightLooseCouple> shapeToTightLooseCouples) {
             MainShape = shape;
             TightPadding = tightPadding;
@@ -34,10 +34,10 @@ namespace Microsoft.Msagl.Routing {
 
         Shape MainShape { get; set; }
 
-        internal bool OverlapsDetected { get; set; }
+        public bool OverlapsDetected { get; set; }
 
 
-        internal void Calculate() {
+        public void Calculate() {
             if (MainShape.Children.Count() == 0) return;
             CreateTightObstacles();
             CreateTigthLooseCouples();

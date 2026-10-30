@@ -5,12 +5,12 @@ using Microsoft.Msagl.Core.GraphAlgorithms;
 using Microsoft.Msagl.Core.Layout;
 
 namespace Microsoft.Msagl.Layout.Layered {
-    internal class NetworkSimplexForGeneralGraph : LayerCalculator {
+    public class NetworkSimplexForGeneralGraph : LayerCalculator {
         BasicGraphOnEdges<PolyIntEdge> graph;
         /// <summary>
         /// a place holder for the cancel flag
         /// </summary>
-        internal CancelToken Cancel { get; set; }
+        public CancelToken Cancel { get; set; }
 
         public int[] GetLayers() {
             NetworkSimplex ns = new NetworkSimplex(graph, this.Cancel);
@@ -18,7 +18,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         }
 
         
-        internal NetworkSimplexForGeneralGraph(BasicGraph<Node, PolyIntEdge> graph, CancelToken cancelObject) {
+        public NetworkSimplexForGeneralGraph(BasicGraph<Node, PolyIntEdge> graph, CancelToken cancelObject) {
             this.graph = graph;
             this.Cancel = cancelObject;
         }

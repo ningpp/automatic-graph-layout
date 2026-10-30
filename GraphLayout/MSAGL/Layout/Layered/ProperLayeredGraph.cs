@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Msagl.Core.GraphAlgorithms;
@@ -8,11 +8,11 @@ namespace Microsoft.Msagl.Layout.Layered {
     /// <summary>
     /// a class representing a graph where every edge goes down only one layer
     /// </summary>
-    internal class ProperLayeredGraph {
+    public class ProperLayeredGraph {
         /// <summary>
         /// the underlying basic graph
         /// </summary>
-        internal BasicGraph<Node, PolyIntEdge>  BaseGraph;
+        public BasicGraph<Node, PolyIntEdge>  BaseGraph;
         LayerEdge[] virtualNodesToInEdges;
         LayerEdge[] virtualNodesToOutEdges;
         int totalNumberOfNodes;
@@ -26,12 +26,12 @@ namespace Microsoft.Msagl.Layout.Layered {
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        internal ProperLayeredGraph(BasicGraph<Node, PolyIntEdge> intGraph) {
+        public ProperLayeredGraph(BasicGraph<Node, PolyIntEdge> intGraph) {
             Initialize(intGraph);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        internal void Initialize(BasicGraph<Node, PolyIntEdge> intGraph)
+        public void Initialize(BasicGraph<Node, PolyIntEdge> intGraph)
         {
             BaseGraph = intGraph;
 
@@ -134,7 +134,7 @@ namespace Microsoft.Msagl.Layout.Layered {
 
         }
 
-        internal LayerEdge InEdgeOfVirtualNode(int node) {
+        public LayerEdge InEdgeOfVirtualNode(int node) {
             return virtualNodesToInEdges[node - FirstVirtualNode];
         }
 /// <summary>
@@ -163,7 +163,7 @@ namespace Microsoft.Msagl.Layout.Layered {
             else
                 return false;
         }
-        internal LayerEdge OutEdgeOfVirtualNode(int node) {
+        public LayerEdge OutEdgeOfVirtualNode(int node) {
             return virtualNodesToOutEdges[node - FirstVirtualNode];
         }
 
@@ -212,7 +212,7 @@ namespace Microsoft.Msagl.Layout.Layered {
             return !IsRealNode(node);
         }
 
-        internal ProperLayeredGraph ReversedClone() {
+        public ProperLayeredGraph ReversedClone() {
             List<PolyIntEdge> reversedEdges = CreateReversedEdges();
             return new ProperLayeredGraph(new BasicGraph<Node, PolyIntEdge>(reversedEdges, this.BaseGraph.NodeCount));
         }
@@ -225,12 +225,12 @@ namespace Microsoft.Msagl.Layout.Layered {
            return ret;
         }
 
-        internal IEnumerable<int> Succ(int node) {
+        public IEnumerable<int> Succ(int node) {
             foreach (LayerEdge le in this.OutEdges(node))
                 yield return le.Target;
         }
 
-        internal IEnumerable<int> Pred(int node) {
+        public IEnumerable<int> Pred(int node) {
             foreach (LayerEdge le in this.InEdges(node))
                 yield return le.Source;
         }

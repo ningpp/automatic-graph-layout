@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -342,7 +342,13 @@ namespace Microsoft.Msagl.Core.Geometry.Curves {
         }
 
 
-        internal static IList<IntersectionInfo> GetAllIntersectionsInternal(ICurve curve0, ICurve curve1,
+        /// <summary>
+        /// Computes all intersections of two curves without using the line/curve special cases.
+        /// </summary>
+        /// <param name="curve0">The first curve.</param>
+        /// <param name="curve1">The second curve.</param>
+        /// <param name="liftIntersections">If true, the intersection parameters are lifted to the original curves.</param>
+        public static IList<IntersectionInfo> GetAllIntersectionsInternal(ICurve curve0, ICurve curve1,
             bool liftIntersections) {
             //recurse down to find all PBLeaf pairs which intesect and try to cross their segments
 
@@ -808,7 +814,13 @@ namespace Microsoft.Msagl.Core.Geometry.Curves {
             return LiftIntersectionToCurves(c0, c1, xx.Par0, xx.Par1, xx.IntersectionPoint, xx.Segment0, xx.Segment1);
         }
 
-        internal static double LiftParameterToCurve(ICurve curve, double par, ICurve seg) {
+        /// <summary>
+        /// Lifts a parameter local to a segment of the curve to the parameter space of the whole curve.
+        /// </summary>
+        /// <param name="curve">The whole curve.</param>
+        /// <param name="par">The segment-local parameter.</param>
+        /// <param name="seg">The segment containing the parameter.</param>
+        public static double LiftParameterToCurve(ICurve curve, double par, ICurve seg) {
             if (curve == seg)
                 return par;
 
@@ -1669,7 +1681,7 @@ namespace Microsoft.Msagl.Core.Geometry.Curves {
         }
 
         // Return points between but not including the intersections.
-        internal static IEnumerable<Point> PointsBetweenIntersections(ICurve a, IList<IntersectionInfo> xx) {
+        public static IEnumerable<Point> PointsBetweenIntersections(ICurve a, IList<IntersectionInfo> xx) {
             xx.OrderBy(x => x.Par0);
             for (int i = 0; i < xx.Count - 1; i++)
                 yield return a[(xx[i].Par0 + xx[i + 1].Par0)/2];

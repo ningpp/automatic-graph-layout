@@ -1,11 +1,11 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Msagl.Core.DataStructures;
 using System.Diagnostics;
 
 namespace Microsoft.Msagl.Layout.Layered {
-    internal class AdjacentSwapsWithConstraints {
+    public class AdjacentSwapsWithConstraints {
         const int maxNumberOfAdjacentExchanges = 50;
         readonly bool hasCrossWeights;
 
@@ -41,7 +41,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// </summary>
         Dictionary<int, int>[] SOrder;
 
-        internal AdjacentSwapsWithConstraints(LayerArrays layerArray,
+        public AdjacentSwapsWithConstraints(LayerArrays layerArray,
                                               bool hasCrossWeights,
                                               ProperLayeredGraph properLayeredGraph,
                                               LayerInfo[] layerInfos) {
@@ -63,7 +63,7 @@ namespace Microsoft.Msagl.Layout.Layered {
             get { return maxNumberOfAdjacentExchanges; }
         }
 
-        bool ExchangeWithGainWithNoDisturbance(int[] layer) {
+        public bool ExchangeWithGainWithNoDisturbance(int[] layer) {
             bool wasGain = false;
 
             bool gain;
@@ -75,7 +75,7 @@ namespace Microsoft.Msagl.Layout.Layered {
             return wasGain;
         }
 
-        bool CanSwap(int i, int j) {
+        public bool CanSwap(int i, int j) {
             if (IsVirtualNode(i) || IsVirtualNode(j))
                 return true;
             LayerInfo layerInfo = layerInfos[layering[i]];
@@ -96,7 +96,7 @@ namespace Microsoft.Msagl.Layout.Layered {
             return true;
         }
 
-        bool IsVirtualNode(int v) {
+        public bool IsVirtualNode(int v) {
             return properLayeredGraph.IsVirtualNode(v);
         }
 
@@ -107,7 +107,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         ///// <param name="u">left vertex</param>
         ///// <param name="v">right vertex</param>
         ///// <returns></returns>
-        bool SwapWithGain(int u, int v) {
+        public bool SwapWithGain(int u, int v) {
             int gain = SwapGain(u, v);
 
             if (gain > 0) {
@@ -117,7 +117,7 @@ namespace Microsoft.Msagl.Layout.Layered {
             return false;
         }
 
-        int SwapGain(int u, int v) {
+        public int SwapGain(int u, int v) {
             if (!CanSwap(u, v))
                 return -1;
             int cuv;
@@ -133,7 +133,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// <param name="v">a vertex</param>
         /// <param name="cuv">the result when u is to the left of v</param>
         /// <param name="cvu">the result when v is to the left of u</param>
-        void CalcPair(int u, int v, out int cuv, out int cvu) {
+        public void CalcPair(int u, int v, out int cuv, out int cvu) {
             List<int> su = S[u], sv = S[v], pu = P[u], pv = P[v];
             if (!hasCrossWeights) {
                 cuv = CountOnArrays(su, sv) +
@@ -152,7 +152,7 @@ namespace Microsoft.Msagl.Layout.Layered {
             }
         }
 
-        int CountOnArrays(List<int> unbs, List<int> vnbs) {
+        public int CountOnArrays(List<int> unbs, List<int> vnbs) {
             int ret = 0;
             int vl = vnbs.Count - 1;
             int j = -1; //the right most position of vnbs to the left from the current u neighbor 
@@ -174,7 +174,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// <returns>number of intersections when u is to the left of v</returns>
         /// <param name="uCrossingCounts"></param>
         /// <param name="vCrossingCount"></param>
-        int CountOnArrays(List<int> unbs, List<int> vnbs, Dictionary<int, int> uCrossingCounts,
+        public int CountOnArrays(List<int> unbs, List<int> vnbs, Dictionary<int, int> uCrossingCounts,
                           Dictionary<int, int> vCrossingCount) {
             int ret = 0;
             int vl = vnbs.Count - 1;
@@ -193,7 +193,7 @@ namespace Microsoft.Msagl.Layout.Layered {
 
 
         //in this routine u and v are adjacent, and u is to the left of v before the swap
-        void Swap(int u, int v) {
+        public void Swap(int u, int v) {
             Debug.Assert(UAndVAreOnSameLayer(u, v));
             Debug.Assert(UIsToTheLeftOfV(u, v));
             Debug.Assert(CanSwap(u, v));
@@ -218,7 +218,7 @@ namespace Microsoft.Msagl.Layout.Layered {
             UpdatePsContainingUV(u, v);
         }
 
-        bool ExchangeWithGain(int[] layer) {
+        public bool ExchangeWithGain(int[] layer) {
             //find a first pair giving some gain
             for (int i = 0; i < layer.Length - 1; i++)
                 if (SwapWithGain(layer[i], layer[i + 1])) {
@@ -230,12 +230,12 @@ namespace Microsoft.Msagl.Layout.Layered {
             return false;
         }
 
-        bool HeadOfTheCoin() {
+        public bool HeadOfTheCoin() {
             return random.Next(2) == 0;
         }
 
         
-        internal void DoSwaps() {
+        public void DoSwaps() {
             InitArrays();
             int count = 0;
             bool progress = true;
@@ -250,7 +250,7 @@ namespace Microsoft.Msagl.Layout.Layered {
             Debug.Assert(SPAreCorrect());
         }
 
-        private bool SPAreCorrect()
+        public bool SPAreCorrect()
         {
             int n = this.properLayeredGraph.NodeCount;
             for (int i = 0; i < n; i++)
@@ -260,7 +260,7 @@ namespace Microsoft.Msagl.Layout.Layered {
             return true;
         }
 
-        private bool SIsCorrect(int i)
+        public bool SIsCorrect(int i)
         {
             var s = S[i];
             Dictionary<int, int> so = SOrder[i];
@@ -287,7 +287,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// <summary>
         /// Is called just after median layer swap is done
         /// </summary>
-        void InitArrays() {
+        public void InitArrays() {
             if (S == null)
                 AllocArrays();
 
@@ -303,12 +303,12 @@ namespace Microsoft.Msagl.Layout.Layered {
                 InitPSArraysForLayer(layers[i]);
         }
 
-        void DisturbLayer(int[] layer) {
+        public void DisturbLayer(int[] layer) {
             for (int i = 0; i < layer.Length - 1; i++)
                 AdjacentSwapToTheRight(layer, i);
         }
 
-        bool AdjExchangeLayer(int i) {
+        public bool AdjExchangeLayer(int i) {
             int[] layer = layers[i];
             bool gain = ExchangeWithGainWithNoDisturbance(layer);
 
@@ -320,7 +320,7 @@ namespace Microsoft.Msagl.Layout.Layered {
             return ExchangeWithGainWithNoDisturbance(layer);
         }
 
-        void AllocArrays() {
+        public void AllocArrays() {
             int n = properLayeredGraph.NodeCount;
             P = new List<int>[n];
             S = new List<int>[n];
@@ -352,7 +352,7 @@ namespace Microsoft.Msagl.Layout.Layered {
             }
         }
 
-        void UpdatePsContainingUV(int u, int v) {
+        public void UpdatePsContainingUV(int u, int v) {
             if (S[u].Count <= S[v].Count)
                 foreach (int a in S[u]) {
                     Dictionary<int, int> porder = POrder[a];
@@ -385,12 +385,12 @@ namespace Microsoft.Msagl.Layout.Layered {
                 }
         }
 
-        void SwapToTheRight(int[] layer, int i) {
+        public void SwapToTheRight(int[] layer, int i) {
             for (int j = i; j < layer.Length - 1; j++)
                 AdjacentSwapToTheRight(layer, j);
         }
 
-        void SwapToTheLeft(int[] layer, int i) {
+        public void SwapToTheLeft(int[] layer, int i) {
             for (int j = i - 1; j >= 0; j--)
                 AdjacentSwapToTheRight(layer, j);
         }
@@ -401,7 +401,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// <param name="layer">the layer to work on</param>
         /// <param name="i">the position to start</param>
         /// <returns></returns>
-        void AdjacentSwapToTheRight(int[] layer, int i) {
+        public void AdjacentSwapToTheRight(int[] layer, int i) {
             int u = layer[i], v = layer[i + 1];
 
             int gain = SwapGain(u, v);
@@ -418,7 +418,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// as we doing adjacent swaps. Initial sorting only needed to calculate initial clr,crl values.
         /// </summary>
         /// <param name="layer"></param>
-        void InitPSArraysForLayer(int[] layer) {
+        public void InitPSArraysForLayer(int[] layer) {
             foreach (int l in layer)
             {
                 foreach (int p in properLayeredGraph.Pred(l))
@@ -442,7 +442,7 @@ namespace Microsoft.Msagl.Layout.Layered {
             }
         }
 
-        void UpdateSsContainingUV(int u, int v) {
+        public void UpdateSsContainingUV(int u, int v) {
             if (P[u].Count <= P[v].Count)
                 foreach (int a in P[u]) {
                     Dictionary<int, int> sorder = SOrder[a];
@@ -475,12 +475,12 @@ namespace Microsoft.Msagl.Layout.Layered {
                 }
         }
 
-        private bool UAndVAreOnSameLayer(int u, int v)
+        public bool UAndVAreOnSameLayer(int u, int v)
         {
             return layering[u] == layering[v];
         }
 
-        private bool UIsToTheLeftOfV(int u, int v)
+        public bool UIsToTheLeftOfV(int u, int v)
         {
             return X[u] < X[v];
         }

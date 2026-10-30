@@ -9,7 +9,7 @@ namespace Microsoft.Msagl.Prototype.Phylo {
         Node root;
         //used in the other solution
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Node Root {
+        public Node Root {
             get { return root != null ? root : root = GetRoot(); }
         }
 

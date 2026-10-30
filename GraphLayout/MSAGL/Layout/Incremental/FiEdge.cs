@@ -6,8 +6,8 @@ namespace Microsoft.Msagl.Layout.Incremental {
     /// <summary>
     /// An edge is a pair of nodes and an ideal length required between them
     /// </summary>
-    internal class FiEdge : IEdge {
-        internal Edge mEdge;
+    public class FiEdge : IEdge {
+        public Edge mEdge;
         public FiNode source;
         public FiNode target;
 
@@ -30,7 +30,7 @@ namespace Microsoft.Msagl.Layout.Incremental {
 
         #endregion
 
-        internal Point vector() {
+        public Point vector() {
             return source.mNode.Center - target.mNode.Center;
         }
     }

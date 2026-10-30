@@ -6,7 +6,7 @@ using Microsoft.Msagl.Core.Geometry;
 using Microsoft.Msagl.Core.Geometry.Curves;
 
 namespace Microsoft.Msagl.Routing.Spline.Bundling {
-    internal class PathFixer {
+    public class PathFixer {
         MetroGraphData metroGraphData;
         Func<Metroline, Point, bool> polylineAcceptsPoint;
         Set<Point> foundCrossings = new Set<Point>();

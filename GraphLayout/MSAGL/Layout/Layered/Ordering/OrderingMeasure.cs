@@ -1,8 +1,8 @@
-using System;
+﻿using System;
 
 namespace Microsoft.Msagl.Layout.Layered {
     
-    internal class OrderingMeasure {
+    public class OrderingMeasure {
         int numberOfCrossings;
         double layerGroupDisbalance;
         int[][] la;
@@ -16,7 +16,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// </summary>
         double[] optimalVirtualGroupSize;
 
-        internal OrderingMeasure(int[][] layerArraysPar,
+        public OrderingMeasure(int[][] layerArraysPar,
             int numOfCrossings, int virtualVertexStart,
             double[] optimalOriginalGroupSizePar,
         double[] optimalVirtualGroupSizePar
@@ -97,7 +97,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         }
 
 
-         internal bool IsPerfect() {
+         public bool IsPerfect() {
              return this.numberOfCrossings == 0 && this.layerGroupDisbalance == 0;
          }
     }

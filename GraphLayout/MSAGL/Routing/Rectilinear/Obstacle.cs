@@ -1,4 +1,4 @@
-//
+﻿//
 // Obstacle.cs
 // MSAGL Obstacle class for Rectilinear Edge Routing.
 //
@@ -24,9 +24,14 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
         /// Only public to make the compiler happy about the "where TPoly : new" constraint.
         /// Will be populated by caller.
         /// </summary>
-        public Obstacle(Shape shape, double padding) {
-                           this.PaddedPolyline = InteractiveObstacleCalculator.PaddedPolylineBoundaryOfNode(shape.BoundaryCurve, padding);
-            
+        public Obstacle(Shape shape, double padding)
+            : this(shape, false, padding) {
+        }
+
+        public Obstacle(Shape shape, bool makeRectangle, double padding) {
+            this.PaddedPolyline = makeRectangle
+                ? InteractiveObstacleCalculator.CreatePaddedPolyline(Curve.PolyFromBox(shape.BoundingBox.Clone()), padding)
+                : InteractiveObstacleCalculator.PaddedPolylineBoundaryOfNode(shape.BoundaryCurve, padding);
 
             RoundVerticesAndSimplify(this.PaddedPolyline);
             this.IsRectangle = this.IsPolylineRectangle();
@@ -43,18 +48,18 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
 
         internal LowObstacleSide ActiveLowSide { get; set; }
         internal HighObstacleSide ActiveHighSide { get; set; }
-        internal Shape InputShape { get; set; }
-        internal bool IsRectangle { get; private set; }
+        public Shape InputShape { get; set; }
+        public bool IsRectangle { get; private set; }
 
         /// <summary>
         /// The padded polyline that is tight to the input shape.
         /// </summary>
-        internal Polyline PaddedPolyline { get; private set; }
+        public Polyline PaddedPolyline { get; private set; }
 
         /// <summary>
         /// The polyline that is either the PaddedPolyline or a convex hull for multiple overlapping obstacles.
         /// </summary>
-        internal Polyline VisibilityPolyline {
+        public Polyline VisibilityPolyline {
             get {
                 return (this.ConvexHull != null) ? this.ConvexHull.Polyline : this.PaddedPolyline;
             }
@@ -80,15 +85,15 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
 
         private Polyline looseVisibilityPolyline;
 
-        internal Rectangle PaddedBoundingBox {
+        public Rectangle PaddedBoundingBox {
             get { return PaddedPolyline.BoundingBox; }
         }
 
-        internal Rectangle VisibilityBoundingBox {
+        public Rectangle VisibilityBoundingBox {
             get { return VisibilityPolyline.BoundingBox; }
         }
 
-        internal bool IsGroup {
+        public bool IsGroup {
             get { return (null != InputShape) && InputShape.IsGroup; }
         }
 
@@ -109,9 +114,9 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
         /// <summary>
         /// For overlapping obstacle management; this is just some arbitrary obstacle in the clump.
         /// </summary>
-        internal Clump Clump { get; set; }
+        public Clump Clump { get; set; }
 
-        internal bool IsOverlapped {
+        public bool IsOverlapped {
             get {
                 Debug.Assert((this.Clump == null) || !this.IsGroup, "Groups should not be considered overlapped");
                 Debug.Assert((this.Clump == null) || (this.ConvexHull == null), "Clumped obstacles should not have overlapped convex hulls");
@@ -130,10 +135,10 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
 
         // A single convex hull is shared by all obstacles contained by it and we only want one occurrence of that
         // convex hull's polyline in the visibility graph generation.
-        internal bool IsPrimaryObstacle { get { return (this.ConvexHull == null) || (this == this.ConvexHull.PrimaryObstacle); } }
+        public bool IsPrimaryObstacle { get { return (this.ConvexHull == null) || (this == this.ConvexHull.PrimaryObstacle); } }
 
-        internal OverlapConvexHull ConvexHull { get; private set; }
-        internal bool IsInConvexHull { get { return this.ConvexHull != null; } }    // Note there is no !IsGroup check
+        public OverlapConvexHull ConvexHull { get; private set; }
+        public bool IsInConvexHull { get { return this.ConvexHull != null; } }    // Note there is no !IsGroup check
 
         internal void SetConvexHull(OverlapConvexHull hull) {
             // This obstacle may have been in a rectangular obstacle or clump that was now found to overlap with a non-rectangular obstacle.
@@ -192,7 +197,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             Debug.Assert(polyline.IsClockwise(), "Polyline is not clockwise after RoundVertices");
         }
 
-        internal static Polyline RemoveCloseAndCollinearVerticesInPlace(Polyline polyline) {
+        public static Polyline RemoveCloseAndCollinearVerticesInPlace(Polyline polyline) {
             var epsilon = ApproximateComparer.IntersectionEpsilon * 10;
             for (PolylinePoint pp = polyline.StartPoint.Next; pp != null; pp = pp.Next) {
                 if (ApproximateComparer.Close(pp.Prev.Point, pp.Point, epsilon)) {

@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -11,7 +11,7 @@ using Microsoft.Msagl.Routing;
 using Microsoft.Msagl.Routing.Visibility;
 using SymmetricSegment = Microsoft.Msagl.Core.DataStructures.SymmetricTuple<Microsoft.Msagl.Core.Geometry.Point>;
 namespace Microsoft.Msagl.Layout.LargeGraphLayout {
-    internal class LgSkeletonLevel {
+    public class LgSkeletonLevel {
         //internal RTree<Rail,Point> RailTree = new RTree<Rail,Point>();
 
         //internal Dictionary<SymmetricSegment, Rail> RailDictionary =
@@ -19,31 +19,31 @@ namespace Microsoft.Msagl.Layout.LargeGraphLayout {
 
         readonly RTree<Point,Point> _visGraphVertices = new RTree<Point,Point>();
 
-        internal int ZoomLevel;
+        public int ZoomLevel;
 
         //VisibilityGraph VisGraph = new VisibilityGraph();
-        internal LgPathRouter PathRouter = new LgPathRouter();
+        public LgPathRouter PathRouter = new LgPathRouter();
 
         readonly Dictionary<SymmetricTuple<LgNodeInfo>, List<Point>> _edgeTrajectories =
             new Dictionary<SymmetricTuple<LgNodeInfo>, List<Point>>();
 
-        internal Dictionary<SymmetricTuple<LgNodeInfo>, List<Point>> EdgeTrajectories {
+        public Dictionary<SymmetricTuple<LgNodeInfo>, List<Point>> EdgeTrajectories {
             get { return _edgeTrajectories; }
         }
 
 
-        internal void AddGraphEdgesFromCentersToPointsOnBorders(IEnumerable<LgNodeInfo> nodeInfos) {
+        public void AddGraphEdgesFromCentersToPointsOnBorders(IEnumerable<LgNodeInfo> nodeInfos) {
             foreach (var nodeInfo in nodeInfos)
                 PathRouter.AddVisGraphEdgesFromNodeCenterToNodeBorder(nodeInfo);
         }
 
 
-        internal void Clear() {
+        public void Clear() {
             _visGraphVertices.Clear();
             PathRouter = new LgPathRouter();
         }
 
-        internal void SetTrajectoryAndAddEdgesToUsed(LgNodeInfo s, LgNodeInfo t, List<Point> path) {
+        public void SetTrajectoryAndAddEdgesToUsed(LgNodeInfo s, LgNodeInfo t, List<Point> path) {
             var t1 = new SymmetricTuple<LgNodeInfo>(s, t);
             if (_edgeTrajectories.ContainsKey(t1)) return;
             _edgeTrajectories[t1] = path;
@@ -51,12 +51,12 @@ namespace Microsoft.Msagl.Layout.LargeGraphLayout {
         }
 
 
-        internal bool HasSavedTrajectory(LgNodeInfo s, LgNodeInfo t) {
+        public bool HasSavedTrajectory(LgNodeInfo s, LgNodeInfo t) {
             var t1 = new SymmetricTuple<LgNodeInfo>(s, t);
             return EdgeTrajectories.ContainsKey(t1);
         }
 
-        internal List<Point> GetTrajectory(LgNodeInfo s, LgNodeInfo t) {
+        public List<Point> GetTrajectory(LgNodeInfo s, LgNodeInfo t) {
             List<Point> path;
             var tuple = new SymmetricTuple<LgNodeInfo>(s, t);
             EdgeTrajectories.TryGetValue(tuple, out path);
@@ -64,12 +64,12 @@ namespace Microsoft.Msagl.Layout.LargeGraphLayout {
         }
 
 
-        internal void ClearSavedTrajectoriesAndUsedEdges() {
+        public void ClearSavedTrajectoriesAndUsedEdges() {
             _edgeTrajectories.Clear();
             PathRouter.ClearUsedEdges();
         }
 
-        internal Set<Point> GetPointsOnSavedTrajectories() {
+        public Set<Point> GetPointsOnSavedTrajectories() {
             var points = new Set<Point>();
             foreach (var edgeTrajectory in _edgeTrajectories.Values) {
                 points.InsertRange(edgeTrajectory);
@@ -77,12 +77,12 @@ namespace Microsoft.Msagl.Layout.LargeGraphLayout {
             return points;
         }
 
-        internal void RemoveUnusedGraphEdgesAndNodes() {
+        public void RemoveUnusedGraphEdgesAndNodes() {
             List<VisibilityEdge> unusedEdges = GetUnusedGraphEdges();
             PathRouter.RemoveVisibilityEdges(unusedEdges);
         }
 
-        internal List<VisibilityEdge> GetUnusedGraphEdges() {
+        public List<VisibilityEdge> GetUnusedGraphEdges() {
             return PathRouter.GetAllEdgesVisibilityEdges().Where(e => !PathRouter.IsEdgeUsed(e)).ToList();
         }
 
@@ -91,7 +91,7 @@ namespace Microsoft.Msagl.Layout.LargeGraphLayout {
                 yield return new SymmetricSegment(ps[i], ps[i + 1]);
         }
 
-        internal bool RoutesAreConsistent() {
+        public bool RoutesAreConsistent() {
             var usedEdges=new Set<SymmetricSegment>(PathRouter.UsedEdges());
             var routesDump =
                 new Set<SymmetricSegment>(_edgeTrajectories.Select(p => p.Value).SelectMany(SymSegsOfPointList));
@@ -109,7 +109,7 @@ namespace Microsoft.Msagl.Layout.LargeGraphLayout {
         }
 
 
-        internal void RemoveSomeEdgeTrajectories(List<SymmetricTuple<LgNodeInfo>> removeList) {
+        public void RemoveSomeEdgeTrajectories(List<SymmetricTuple<LgNodeInfo>> removeList) {
             foreach (var symmetricTuple in removeList)
                 RemoveEdgeTrajectory(symmetricTuple);
             RemoveUnusedGraphEdgesAndNodes();

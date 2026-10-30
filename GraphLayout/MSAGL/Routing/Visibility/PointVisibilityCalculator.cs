@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -12,7 +12,7 @@ namespace Microsoft.Msagl.Routing.Visibility {
     /// <summary>
     /// following "Visibility Algorithms in the Plane", Ghosh
     /// </summary>
-    internal class PointVisibilityCalculator {
+    public class PointVisibilityCalculator {
         [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")] //  VisibilityGraph graphOfHoleBoundaries;
             ActiveEdgeComparerWithRay activeEdgeComparer;
 
@@ -53,7 +53,7 @@ namespace Microsoft.Msagl.Routing.Visibility {
         /// <param name="visibilityKind">tangent or regural visibility</param>
         /// <param name="qVertex">the graph vertex corresponding to the pivot</param>        
         /// <returns></returns>
-        internal static VisibilityVertex CalculatePointVisibilityGraph(
+        public static VisibilityVertex CalculatePointVisibilityGraph(
             IEnumerable<Polyline> listOfHoles,
             VisibilityGraph visibilityGraph,
             Point point,

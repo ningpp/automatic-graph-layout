@@ -49,7 +49,7 @@ namespace Microsoft.Msagl.Routing {
         /// <summary>
         /// the amount of free space around the edge
         /// </summary>
-        internal double Capacity = 1000000;
+        public double Capacity = 1000000;
 
 
         /// <summary>

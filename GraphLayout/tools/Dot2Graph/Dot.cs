@@ -541,7 +541,8 @@ namespace Dot2Graph
         public static Graph Parse(System.IO.Stream reader, out int line, out int col, out string msg)
         {
             Parser parser = new Parser();
-            Scanner scanner = new Scanner(reader);
+            Scanner scanner = new Scanner();
+            scanner.SetSource(NormalizeInput(reader));
             parser.Scanner = scanner;
             line = 0;
             col = 0;
@@ -595,6 +596,85 @@ namespace Dot2Graph
             bool nodes_are_ok = graph1.Nodes.All(n => n.GeometryNode != null);
             bool edges_are_ok = graph1.Edges.All(e => e.GeometryEdge != null);
             return nodes_are_ok && edges_are_ok;
+        }
+
+        static System.IO.Stream NormalizeInput(System.IO.Stream input)
+        {
+            return new NormalizedInputStream(input);
+        }
+
+        sealed class NormalizedInputStream : System.IO.Stream
+        {
+            readonly System.IO.Stream input;
+            readonly Queue<byte> prefix = new Queue<byte>();
+            bool initialized;
+            bool skipLfAfterCr;
+
+            internal NormalizedInputStream(System.IO.Stream input)
+            {
+                this.input = input;
+            }
+
+            void Initialize()
+            {
+                if (initialized) return;
+                initialized = true;
+                int b0 = input.ReadByte();
+                int b1 = input.ReadByte();
+                int b2 = input.ReadByte();
+                if (b0 == 0xEF && b1 == 0xBB && b2 == 0xBF) return;
+                if (b0 >= 0) prefix.Enqueue((byte)b0);
+                if (b1 >= 0) prefix.Enqueue((byte)b1);
+                if (b2 >= 0) prefix.Enqueue((byte)b2);
+            }
+
+            int ReadRawByte()
+            {
+                Initialize();
+                return prefix.Count > 0 ? prefix.Dequeue() : input.ReadByte();
+            }
+
+            public override int ReadByte()
+            {
+                while (true)
+                {
+                    int value = ReadRawByte();
+                    if (value < 0) return value;
+                    if (skipLfAfterCr)
+                    {
+                        skipLfAfterCr = false;
+                        if (value == '\n') continue;
+                    }
+                    if (value == '\r')
+                    {
+                        skipLfAfterCr = true;
+                        return '\n';
+                    }
+                    return value;
+                }
+            }
+
+            public override int Read(byte[] buffer, int offset, int count)
+            {
+                int read = 0;
+                while (read < count)
+                {
+                    int value = ReadByte();
+                    if (value < 0) break;
+                    buffer[offset + read++] = (byte)value;
+                }
+                return read;
+            }
+
+            public override bool CanRead => true;
+            public override bool CanSeek => false;
+            public override bool CanWrite => false;
+            public override long Length => throw new NotSupportedException();
+            public override long Position { get => throw new NotSupportedException(); set => throw new NotSupportedException(); }
+            public override void Flush() { }
+            public override long Seek(long offset, System.IO.SeekOrigin origin) => throw new NotSupportedException();
+            public override void SetLength(long value) => throw new NotSupportedException();
+            public override void Write(byte[] buffer, int offset, int count) => throw new NotSupportedException();
         }
 
         public static Graph Parse(string file, out int line, out int col, out string msg)

@@ -1,4 +1,4 @@
-//
+﻿//
 // SparseVisibilityGraphGenerator.cs
 // MSAGL base class to create the visibility graph consisting of nlogn ScanSegment intersections for Rectilinear Edge Routing.
 //
@@ -27,7 +27,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
     // obstacle sides; instead, we create orthogonal edges to the lateral sides of the obstacle's bounding
     // box. Also, we support overlapped obstacles (interior edges are weighted, as in the non-sparse
     // implementation) and groups.
-    internal partial class SparseVisibilityGraphGenerator : VisibilityGraphGenerator {
+    public partial class SparseVisibilityGraphGenerator : VisibilityGraphGenerator {
         /// <summary>
         /// The points of obstacle vertices encountered on horizontal scan.
         /// </summary>
@@ -117,7 +117,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
         /// Generate the visibility graph along which edges will be routed.
         /// </summary>
         /// <returns></returns>
-        internal override void GenerateVisibilityGraph() {
+        public override void GenerateVisibilityGraph() {
             this.AccumulateVertexCoords();
             this.CreateSegmentVectorsAndPopulateCoordinateMaps();
             this.RunScanLineToCreateSegmentsAndBoundingBoxSteinerPoints();

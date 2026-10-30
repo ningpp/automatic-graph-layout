@@ -13,7 +13,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
     /// This is different from LeftObstacleSide, which refers to the traversal direction being along
     /// the clockwise polyline direction; LowObstacleSide uses the ctor arg traverseClockwise to manage that.
     /// </summary>
-    internal class LowObstacleSide : BasicObstacleSide {
+    public class LowObstacleSide : BasicObstacleSide {
         internal LowObstacleSide(Obstacle obstacle, PolylinePoint startVertex, ScanDirection scanDir)
             : base(obstacle, startVertex, scanDir, scanDir.IsHorizontal /*traverseClockwise*/)
         {

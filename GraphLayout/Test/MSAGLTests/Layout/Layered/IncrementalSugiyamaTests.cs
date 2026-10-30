@@ -1,4 +1,4 @@
-﻿//-----------------------------------------------------------------------
+﻿﻿//-----------------------------------------------------------------------
 // <copyright file="IncrementalSugiyamaTests.cs" company="Microsoft">
 //   (c) Microsoft Corporation.  All rights reserved.
 // </copyright>
@@ -17,16 +17,14 @@ namespace Microsoft.Msagl.UnitTests
     /// Verifies that incremental sugiyama layout works correctly.
     /// </summary>
     [TestClass]
-    [DeploymentItem(@"Resources\DotFiles\LevFiles\chat.dot", "Dots")]
     public class IncrementalSugiyamaTests : MsaglTestBase
     {
         [TestMethod]
         [Description("Verifies that updating shapes and calling incremental sugiyama does not affect the ordering of nodes and layers.")]
         public void NodeShapeChange()
         {
-            Console.WriteLine(this.TestContext.TestRunDirectory);
             // Setup
-            string filePath = Path.Combine(this.TestContext.TestRunDirectory, "Out\\Dots", "chat.dot");
+            string filePath = Path.Combine(GetTestResourcePath("DotFiles", "LevFiles"), "chat.dot");
             GeometryGraph graph = this.LoadGraph(filePath);
             var settings = new SugiyamaLayoutSettings();
 

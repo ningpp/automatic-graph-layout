@@ -10,7 +10,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
     /// <summary>
     /// This records an intersection of a lookahead ray with an obstacle edge.
     /// </summary>
-    internal class HighReflectionEvent : BasicReflectionEvent {
+    public class HighReflectionEvent : BasicReflectionEvent {
         internal HighObstacleSide Side { get; private set; }
 
         internal HighReflectionEvent(BasicReflectionEvent previousSite, HighObstacleSide targetSide, Point site)

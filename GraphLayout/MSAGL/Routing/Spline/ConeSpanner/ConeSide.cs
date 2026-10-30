@@ -1,13 +1,13 @@
-using Microsoft.Msagl.Core.Geometry;
+﻿using Microsoft.Msagl.Core.Geometry;
 
 namespace Microsoft.Msagl.Routing.Spline.ConeSpanner {
     /// <summary>
     /// represents a cone side
     /// </summary>
-    internal abstract class ConeSide {
-        internal abstract Point Start { get; }
-        internal abstract Point Direction { get; }
-        protected internal Cone Cone { get; set; }
+    public abstract class ConeSide {
+        public abstract Point Start { get; }
+        public abstract Point Direction { get; }
+        public Cone Cone { get; set; }
         internal bool Removed { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-//
+﻿//
 // EventQueue.cs
 // MSAGL class for Rectilinear Edge Routing between two nodes.
 //
@@ -16,31 +16,31 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
     /// <summary>
     /// Wrap the tree of events.
     /// </summary>
-    internal class EventQueue : IComparer<SweepEvent> {
+    public class EventQueue : IComparer<SweepEvent> {
         ScanDirection scanDirection;
         readonly BinaryHeapWithComparer<SweepEvent> eventTree;
 
-        internal EventQueue() {
+        public EventQueue() {
             eventTree = new BinaryHeapWithComparer<SweepEvent>(this);
         }
         
-        internal void Reset(ScanDirection scanDir) {
+        public void Reset(ScanDirection scanDir) {
             Debug.Assert(0 == eventTree.Count, "Stray events in EventQueue.Reset");
             scanDirection = scanDir;
         }
 
-        internal void Enqueue(SweepEvent evt) {
+        public void Enqueue(SweepEvent evt) {
             DevTraceInfo(1, "Enqueueing {0}", evt);
             eventTree.Enqueue(evt);
         }
 
-        internal SweepEvent Dequeue() {
+        public SweepEvent Dequeue() {
             SweepEvent evt = eventTree.Dequeue();
             DevTraceInfo(1, "Dequeueing {0}", evt);
             return evt;
         }
 
-        internal int Count {
+        public int Count {
             get { return eventTree.Count; }
         }
 

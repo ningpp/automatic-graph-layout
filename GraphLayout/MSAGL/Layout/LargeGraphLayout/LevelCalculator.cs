@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.Msagl.Core.Geometry.Curves;
@@ -8,7 +8,7 @@ using Microsoft.Msagl.Prototype.Ranking;
 using Microsoft.Msagl.Routing;
 
 namespace Microsoft.Msagl.Layout.LargeGraphLayout {
-    internal class LevelCalculator { 
+    public class LevelCalculator { 
 
         static void AssignEdges(LgData lgData, IZoomLevelCalculator nodeZoomLevelCalculator) {
             AssignEdgesToLevels(lgData, nodeZoomLevelCalculator);
@@ -40,7 +40,7 @@ namespace Microsoft.Msagl.Layout.LargeGraphLayout {
         }
 
 
-        internal static void SetEdgesOnLevels(
+        public static void SetEdgesOnLevels(
             LgData lgData,
             GeometryGraph mainGeometryGraph,
             LgLayoutSettings lgLayoutSettings)
@@ -55,7 +55,7 @@ namespace Microsoft.Msagl.Layout.LargeGraphLayout {
             lgData.LevelNodeCounts = nodeZoomLevelCalculator.LevelNodeCounts;
         }
 
-        internal static void SetNodeZoomLevelsAndRouteEdgesOnLevels(
+        public static void SetNodeZoomLevelsAndRouteEdgesOnLevels(
             LgData lgData,
             GeometryGraph mainGeometryGraph,
             LgLayoutSettings lgLayoutSettings) {
@@ -70,7 +70,7 @@ namespace Microsoft.Msagl.Layout.LargeGraphLayout {
             AssignEdges(lgData, nodeZoomLevelCalculator);
         }
 
-        internal static void RankGraph(LgData lgData, GeometryGraph mainGeometryGraph) {
+        public static void RankGraph(LgData lgData, GeometryGraph mainGeometryGraph) {
 //fromDrawingToEdgeInfo = new Dictionary<ICurve, LgEdgeInfo>();
             foreach (var connectedGraph in lgData.ConnectedGeometryGraphs)
                 RankTheGraph(lgData, mainGeometryGraph, connectedGraph);

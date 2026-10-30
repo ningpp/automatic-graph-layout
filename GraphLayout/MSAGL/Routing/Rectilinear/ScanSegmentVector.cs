@@ -7,14 +7,14 @@ using Microsoft.Msagl.Core.Geometry;
 using Microsoft.Msagl.Routing.Visibility;
 
 namespace Microsoft.Msagl.Routing.Rectilinear {
-    internal partial class SparseVisibilityGraphGenerator : VisibilityGraphGenerator {
+    public partial class SparseVisibilityGraphGenerator : VisibilityGraphGenerator {
         /// <summary>
         /// This forms the vector of ScanSegments for the sparse VisibilityGraph.
         /// </summary>
-        internal class ScanSegmentVector {
+        public class ScanSegmentVector {
             private readonly ScanSegmentVectorItem[] vector;
 
-            internal ScanSegmentVector(Set<double> coordMap, bool isHorizontal) {
+            public ScanSegmentVector(Set<double> coordMap, bool isHorizontal) {
                 this.vector = new ScanSegmentVectorItem[coordMap.Count];
                 this.IsHorizontal = isHorizontal;
                 var coords = coordMap.OrderBy(coord => coord).GetEnumerator();
@@ -28,39 +28,39 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             /// <summary>
             /// The index of the scan segment vector we're appending to on the ScanSegment-generation sweep.
             /// </summary>
-            internal int CurrentSlotIndex { get; set; }
+            public int CurrentSlotIndex { get; set; }
 
             /// <summary>
             /// The number of slots.
             /// </summary>
-            internal int Length {
+            public int Length {
                 get { return this.vector.Length; }
             }
             
             /// <summary>
             /// The item at the index of the scan segment vector we're appending to on the ScanSegment-generation sweep.
             /// </summary>
-            internal ScanSegmentVectorItem CurrentSlot { get { return this.vector[this.CurrentSlotIndex]; } }
+            public ScanSegmentVectorItem CurrentSlot { get { return this.vector[this.CurrentSlotIndex]; } }
 
             /// <summary>
             /// The indexed item in the vector.
             /// </summary>
-            internal ScanSegmentVectorItem this[int slot] {
+            public ScanSegmentVectorItem this[int slot] {
                 get { return this.vector[slot]; }
             }
 
             /// <summary>
             /// Appends a ScanSegment to the linked list in the "Current" slot.
             /// </summary>
-            internal void CreateScanSegment(Point start, Point end, double weight, PointAndCrossingsList gbcList) {
+            public void CreateScanSegment(Point start, Point end, double weight, PointAndCrossingsList gbcList) {
                 this.CurrentSlot.AppendScanSegment(new ScanSegment(start, end, weight, gbcList));
             }
 
-            internal void ScanSegmentsCompleteForCurrentSlot() {
+            public void ScanSegmentsCompleteForCurrentSlot() {
                 ++this.CurrentSlotIndex;
             }
 
-            internal void ScanSegmentsComplete() {
+            public void ScanSegmentsComplete() {
                 foreach (var item in this.vector) {
                     item.AddPendingPerpendicularCoordsToScanSegments();
                 }
@@ -69,14 +69,14 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             /// <summary>
             /// Returns an enumeration of the vector of ScanSegmentVectorItems.
             /// </summary>
-            internal IEnumerable<ScanSegmentVectorItem> Items {
+            public IEnumerable<ScanSegmentVectorItem> Items {
                 get { return this.vector; }
             }
 
             /// <summary>
             /// Reset vector state between passes.
             /// </summary>
-            internal void ResetForIntersections() {
+            public void ResetForIntersections() {
                 foreach (ScanSegmentVectorItem t in this.vector) {
                     t.ResetForIntersections();
                 }
@@ -90,7 +90,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             /// <summary>
             /// Search the vector for the nearest slot in the specified direction.
             /// </summary>
-            internal int FindNearest(double coord, int directionIfMiss) {
+            public int FindNearest(double coord, int directionIfMiss) {
                 // Array.BinarySearch doesn't allow mapping from ScanSegmentVectorItem to its Coord.
                 int low = 0;
                 int high = this.vector.Length - 1;
@@ -135,7 +135,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
                 return low;
             }
 
-            internal void CreateSparseVerticesAndEdges(VisibilityGraph vg) {
+            public void CreateSparseVerticesAndEdges(VisibilityGraph vg) {
                 foreach (var item in this.vector) {
                     item.ResetForIntersections();
                     for (var segment = item.FirstSegment; segment != null; segment = segment.NextSegment) {
@@ -145,17 +145,17 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             }
 
             // Get the coordinate that remains constant along a segment in this vector.
-            internal double GetParallelCoord(Point site) {
+            public double GetParallelCoord(Point site) {
                 return this.IsHorizontal ? site.Y : site.X;
             }
 
             // Get the coordinate that changes along a segment in this vector (and is thus the parallel
             // coord of an intersecting segment).
-            internal double GetPerpendicularCoord(Point site) {
+            public double GetPerpendicularCoord(Point site) {
                 return this.IsHorizontal ? site.X : site.Y;
             }
 
-            internal void ConnectAdjoiningSegmentEndpoints() {
+            public void ConnectAdjoiningSegmentEndpoints() {
                 // Make sure that any series of segments (of different overlappedness) that have points in the
                 // graph are connected at adjoining starts/ends and ends/starts (these adjoining points may not be
                 // Steiner points in the graph if they are on indirect segments.

@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ConstraintVector.cs" company="Microsoft">
 //   (c) Microsoft Corporation.  All rights reserved.
 // </copyright>
@@ -17,7 +17,7 @@ namespace Microsoft.Msagl.Core.ProjectionSolver
     class ConstraintVector
     {
         internal Constraint[] Vector { get; private set; }
-        internal bool IsEmpty { get { return null == Vector; } }
+        public bool IsEmpty { get { return null == Vector; } }
 
         internal void Create(int numConstraints)
         {
@@ -28,7 +28,7 @@ namespace Microsoft.Msagl.Core.ProjectionSolver
         }
 
         private int nextConstraintIndex;
-        internal void Add(Constraint constraint)
+        public void Add(Constraint constraint)
         {
             Debug.Assert(!constraint.IsActive, "Constraint should not be active");
             constraint.SetVectorIndex(nextConstraintIndex);
@@ -133,7 +133,7 @@ namespace Microsoft.Msagl.Core.ProjectionSolver
         }
 
         // Initialized in Solve() and computed during Block.ComputeDfDv.
-        internal int MaxConstraintTreeDepth;
+        public int MaxConstraintTreeDepth;
 
         // This is the list of lists of unsatisfiable constraints accumulated during all Block.Expand calls.
         // As in the doc, this can only happen during Block.Expand. The only way to get a cycle is to add a constraint
@@ -153,7 +153,7 @@ namespace Microsoft.Msagl.Core.ProjectionSolver
         // Therefore the only reason multi-constraint cycles would exist is if a block was expanded to accommodate
         // the constraint (incrementing the offsets to the right) despite not having found a forward minLagrangian.
         // This also means that ComputeDfDv should never encounter cycles.
-        internal int NumberOfUnsatisfiableConstraints;
+        public int NumberOfUnsatisfiableConstraints;
 
         #endregion // BlockConstraintGlobals
 

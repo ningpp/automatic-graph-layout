@@ -11,7 +11,7 @@ namespace Microsoft.Msagl.Routing.Spline.Bundling {
     /// <summary>
     /// Check intersections between edges and obstacles using triangulation (faster than kd-tree)
     /// </summary>
-    internal class CdtIntersections {
+    public class CdtIntersections {
         readonly MetroGraphData metroGraphData;
         readonly BundlingSettings bundlingSettings;
 
@@ -149,7 +149,7 @@ namespace Microsoft.Msagl.Routing.Spline.Bundling {
             return true;
         }
 
-        internal static PointLocation PointLocationInsideTriangle(Point p, CdtTriangle triangle) {
+        public static PointLocation PointLocationInsideTriangle(Point p, CdtTriangle triangle) {
             bool seenBoundary=false;
             for (int i = 0; i < 3; i++) {
                 var area = Point.SignedDoubledTriangleArea(p, triangle.Sites[i].Point, triangle.Sites[i + 1].Point);

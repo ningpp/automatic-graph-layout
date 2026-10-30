@@ -84,7 +84,7 @@ namespace Microsoft.Msagl.Routing
                       
         }
 
-        internal static bool ContainmentLoop(EdgeGeometry eg, double padding) {
+        public static bool ContainmentLoop(EdgeGeometry eg, double padding) {
             var sourceCurve = eg.SourcePort.Curve;
             var targetCurve = eg.TargetPort.Curve;
             if (sourceCurve == null || targetCurve == null)
@@ -113,7 +113,7 @@ namespace Microsoft.Msagl.Routing
         /// <param name="howMuchToStickOut"></param>
         /// <param name="reverse">reverse the loop if true</param>
         /// <returns></returns>
-        internal static Curve CreateLoop(Rectangle sourceBox, Rectangle targetBox, double howMuchToStickOut, bool reverse)
+        public static Curve CreateLoop(Rectangle sourceBox, Rectangle targetBox, double howMuchToStickOut, bool reverse)
         {
             var center=sourceBox.Center;
             var closestPoint = FindClosestPointOnBoxBoundary(sourceBox.Center, targetBox);
@@ -224,7 +224,7 @@ namespace Microsoft.Msagl.Routing
         }
 
         [SuppressMessage("Microsoft.Usage", "CA1806:DoNotIgnoreMethodResults", MessageId = "Microsoft.Msagl.Core.Geometry.Site")]
-        internal static SmoothedPolyline CreateUnderlyingPolylineForSelfEdge(Point p0, double dx, double dy)
+        public static SmoothedPolyline CreateUnderlyingPolylineForSelfEdge(Point p0, double dx, double dy)
         {
             var p1 = p0 + new Point(0, dy);
             var p2 = p0 + new Point(dx, dy);
@@ -242,7 +242,7 @@ namespace Microsoft.Msagl.Routing
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1806:DoNotIgnoreMethodResults", MessageId = "Microsoft.Msagl.Site")]
-        static internal void SetStraightLineEdgesWithUnderlyingPolylines(GeometryGraph graph) {
+        static public void SetStraightLineEdgesWithUnderlyingPolylines(GeometryGraph graph) {
             SplineRouter.CreatePortsIfNeeded(graph.Edges);
             foreach (Edge edge in graph.Edges) 
                 CreateSimpleEdgeCurveWithUnderlyingPolyline(edge);

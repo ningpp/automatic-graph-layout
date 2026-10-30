@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Msagl.Core.DataStructures;
@@ -13,22 +13,22 @@ namespace Microsoft.Msagl.Layout.LargeGraphLayout
     /// <summary>
     /// sets zoom levels for LgNodeInfos
     /// </summary>
-    internal class DeviceIndependendZoomCalculatorForNodes : IZoomLevelCalculator
+    public class DeviceIndependendZoomCalculatorForNodes : IZoomLevelCalculator
     {
         public Func<Node, LgNodeInfo> NodeToLgNodeInfo;
         readonly int maxAmountPerTile;
         public GeometryGraph Graph { get; set; }
         public LgLayoutSettings Settings { get; set; }
-        public List<LgNodeInfo> SortedLgNodeInfos { get { return sortedLgNodeInfos; } }
+        public List<LgNodeInfo> SortedLgNodeInfos { get { return sortedLgNodeInfos; } set { sortedLgNodeInfos = value; } }
 
-        readonly List<int> _levelNodeCounts = new List<int>();
+        public List<int> _levelNodeCounts = new List<int>();
 
         public List<int> LevelNodeCounts { get { return _levelNodeCounts; } }
 
         int unassigned;
         List<LgNodeInfo> sortedLgNodeInfos;
-        int zoomLevel;
-        internal DeviceIndependendZoomCalculatorForNodes(
+        public int zoomLevel;
+        public DeviceIndependendZoomCalculatorForNodes(
             Func<Node, LgNodeInfo> nodeToLgNodeInfo, GeometryGraph graph, LgLayoutSettings settings, int maxAmountPerTile)
         {
             NodeToLgNodeInfo = nodeToLgNodeInfo;
@@ -81,7 +81,7 @@ namespace Microsoft.Msagl.Layout.LargeGraphLayout
             }
         }
 
-        internal static Tuple<int, int> PointToTuple(Point graphLeftBottom, Point point, double gridSize)
+        public static Tuple<int, int> PointToTuple(Point graphLeftBottom, Point point, double gridSize)
         {
             var dx = point.X - graphLeftBottom.X;
             var dy = point.Y - graphLeftBottom.Y;
@@ -190,7 +190,7 @@ namespace Microsoft.Msagl.Layout.LargeGraphLayout
             return unassigned > 0;
         }
 
-        static internal double GetDistBetweenBoundingBoxes(Node source, Node target)
+        static public double GetDistBetweenBoundingBoxes(Node source, Node target)
         {
             var sb = source.BoundingBox;
             var tb = target.BoundingBox;

@@ -1,8 +1,8 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.Msagl.Core.Geometry;
 
 namespace Microsoft.Msagl.Routing.Rectilinear.Nudging{
-    internal class PointByDelegateComparer : IComparer<Point>{
+    public class PointByDelegateComparer : IComparer<Point>{
 
         PointProjection projection;
 

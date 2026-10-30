@@ -10,7 +10,7 @@ using Microsoft.Msagl.Core;
 using Microsoft.Msagl.Core.DataStructures;
 
 namespace Microsoft.Msagl.Prototype.Phylo {
-    internal class PhyloTreeLayoutCalclulation : AlgorithmBase{
+    public class PhyloTreeLayoutCalclulation : AlgorithmBase{
         Anchor[] anchors;
         ProperLayeredGraph properLayeredGraph;
         Database dataBase;

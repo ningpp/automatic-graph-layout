@@ -10,7 +10,7 @@ namespace Microsoft.Msagl.Routing
     /// <summary>
     /// Class for creating Shape elements from a Graph.
     /// </summary>
-    static internal class ShapeCreator
+    static public class ShapeCreator
     {
         
         /// <summary>

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Microsoft.Msagl.Core.Geometry;
 using Microsoft.Msagl.Core.Geometry.Curves;
@@ -7,30 +7,30 @@ namespace Microsoft.Msagl.Routing.Visibility {
     /// <summary>
     /// represents a chunk of a hole boundary
     /// </summary>
-    internal class Stem {
+    public class Stem {
         PolylinePoint start;
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal PolylinePoint Start {
+        public PolylinePoint Start {
             get { return start; }
             set { start = value; }
         }
         PolylinePoint end;
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal PolylinePoint End {
+        public PolylinePoint End {
             get { return end; }
             set { end = value; }
         }
      
         
-        internal Stem(PolylinePoint start, PolylinePoint end) {
+        public Stem(PolylinePoint start, PolylinePoint end) {
             System.Diagnostics.Debug.Assert(start.Polyline==end.Polyline);
             this.start = start;
             this.end = end;
         }
 
-        internal IEnumerable<PolylinePoint> Sides {
+        public IEnumerable<PolylinePoint> Sides {
             get {
                 PolylinePoint v=start;
                 
@@ -42,7 +42,7 @@ namespace Microsoft.Msagl.Routing.Visibility {
             }
         }
 
-        internal bool MoveStartClockwise() {
+        public bool MoveStartClockwise() {
             if (Start != End) {
                 Start = Start.NextOnPolyline;
                 return true;

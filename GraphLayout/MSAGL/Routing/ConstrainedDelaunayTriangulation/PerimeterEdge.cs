@@ -4,13 +4,13 @@ namespace Microsoft.Msagl.Routing.ConstrainedDelaunayTriangulation {
     /// <summary>
     /// 
     /// </summary>
-    internal class PerimeterEdge {
-        internal CdtSite Start;
-        internal CdtSite End;
-        internal PerimeterEdge Prev, Next;
-        internal CdtEdge Edge;
+    public class PerimeterEdge {
+        public CdtSite Start;
+        public CdtSite End;
+        public PerimeterEdge Prev, Next;
+        public CdtEdge Edge;
 
-        internal PerimeterEdge(CdtEdge edge) {
+        public PerimeterEdge(CdtEdge edge) {
             Debug.Assert(edge.CcwTriangle==null || edge.CwTriangle==null);
             Edge = edge;
         }

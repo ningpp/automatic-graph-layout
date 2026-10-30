@@ -33,8 +33,8 @@ namespace Microsoft.Msagl.Prototype.NonOverlappingBoundaries {
     /// <summary>
     /// Uses Lev's HierarchyCalculatorWithRectangularNodes to do overlap queries
     /// </summary>
-    internal class ProximityQuery {
-        internal ProximityQuery(List<IHull> nodeHulls) {
+    public class ProximityQuery {
+        public ProximityQuery(List<IHull> nodeHulls) {
             hierarchy = RectangleNode<IHull,Point>.CreateRectangleNodeOnEnumeration(GetNodeRects(nodeHulls));
         }
 
@@ -42,7 +42,7 @@ namespace Microsoft.Msagl.Prototype.NonOverlappingBoundaries {
         /// Find all overlapping pairs.
         /// </summary>
         /// <returns>List of overlapping pairs</returns>
-        internal List<Tuple<IHull, IHull>> GetAllIntersections() {
+        public List<Tuple<IHull, IHull>> GetAllIntersections() {
             List<Tuple<IHull, IHull>> closePairs = new List<Tuple<IHull, IHull>>();
             GetClosePairs(hierarchy, hierarchy, closePairs);
             return closePairs;

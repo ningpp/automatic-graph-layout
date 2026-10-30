@@ -1,9 +1,9 @@
-﻿namespace Microsoft.Msagl.DebugHelpers.Persistence {
-    internal class CharStreamElement : CurveStreamElement {
-        internal CharStreamElement(char ch) {
+﻿﻿namespace Microsoft.Msagl.DebugHelpers.Persistence {
+    public class CharStreamElement : CurveStreamElement {
+        public CharStreamElement(char ch) {
             Value = ch;
         }
 
-        internal char Char { get { return (char)Value; } }
+        public char Char { get { return (char)Value; } }
     }
 }

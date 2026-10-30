@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -15,7 +15,7 @@ namespace Microsoft.Msagl.Layout.LargeGraphLayout {
         readonly Set<Point> _fixedPoints;
         readonly RTree<SymmetricSegment, Point> _symmetricSegmentsTree=new RTree<SymmetricSegment, Point>();
 
-        internal RouteSimplifier(LgPathRouter pathRouter, IEnumerable<LgNodeInfo> nodes, Set<Point> fixedPoints) {
+        public RouteSimplifier(LgPathRouter pathRouter, IEnumerable<LgNodeInfo> nodes, Set<Point> fixedPoints) {
             _pathRouter = pathRouter;
             _fixedPoints = fixedPoints;
             foreach (var node in nodes)
@@ -34,7 +34,7 @@ namespace Microsoft.Msagl.Layout.LargeGraphLayout {
                 new Set<LgNodeInfo>(nodes.Where(node => Curve.CurvesIntersect(node.BoundaryOnLayer, new LineSegment(p1, p2))));
         }
 
-        internal bool Run() {
+        public bool Run() {
             // it is critical to enumerate to an array here, because the quiery will change during the foreach loop below
             var candidates =
                 new List<VisibilityVertex>(_pathRouter.GetAllVertices().Where(v => (!_fixedPoints.Contains(v.Point)) &&

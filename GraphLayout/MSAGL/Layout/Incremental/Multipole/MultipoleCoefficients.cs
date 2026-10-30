@@ -1,4 +1,4 @@
-using System.Diagnostics;
+﻿﻿using System.Diagnostics;
 using Microsoft.Msagl.Core.Geometry;
 using Microsoft.Msagl.Core;
 
@@ -11,7 +11,7 @@ namespace Microsoft.Msagl.Layout.Incremental
     public class MultipoleCoefficients
     {
         Complex z0;
-        Complex[] a;
+        public Complex[] a;
         int p;
         /// <summary>
         /// 
@@ -159,7 +159,7 @@ namespace Microsoft.Msagl.Layout.Incremental
             return duv / l;
         }
 
-        struct Complex
+        public struct Complex
         {
             public Complex(double re, double im)
             {

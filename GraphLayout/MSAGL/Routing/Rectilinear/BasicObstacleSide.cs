@@ -14,7 +14,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
     /// determinant of traversal direction being with or opposite to the clockwise polyline direction;
     /// BasicObstacleSide uses the ctor arg traverseClockwise to manage that.
     /// </summary>
-    internal abstract class BasicObstacleSide : ObstacleSide {
+    public abstract class BasicObstacleSide : ObstacleSide {
         public Obstacle Obstacle { get; private set; }
         readonly PolylinePoint endVertex;
         internal double Slope { get; private set; }
@@ -32,7 +32,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             }
         }
         
-        internal override PolylinePoint EndVertex {
+        public override PolylinePoint EndVertex {
             get { return endVertex; }
         }
     }

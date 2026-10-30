@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -15,12 +15,12 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
     /// <summary>
     /// single source single target rectilinear path
     /// </summary>
-    internal class SsstRectilinearPath {
+    public class SsstRectilinearPath {
         internal double LengthImportance { get; set; }
-        internal double BendsImportance { get; set; }
+        public double BendsImportance { get; set; }
 
         // Only bends importance needs to be public.
-        internal const double DefaultBendPenaltyAsAPercentageOfDistance = 4.0;
+        public const double DefaultBendPenaltyAsAPercentageOfDistance = 4.0;
 
         private VisibilityVertexRectilinear Target { get; set; }
         private VisibilityVertexRectilinear Source { get; set; }
@@ -245,11 +245,11 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             }
         }
 
-        internal static IEnumerable<Point> RestorePath(VertexEntry entry) {
+        public static IEnumerable<Point> RestorePath(VertexEntry entry) {
             return RestorePath(ref entry, null);
         }
 
-        internal static IEnumerable<Point> RestorePath(ref VertexEntry entry, VisibilityVertex firstVertexInStage) {
+        public static IEnumerable<Point> RestorePath(ref VertexEntry entry, VisibilityVertex firstVertexInStage) {
             if (entry == null) {
                 return null;
             }
@@ -336,11 +336,11 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             return directionToVertex;
         }
 
-        internal static double ManhattanDistance(Point a, Point b) {
+        public static double ManhattanDistance(Point a, Point b) {
             return Math.Abs(b.X - a.X) + Math.Abs(b.Y - a.Y);
         }
 
-        internal VertexEntry GetPathWithCost(VertexEntry[] sourceVertexEntries, VisibilityVertexRectilinear source, double adjustmentToSourceCost,
+        public VertexEntry GetPathWithCost(VertexEntry[] sourceVertexEntries, VisibilityVertexRectilinear source, double adjustmentToSourceCost,
                                              VertexEntry[] targetVertexEntries, VisibilityVertexRectilinear target, double adjustmentToTargetCost, 
                                              double priorBestCost) {
             this.upperBoundOnCost = priorBestCost;

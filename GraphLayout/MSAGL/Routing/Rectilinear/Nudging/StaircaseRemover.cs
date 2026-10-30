@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Msagl.Core.DataStructures;
@@ -6,7 +6,7 @@ using Microsoft.Msagl.Core.Geometry;
 using Microsoft.Msagl.Core.Geometry.Curves;
 
 namespace Microsoft.Msagl.Routing.Rectilinear.Nudging {
-    internal class StaircaseRemover {
+    public class StaircaseRemover {
         protected List<Path> Paths { get; set; }
 
         protected RTree<Polyline,Point> HierarchyOfObstacles { get; set; }
@@ -19,7 +19,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear.Nudging {
         }
 
 
-        internal static void RemoveStaircases(List<Path> paths, RectangleNode<Polyline, Point> hierarchyOfObstacles) {
+        public static void RemoveStaircases(List<Path> paths, RectangleNode<Polyline, Point> hierarchyOfObstacles) {
             var r = new StaircaseRemover(paths, hierarchyOfObstacles);
             r.Calculate();
         }

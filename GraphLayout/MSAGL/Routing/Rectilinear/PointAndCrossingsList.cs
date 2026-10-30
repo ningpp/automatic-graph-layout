@@ -1,4 +1,4 @@
-//
+﻿//
 // PointAndCrossingsList.cs
 // MSAGL class for a sorted list of Group boundary crossings for Rectilinear Edge Routing.
 //
@@ -13,42 +13,42 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
     // A Group is a Shape that has children.
     // This class maps between intersection points on Group boundaries and the groups and crossing
     // directions at those intersection points.
-    internal class PointAndCrossingsList {
+    public class PointAndCrossingsList {
         // Internal to allow testing.
-        internal List<PointAndCrossings> ListOfPointsAndCrossings { get; private set; }
+        public List<PointAndCrossings> ListOfPointsAndCrossings { get; private set; }
         int index;
 
-        internal int Count { get { return ListOfPointsAndCrossings.Count; } }
+        public int Count { get { return ListOfPointsAndCrossings.Count; } }
 
-        internal PointAndCrossingsList() {
+        public PointAndCrossingsList() {
             ListOfPointsAndCrossings = new List<PointAndCrossings>();
         }
         
-        internal void Add(Point intersect, List<GroupBoundaryCrossing> crossings) {
+        public void Add(Point intersect, List<GroupBoundaryCrossing> crossings) {
             ListOfPointsAndCrossings.Add(new PointAndCrossings(intersect, crossings));
         }
 
-        internal PointAndCrossings Pop() {
+        public PointAndCrossings Pop() {
             // Next should only be called after CurrentIsBeforeOrAt returns true.
             Debug.Assert(index < ListOfPointsAndCrossings.Count, "Unexpected call to Next()");
             return ListOfPointsAndCrossings[index++];
         }
 
-        internal bool CurrentIsBeforeOrAt(Point comparand) {
+        public bool CurrentIsBeforeOrAt(Point comparand) {
             if (index >= ListOfPointsAndCrossings.Count) {
                 return false;
             }
             return PointComparer.Compare(ListOfPointsAndCrossings[index].Location, comparand) <= 0;
         }
 
-        internal PointAndCrossings First { get { return this.ListOfPointsAndCrossings[0]; } }
-        internal PointAndCrossings Last { get { return this.ListOfPointsAndCrossings[this.ListOfPointsAndCrossings.Count - 1]; } }
+        public PointAndCrossings First { get { return this.ListOfPointsAndCrossings[0]; } }
+        public PointAndCrossings Last { get { return this.ListOfPointsAndCrossings[this.ListOfPointsAndCrossings.Count - 1]; } }
 
-        internal void Reset() {
+        public void Reset() {
             index = 0;
         }
 
-        internal void MergeFrom(PointAndCrossingsList other) {
+        public void MergeFrom(PointAndCrossingsList other) {
             Reset();
             if ((null == other) || (0 == other.ListOfPointsAndCrossings.Count)) {
                 return;
@@ -96,7 +96,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             this.ListOfPointsAndCrossings = newCrossingsList;
         }
 
-        internal void Trim(Point start, Point end) {
+        public void Trim(Point start, Point end) {
             Reset();
             if ((null == ListOfPointsAndCrossings) || (0 == ListOfPointsAndCrossings.Count)) {
                 return;
@@ -108,7 +108,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
 
         // For a single vertex point, split its List of crossings in both directions into an array in each (opposite)
         // direction.  CLR Array iteration is much faster than List.
-        static internal GroupBoundaryCrossing[] ToCrossingArray(List<GroupBoundaryCrossing> crossings, Direction dirToInside){
+        static public GroupBoundaryCrossing[] ToCrossingArray(List<GroupBoundaryCrossing> crossings, Direction dirToInside){
 
             // First find the number in each (opposite) direction, then create the arrays. 
             // We expect a very small number of groups to share a boundary point so this is not optimized.

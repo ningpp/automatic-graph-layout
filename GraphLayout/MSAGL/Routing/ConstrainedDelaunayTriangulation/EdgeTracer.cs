@@ -7,7 +7,7 @@ using Microsoft.Msagl.Core.Geometry;
 using Microsoft.Msagl.Core.Geometry.Curves;
 
 namespace Microsoft.Msagl.Routing.ConstrainedDelaunayTriangulation {
-    internal class EdgeTracer {
+    public class EdgeTracer {
         readonly CdtEdge edge;
         readonly Set<CdtTriangle> triangles;
         readonly RbTree<CdtFrontElement> front;

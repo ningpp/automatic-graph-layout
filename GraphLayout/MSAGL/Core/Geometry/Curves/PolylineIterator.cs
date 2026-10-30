@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace Microsoft.Msagl.Core.Geometry.Curves
 {
-    internal class PolylineIterator:IEnumerator<Point>
+    public class PolylineIterator:IEnumerator<Point>
     {
         Polyline polyline;
 
         PolylinePoint currentPolyPoint;
 
-        internal PolylineIterator(Polyline poly)
+        public PolylineIterator(Polyline poly)
         {
             this.polyline = poly;
         }

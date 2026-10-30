@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Msagl.Core;
@@ -19,7 +19,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         IntPair[] pairArray;
         readonly Routing routing;
         readonly int[] topLayer;
-        private SugiyamaLayoutSettings settings;
+        internal SugiyamaLayoutSettings settings;
 
         internal TwoLayerFlatEdgeRouter(SugiyamaLayoutSettings settings, Routing routing, int[] bottomLayer, int[] topLayer)
         {
@@ -51,7 +51,7 @@ namespace Microsoft.Msagl.Layout.Layered {
             get { return settings.LayerSeparation / 8; }
         }
 
-        void InitLabelsInfo() {
+        internal void InitLabelsInfo() {
             pairArray = new Set<IntPair>(from v in bottomLayer
                                          where v < IntGraph.NodeCount
                                          from edge in IntGraph.OutEdges(v)
@@ -75,14 +75,14 @@ namespace Microsoft.Msagl.Layout.Layered {
             InitLabelsToLabelObstacles();
         }
 
-        void InitLabelsToLabelObstacles() {
+        internal void InitLabelsToLabelObstacles() {
             labelsToLabelObstacles = new Dictionary<Label, ICurve>();
             IEnumerable<Label> labels = from p in pairArray from label in PairLabels(p) select label;
             foreach (Label label in labels)
                 labelsToLabelObstacles[label] = CreatObstaceOnLabel(label);
         }
 
-        double GetMaxLabelWidth(IntPair intPair) {
+        internal double GetMaxLabelWidth(IntPair intPair) {
             IEnumerable<Label> multiEdgeLabels = PairLabels(intPair);
 
             if (multiEdgeLabels.Any())
@@ -90,7 +90,7 @@ namespace Microsoft.Msagl.Layout.Layered {
             return 0;
         }
 
-        IEnumerable<Label> PairLabels(IntPair intPair) {
+        internal IEnumerable<Label> PairLabels(IntPair intPair) {
             return from edge in Database.GetMultiedge(intPair)
                    let label = edge.Edge.Label
                    where label != null
@@ -113,20 +113,20 @@ namespace Microsoft.Msagl.Layout.Layered {
             }
         }
 
-        IEnumerable<ICurve> GetObstacles() {
+        internal IEnumerable<ICurve> GetObstacles() {
             return (from v in topLayer.Concat(bottomLayer)
                     where v < routing.OriginalGraph.Nodes.Count
                     select routing.IntGraph.Nodes[v].BoundaryCurve).Concat(LabelCurves());
         }
 
-        IEnumerable<ICurve> LabelCurves() {
+        internal IEnumerable<ICurve> LabelCurves() {
             return from edge in IntEdges()
                    let label = edge.Edge.Label
                    where label != null
                    select CreatObstaceOnLabel(label);
         }
 
-        static ICurve CreatObstaceOnLabel(Label label) {
+        internal static ICurve CreatObstaceOnLabel(Label label) {
             var c = new Curve();
             double obstacleBottom = label.Center.Y - label.Height/4;
             c.AddSegment(new LineSegment(new Point(label.BoundingBox.Left, obstacleBottom),
@@ -137,18 +137,18 @@ namespace Microsoft.Msagl.Layout.Layered {
             return c;
         }
 
-        IEnumerable<PolyIntEdge> IntEdges() {
+        internal IEnumerable<PolyIntEdge> IntEdges() {
             return from pair in pairArray from edge in Database.GetMultiedge(pair) select edge;
         }
 
-        void RouteEdge(PolyIntEdge edge) {
+        internal void RouteEdge(PolyIntEdge edge) {
             if (edge.HasLabel)
                 RouteEdgeWithLabel(edge, edge.Edge.Label);
             else
                 RouteEdgeWithNoLabel(edge);
         }
 
-        void RouteEdgeWithLabel(PolyIntEdge intEdge, Label label) {
+        internal void RouteEdgeWithLabel(PolyIntEdge intEdge, Label label) {
             //we allow here for the edge to cross its own label
             Node sourceNode = routing.IntGraph.Nodes[intEdge.Source];
             Node targetNode = routing.IntGraph.Nodes[intEdge.Target];
@@ -171,7 +171,7 @@ namespace Microsoft.Msagl.Layout.Layered {
                                                              intEdge.Edge.Target.BoundaryCurve, eg.Curve, false);
         }
 
-        void RouteEdgeWithNoLabel(PolyIntEdge intEdge) {
+        internal void RouteEdgeWithNoLabel(PolyIntEdge intEdge) {
             Node sourceNode = routing.IntGraph.Nodes[intEdge.Source];
             Node targetNode = routing.IntGraph.Nodes[intEdge.Target];
             var sourcePort = new FloatingPort(sourceNode.BoundaryCurve, sourceNode.Center);
@@ -184,14 +184,14 @@ namespace Microsoft.Msagl.Layout.Layered {
             intEdge.Edge.EdgeGeometry = eg;
         }
 
-        void PositionLabelsOfFlatEdges() {
+        internal void PositionLabelsOfFlatEdges() {
             if (labelCenters == null || labelCenters.Length == 0)
                 return;
             SortLabelsByX();
             CalculateLabelsX();
         }
 
-        void CalculateLabelsX() {
+        internal void CalculateLabelsX() {
             int i;
             var solver = new SolverShell();
             for (i = 0; i < pairArray.Length; i++)
@@ -212,11 +212,11 @@ namespace Microsoft.Msagl.Layout.Layered {
             }
         }
 
-        double GetLabelWeight(IntPair intPair) {
+        internal double GetLabelWeight(IntPair intPair) {
             return Database.GetMultiedge(intPair).Count;
         }
 
-        void SortLabelsByX() {
+        internal void SortLabelsByX() {
             Array.Sort(labelCenters, pairArray);
         }
     }

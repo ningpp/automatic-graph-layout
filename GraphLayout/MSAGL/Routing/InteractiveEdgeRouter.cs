@@ -1,4 +1,4 @@
-using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -13,6 +13,7 @@ using Microsoft.Msagl.Layout.LargeGraphLayout;
 using Microsoft.Msagl.Routing.Spline.ConeSpanner;
 using Microsoft.Msagl.Routing.Visibility;
 using Microsoft.Msagl.DebugHelpers;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Microsoft.Msagl.Routing {
     /// <summary>
@@ -68,7 +69,7 @@ namespace Microsoft.Msagl.Routing {
 
         VisibilityGraph visibilityGraph;
 
-        internal VisibilityGraph VisibilityGraph {
+        public VisibilityGraph VisibilityGraph {
             get { return visibilityGraph; }
             set { visibilityGraph = value; }
         }
@@ -110,7 +111,7 @@ namespace Microsoft.Msagl.Routing {
         /// <summary>
         /// the port of the edge end
         /// </summary>
-        Port TargetPort {
+        public Port TargetPort {
             get { return targetPort; }
             set { targetPort = value; }
         }
@@ -130,7 +131,7 @@ namespace Microsoft.Msagl.Routing {
             get {
                 return loosePadding;
             }
-            internal set {
+            set {
                 loosePadding = value;
                 if(ObstacleCalculator!=null)
                     ObstacleCalculator.LoosePadding = value;
@@ -140,7 +141,7 @@ namespace Microsoft.Msagl.Routing {
 
         VisibilityVertex _sourceVisibilityVertex;
 
-        VisibilityVertex SourceVisibilityVertex {
+        public VisibilityVertex SourceVisibilityVertex {
             get { return _sourceVisibilityVertex; } //            set { sourceVisibilityVertex = value; }
         }
 
@@ -182,18 +183,18 @@ namespace Microsoft.Msagl.Routing {
 
         bool targetIsInsideOfSourceTightPolyline;
         bool sourceIsInsideOfTargetTightPolyline;
-        internal bool UseEdgeLengthMultiplier;
+        public bool UseEdgeLengthMultiplier;
         /// <summary>
         /// if set to true the algorithm will try to shortcut a shortest polyline inner points
         /// </summary>
-        internal bool UseInnerPolylingShortcutting=true;
+        public bool UseInnerPolylingShortcutting=true;
 
         /// <summary>
         /// if set to true the algorithm will try to shortcut a shortest polyline start and end
         /// </summary>
-        internal bool UsePolylineEndShortcutting=true;
+        public bool UsePolylineEndShortcutting=true;
 
-        internal bool AllowedShootingStraightLines = true;
+        public bool AllowedShootingStraightLines = true;
   
 
         /// <summary>
@@ -205,7 +206,7 @@ namespace Microsoft.Msagl.Routing {
 
         Point StartPointOfEdgeRouting { get; set; }
 
-        void ExtendVisibilityGraphToLocation(Point location) {
+        public void ExtendVisibilityGraphToLocation(Point location) {
             if (VisibilityGraph == null)
                 VisibilityGraph = new VisibilityGraph();
             List<Polygon> addedPolygons = null;
@@ -222,6 +223,8 @@ namespace Microsoft.Msagl.Routing {
                 if (targetVisibilityVertex != null)
                     VisibilityGraph.RemoveVertex(targetVisibilityVertex);
                 CalculateEdgeTargetVisibilityGraph(location);
+                if (SourceVisibilityVertex == null)
+                    CalculateSourcePortVisibilityGraph();
             }
             else {
                 RemovePointVisibilityGraphs();
@@ -797,7 +800,7 @@ namespace Microsoft.Msagl.Routing {
             set { ObstacleCalculator.RootOfLooseHierarchy = value; }
         }
 
-        internal bool UseSpanner { get; set; }
+        public bool UseSpanner { get; set; }
 
 
         void CalculateObstacles() {
@@ -1097,7 +1100,7 @@ namespace Microsoft.Msagl.Routing {
 
         internal bool LookForRoundedVertices { get; set; }
 
-        internal InteractiveObstacleCalculator ObstacleCalculator { get; set; }
+        public InteractiveObstacleCalculator ObstacleCalculator { get; set; }
 
         ///<summary>
         ///</summary>
@@ -1407,19 +1410,21 @@ namespace Microsoft.Msagl.Routing {
             CalculateWholeTangentVisibilityGraph();
         }
 
-        internal void CalculateWholeTangentVisibilityGraph() {
+        public void CalculateWholeTangentVisibilityGraph() {
             VisibilityGraph = new VisibilityGraph();
             CalculateWholeVisibilityGraphOnExistingGraph();
         }
 
         internal void CalculateWholeVisibilityGraphOnExistingGraph() {
-            activePolygons = new List<Polygon>(AllPolygons());
-            foreach (Polyline polylineLocal in ObstacleCalculator.LooseObstacles)
+            var looseObstacles = ObstacleCalculator.LooseObstacles ?? new List<Polyline>();
+            activePolygons = new List<Polygon>(looseObstacles.Select(p => new Polygon(p)));
+            alreadyAddedOrExcludedPolylines.InsertRange(looseObstacles);
+            foreach (Polyline polylineLocal in looseObstacles)
                 VisibilityGraph.AddHole(polylineLocal);
 
             AlgorithmBase visibilityGraphGenerator;
             if (UseSpanner) {
-                visibilityGraphGenerator = new ConeSpanner(ObstacleCalculator.LooseObstacles, VisibilityGraph)
+                visibilityGraphGenerator = new ConeSpanner(looseObstacles, VisibilityGraph)
                 {ConeAngle = ConeSpannerAngle};
             }
             else {
@@ -1675,8 +1680,8 @@ namespace Microsoft.Msagl.Routing {
         }
 
 
-        IEnumerable<Polygon> AllPolygons() {
-            foreach (Polyline p in ObstacleCalculator.LooseObstacles)
+        public IEnumerable<Polygon> AllPolygons() {
+            foreach (Polyline p in ObstacleCalculator.LooseObstacles ?? Enumerable.Empty<Polyline>())
                 yield return new Polygon(p);
         }
 
@@ -1709,10 +1714,10 @@ namespace Microsoft.Msagl.Routing {
         }
 #endif
 
-        internal void AddActivePolygons(IEnumerable<Polygon> polygons) {
+        public void AddActivePolygons(IEnumerable<Polygon> polygons) {
             activePolygons.AddRange(polygons);
         }
-        internal void ClearActivePolygons() {
+        public void ClearActivePolygons() {
             activePolygons.Clear();
         }
     }

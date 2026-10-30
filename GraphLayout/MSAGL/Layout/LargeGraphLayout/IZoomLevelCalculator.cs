@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿﻿using System.Collections.Generic;
 using Microsoft.Msagl.Core.Layout;
 
 namespace Microsoft.Msagl.Layout.LargeGraphLayout {
-    internal interface IZoomLevelCalculator {
+    public interface IZoomLevelCalculator {
         /// <summary>
         /// returns the top node
         /// </summary>

@@ -1,4 +1,4 @@
-//
+﻿//
 // ObstacleTree.cs
 // MSAGL class for wrapping a RectangleNode<Obstacle, Point> hierarchy for Rectilinear Edge Routing.
 //
@@ -18,8 +18,8 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
         /// <summary>
         /// The root of the hierarchy.
         /// </summary>
-        internal RectangleNode<Obstacle, Point> Root { get; private set; }
-        internal Rectangle GraphBox { get { return (Rectangle)Root.Rectangle; } }
+        public RectangleNode<Obstacle, Point> Root { get; private set; }
+        public Rectangle GraphBox { get { return (Rectangle)Root.Rectangle; } }
 
         /// <summary>
         /// Dictionary of sets of ancestors for each shape, for evaluating necessary group-boundary crossings.
@@ -29,7 +29,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
         /// <summary>
         /// Indicates whether we adjusted spatial ancestors due to blocked paths.
         /// </summary>
-        internal bool SpatialAncestorsAdjusted;
+        public bool SpatialAncestorsAdjusted;
 
         /// <summary>
         /// The map of shapes to obstacles.
@@ -67,7 +67,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
         /// <param name="obstacles"></param>
         /// <param name="ancestorSets"></param>
         /// <param name="idToObstacleMap"></param>
-        internal void Init(IEnumerable<Obstacle> obstacles, Dictionary<Shape, Set<Shape>> ancestorSets
+        public void Init(IEnumerable<Obstacle> obstacles, Dictionary<Shape, Set<Shape>> ancestorSets
                         , Dictionary<Shape, Obstacle> idToObstacleMap) {
             CreateObstacleListAndOrdinals(obstacles);
             this.AncestorSets = ancestorSets;
@@ -164,7 +164,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             }
         }
 
-        internal static RectangleNode<Obstacle,Point> CalculateHierarchy(IEnumerable<Obstacle> obstacles) {
+        public static RectangleNode<Obstacle,Point> CalculateHierarchy(IEnumerable<Obstacle> obstacles) {
             var rectNodes = obstacles.Select(obs => new RectangleNode<Obstacle, Point>(obs, obs.VisibilityBoundingBox)).ToList();
             return RectangleNode<Obstacle, Point>.CreateRectangleNodeOnListOfNodes(rectNodes);
         }
@@ -446,7 +446,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
         /// Add ancestors that are spatial parents - they may not be in the hierarchy, but we need to be
         /// able to cross their boundaries if we're routing between obstacles on different sides of them.
         /// </summary>
-        internal bool AdjustSpatialAncestors() {
+        public bool AdjustSpatialAncestors() {
             if (this.SpatialAncestorsAdjusted) {
                 return false;
             }
@@ -491,7 +491,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             return true;
         }
 
-        internal IEnumerable<Obstacle> GetAllGroups() {
+        public IEnumerable<Obstacle> GetAllGroups() {
             return GetAllObstacles().Where(obs => obs.IsGroup);
         } 
 
@@ -506,7 +506,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
         /// <summary>
         /// Create a LineSegment that contains the max visibility from startPoint in the desired direction.
         /// </summary>
-        internal LineSegment CreateMaxVisibilitySegment(Point startPoint, Direction dir, out PointAndCrossingsList pacList) {
+        public LineSegment CreateMaxVisibilitySegment(Point startPoint, Direction dir, out PointAndCrossingsList pacList) {
             var graphBoxBorderIntersect = StaticGraphUtility.RectangleBorderIntersect(this.GraphBox, startPoint, dir);
             if (PointComparer.GetDirections(startPoint, graphBoxBorderIntersect) == Direction. None) {
                 pacList = null;
@@ -524,7 +524,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
         /// Convenience functions that call through to RectangleNode.
         /// </summary>
         /// <returns></returns>
-        internal IEnumerable<Obstacle> GetAllObstacles() {
+        public IEnumerable<Obstacle> GetAllObstacles() {
             return this.allObstacles;
         }
 
@@ -532,12 +532,12 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
         /// Returns a list of all primary obstacles - secondary obstacles inside a convex hull are not needed in the VisibilityGraphGenerator.
         /// </summary>
         /// <returns></returns>
-        internal IEnumerable<Obstacle> GetAllPrimaryObstacles() {
+        public IEnumerable<Obstacle> GetAllPrimaryObstacles() {
             return this.Root.GetAllLeaves();
         }
 
         // Hit-testing.
-        internal bool IntersectionIsInsideAnotherObstacle(Obstacle sideObstacle, Obstacle eventObstacle, Point intersect, ScanDirection scanDirection) {
+        public bool IntersectionIsInsideAnotherObstacle(Obstacle sideObstacle, Obstacle eventObstacle, Point intersect, ScanDirection scanDirection) {
             insideHitTestIgnoreObstacle1 = eventObstacle;
             insideHitTestIgnoreObstacle2 = sideObstacle;
             insideHitTestScanDirection = scanDirection;
@@ -545,11 +545,11 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             return (null != obstacleNode);
         }
 
-        internal bool PointIsInsideAnObstacle(Point intersect, Direction direction) {
+        public bool PointIsInsideAnObstacle(Point intersect, Direction direction) {
             return PointIsInsideAnObstacle(intersect, ScanDirection.GetInstance(direction));
         }
 
-        internal bool PointIsInsideAnObstacle(Point intersect, ScanDirection scanDirection) {
+        public bool PointIsInsideAnObstacle(Point intersect, ScanDirection scanDirection) {
             insideHitTestIgnoreObstacle1 = null;
             insideHitTestIgnoreObstacle2 = null;
             insideHitTestScanDirection = scanDirection;
@@ -616,14 +616,14 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             return HitTestBehavior.Continue;
         }
 
-        internal bool SegmentCrossesAnObstacle(Point startPoint, Point endPoint) {
+        public bool SegmentCrossesAnObstacle(Point startPoint, Point endPoint) {
             stopAtGroups = true;
             wantGroupCrossings = false;
             LineSegment obstacleIntersectSeg = RestrictSegmentPrivate(startPoint, endPoint);
             return !PointComparer.Equal(obstacleIntersectSeg.End, endPoint);
         }
 
-        internal bool SegmentCrossesANonGroupObstacle(Point startPoint, Point endPoint) {
+        public bool SegmentCrossesANonGroupObstacle(Point startPoint, Point endPoint) {
             stopAtGroups = false;
             wantGroupCrossings = false;
             LineSegment obstacleIntersectSeg = RestrictSegmentPrivate(startPoint, endPoint);
@@ -631,7 +631,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
         }
  // TEST_MSAGL
 
-        internal LineSegment RestrictSegmentWithObstacles(Point startPoint, Point endPoint) {
+        public LineSegment RestrictSegmentWithObstacles(Point startPoint, Point endPoint) {
             stopAtGroups = false;
             wantGroupCrossings = true;
             return RestrictSegmentPrivate(startPoint, endPoint);

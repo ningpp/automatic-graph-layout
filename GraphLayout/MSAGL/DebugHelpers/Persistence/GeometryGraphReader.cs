@@ -223,7 +223,9 @@ namespace Microsoft.Msagl.DebugHelpers.Persistence
             LayoutAlgorithmSettings layoutSettings = sugiyama;
 
             sugiyama.MinNodeWidth = GetDoubleAttributeOrDefault(GeometryToken.MinNodeWidth, sugiyama.MinNodeWidth);
-            sugiyama.MinNodeHeight = GetDoubleAttributeOrDefault(GeometryToken.MinNodeHeight, sugiyama.MinimalHeight);
+            sugiyama.MinNodeHeight = GetDoubleAttributeOrDefault(GeometryToken.MinNodeHeight, sugiyama.MinNodeHeight);
+            sugiyama.MinimalWidth = GetDoubleAttributeOrDefault(GeometryToken.MinimalWidth, sugiyama.MinimalWidth);
+            sugiyama.MinimalHeight = GetDoubleAttributeOrDefault(GeometryToken.MinimalHeight, sugiyama.MinimalHeight);
             sugiyama.AspectRatio = GetDoubleAttributeOrDefault(GeometryToken.AspectRatio, sugiyama.AspectRatio);
             sugiyama.NodeSeparation = GetDoubleAttributeOrDefault(GeometryToken.NodeSeparation, sugiyama.NodeSeparation);
             sugiyama.ClusterMargin = sugiyama.NodeSeparation;
@@ -242,10 +244,12 @@ namespace Microsoft.Msagl.DebugHelpers.Persistence
             sugiyama.LabelCornersPreserveCoefficient = GetDoubleAttribute(GeometryToken.LabelCornersPreserveCoefficient);
             sugiyama.BrandesThreshold = GetIntAttributeOrDefault(GeometryToken.BrandesThreshold,
                 sugiyama.BrandesThreshold);
+            sugiyama.LayeringOnly = GetBoolAttributeOrDefault(GeometryToken.LayeringOnly, sugiyama.LayeringOnly);
             sugiyama.LayerSeparation = GetDoubleAttributeOrDefault(GeometryToken.LayerSeparation,
                 sugiyama.LayerSeparation);
             var transform = new PlaneTransformation();
             ReadTransform(transform);
+            sugiyama.Transformation = transform;
             return layoutSettings;
         }
 
@@ -1054,7 +1058,12 @@ namespace Microsoft.Msagl.DebugHelpers.Persistence
 
         void ReadNodes()
         {
-            if (XmlReader.IsEmptyElement) return;
+            if (XmlReader.IsEmptyElement)
+            {
+                //consume the empty element, otherwise ReadGraph would loop forever
+                XmlRead();
+                return;
+            }
             XmlRead();
             while (TokenIs(GeometryToken.Node))
                 ReadNode();
@@ -1067,13 +1076,17 @@ namespace Microsoft.Msagl.DebugHelpers.Persistence
         {
             string nodeId = GetMustAttribute(GeometryToken.Id);
             double nodePadding = GetDoubleAttributeOrDefault(GeometryToken.Padding, NodeDefaultPadding);
+            bool isEmptyNode = XmlReader.IsEmptyElement;
             XmlRead();
-            var node = new Node(ReadICurve()) { Padding = nodePadding, UserData = nodeId };
-            if (node.BoundaryCurve == null)
-                throw new InvalidOperationException();
+            ICurve boundaryCurve = isEmptyNode ? null : ReadICurve();
+            var node = new Node(boundaryCurve) { Padding = nodePadding, UserData = nodeId };
             _graph.Nodes.Add(node);
-            XmlReader.Skip();
-            ReadEndElement();
+            if (!isEmptyNode)
+            {
+                if (boundaryCurve != null)
+                    XmlReader.Skip();
+                ReadEndElement();
+            }
             nodeIdToNodes[nodeId] = node;
         }
 

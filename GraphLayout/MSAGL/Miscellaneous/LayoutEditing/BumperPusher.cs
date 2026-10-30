@@ -32,7 +32,7 @@ namespace Microsoft.Msagl.Miscellaneous.LayoutEditing {
             this.pushingNodes = pushingNodes;
         }
 
-        internal IEnumerable<Node> FixedNodes { get { return fixedNodes; } }
+        public IEnumerable<Node> FixedNodes { get { return fixedNodes; } }
 
         Rectangle GetPaddedBoxOfNode(Node n) {
 #if SHARPKIT //https://code.google.com/p/sharpkit/issues/detail?id=369 there are no structs in js

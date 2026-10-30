@@ -6,7 +6,7 @@ namespace Microsoft.Msagl.Prototype.Ranking {
     /// <summary>
     /// Class for centrality computation.
     /// </summary>
-    sealed internal class Centrality {
+    sealed public class Centrality {
         private Centrality() { } //to avoid creating the public constructor
         /// <summary>
         /// Computes the PageRank in a directed graph.

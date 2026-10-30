@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <NuspecFile>AutomaticGraphLayout.nuspec</NuspecFile>
     <AssemblyName>Microsoft.Msagl</AssemblyName>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -17,7 +17,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-     <PackageReference Include="System.Text.Json" Version="4.7.2" />
+     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
 	  
   </ItemGroup>
 </Project>

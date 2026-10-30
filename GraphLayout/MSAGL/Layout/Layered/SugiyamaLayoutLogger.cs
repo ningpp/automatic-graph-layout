@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
@@ -8,7 +8,7 @@ namespace Microsoft.Msagl.Layout.Layered {
     /// </summary>
     public sealed class SugiyamaLayoutLogger : IDisposable {
         static StreamWriter sw;
-        internal SugiyamaLayoutLogger() {}
+        public SugiyamaLayoutLogger() {}
 
         #region IDisposable Members
 

@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Msagl.Core.DataStructures;
@@ -25,8 +25,8 @@ namespace Microsoft.Msagl.Layout.LargeGraphLayout
 
 
         internal readonly Func<PlaneTransformation> TransformFromGraphToScreen;
-        internal readonly double DpiX;
-        internal readonly double DpiY;
+        public readonly double DpiX;
+        public readonly double DpiY;
 
         /// <summary>
         /// size of drawn node
@@ -89,7 +89,7 @@ namespace Microsoft.Msagl.Layout.LargeGraphLayout
         /// <summary>
         /// a delegate returning the current viewport of the viewer
         /// </summary>
-        internal Func<Rectangle> ClientViewportFunc { get; set; }
+        public Func<Rectangle> ClientViewportFunc { get; set; }
 
         /// <summary>
         /// constructor

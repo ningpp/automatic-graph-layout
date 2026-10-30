@@ -9,12 +9,12 @@ using Microsoft.Msagl.Core.Layout;
 
 namespace Microsoft.Msagl.Routing {
     //this class contains a set of edge geometries, and set of node boundaries, ICurves, that might obstruct the edge routing 
-    internal class PreGraph {
-        internal List<EdgeGeometry> edgeGeometries;
-        internal Set<ICurve> nodeBoundaries;
-        internal Rectangle boundingBox;
+    public class PreGraph {
+        public List<EdgeGeometry> edgeGeometries;
+        public Set<ICurve> nodeBoundaries;
+        public Rectangle boundingBox;
        
-        internal PreGraph(EdgeGeometry[] egs, Set<ICurve> nodeBoundaries) {
+        public PreGraph(EdgeGeometry[] egs, Set<ICurve> nodeBoundaries) {
             edgeGeometries = new List<EdgeGeometry>(egs);
             this.nodeBoundaries = new Set<ICurve>(nodeBoundaries);
             boundingBox = Rectangle.CreateAnEmptyBox();
@@ -22,15 +22,19 @@ namespace Microsoft.Msagl.Routing {
                 boundingBox.Add(curve.BoundingBox);
         }
 
-        internal PreGraph() {}
+        public PreGraph() {
+            edgeGeometries = new List<EdgeGeometry>();
+            nodeBoundaries = new Set<ICurve>();
+            boundingBox = Rectangle.CreateAnEmptyBox();
+        }
 
-        internal void AddGraph(PreGraph a) {
+        public void AddGraph(PreGraph a) {
             edgeGeometries.AddRange(a.edgeGeometries);
             nodeBoundaries += a.nodeBoundaries;
             boundingBox.Add(a.boundingBox);
         }
 
-        internal void AddNodeBoundary(ICurve curve) {
+        public void AddNodeBoundary(ICurve curve) {
             nodeBoundaries.Insert(curve);
             boundingBox.Add(curve.BoundingBox);
         }

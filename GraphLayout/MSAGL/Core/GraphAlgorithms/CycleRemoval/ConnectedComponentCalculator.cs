@@ -1,10 +1,10 @@
-using System.Collections.Generic;
+﻿﻿using System.Collections.Generic;
 
 namespace Microsoft.Msagl.Core.GraphAlgorithms {
 
    
-    static internal class ConnectedComponentCalculator<TEdge> where TEdge:IEdge {
-        static internal IEnumerable<IEnumerable<int>> GetComponents(BasicGraphOnEdges<TEdge> graph) {
+    static public class ConnectedComponentCalculator<TEdge> where TEdge:IEdge {
+        static public IEnumerable<IEnumerable<int>> GetComponents(BasicGraphOnEdges<TEdge> graph) {
             bool[] enqueueed = new bool[graph.NodeCount];
 #if SHARPKIT //http://code.google.com/p/sharpkit/issues/detail?id=367 bool arrays are not default initialised
             for (var i = 0; i < graph.NodeCount; i++)

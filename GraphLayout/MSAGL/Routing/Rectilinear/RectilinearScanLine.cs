@@ -1,4 +1,4 @@
-//
+﻿//
 // RectilinearScanLine.cs
 // MSAGL ScanLine class for Rectilinear Edge Routing line generation.
 //
@@ -11,9 +11,10 @@ using Microsoft.Msagl.Core.Geometry.Curves;
 using Microsoft.Msagl.Core.Layout;
 using Microsoft.Msagl.DebugHelpers;
 using Microsoft.Msagl.Core;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Microsoft.Msagl.Routing.Rectilinear {
-    internal class RectilinearScanLine : IComparer<BasicObstacleSide> {
+    public class RectilinearScanLine : IComparer<BasicObstacleSide> {
         readonly ScanDirection scanDirection;
 
         // This is the data structure that allows fast insert/remove of obstacle edges as well as
@@ -24,13 +25,13 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
         // position, which is set on insertions by parameter, and by Overlap events via SetLinePosition.
         private Point linePositionAtLastInsertOrRemove;
 
-        internal RectilinearScanLine(ScanDirection scanDir, Point start) {
+        public RectilinearScanLine(ScanDirection scanDir, Point start) {
             scanDirection = scanDir;
             SideTree = new RbTree<BasicObstacleSide>(this);
             this.linePositionAtLastInsertOrRemove = start;
         }
 
-        internal RBNode<BasicObstacleSide> Insert(BasicObstacleSide side, Point scanPos) {
+        public RBNode<BasicObstacleSide> Insert(BasicObstacleSide side, Point scanPos) {
             DevTraceInfo(1, "prev LinePos = {0}, new LinePos = {1}, inserting side = {2}", this.linePositionAtLastInsertOrRemove, scanPos, side.ToString());
             Assert(!scanDirection.IsFlat(side), "Flat sides are not allowed in the scanline");
             Assert(null == Find(side), "side already exists in the ScanLine");
@@ -44,9 +45,9 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             return node;
         }
 
-        internal int Count { get { return SideTree.Count; } }
+        public int Count { get { return SideTree.Count; } }
 
-        internal void Remove(BasicObstacleSide side, Point scanPos) {
+        public void Remove(BasicObstacleSide side, Point scanPos) {
             DevTraceInfo(1, "current linePos = {0}, removing side = {1}", this.linePositionAtLastInsertOrRemove, side.ToString());
             Assert(null != Find(side), "side does not exist in the ScanLine");
             this.linePositionAtLastInsertOrRemove = scanPos;
@@ -54,7 +55,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             DevTraceDump(2);
         }
 
-        internal RBNode<BasicObstacleSide> Find(BasicObstacleSide side) {
+        public RBNode<BasicObstacleSide> Find(BasicObstacleSide side) {
             // Sides that start after the current position cannot be in the scanline.
             if (-1 == scanDirection.ComparePerpCoord(this.linePositionAtLastInsertOrRemove, side.Start)) {
                 return null;
@@ -62,30 +63,30 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             return SideTree.Find(side);
         }
 
-        internal RBNode<BasicObstacleSide> NextLow(BasicObstacleSide side) {
+        public RBNode<BasicObstacleSide> NextLow(BasicObstacleSide side) {
             return NextLow(Find(side));
         }
 
-        internal RBNode<BasicObstacleSide> NextLow(RBNode<BasicObstacleSide> sideNode) {
+        public RBNode<BasicObstacleSide> NextLow(RBNode<BasicObstacleSide> sideNode) {
             var pred = SideTree.Previous(sideNode);
             return pred;
         }
 
-        internal RBNode<BasicObstacleSide> NextHigh(BasicObstacleSide side) {
+        public RBNode<BasicObstacleSide> NextHigh(BasicObstacleSide side) {
             return NextHigh(Find(side));
         }
 
-        internal RBNode<BasicObstacleSide> NextHigh(RBNode<BasicObstacleSide> sideNode) {
+        public RBNode<BasicObstacleSide> NextHigh(RBNode<BasicObstacleSide> sideNode) {
             var succ = SideTree.Next(sideNode);
             return succ;
         }
 
-        internal RBNode<BasicObstacleSide> Next(Direction dir, RBNode<BasicObstacleSide> sideNode) {
+        public RBNode<BasicObstacleSide> Next(Direction dir, RBNode<BasicObstacleSide> sideNode) {
             var succ = (StaticGraphUtility.IsAscending(dir)) ? SideTree.Next(sideNode) : SideTree.Previous(sideNode);
             return succ;
         }
 
-        internal RBNode<BasicObstacleSide> Lowest()
+        public RBNode<BasicObstacleSide> Lowest()
         {
             return SideTree.TreeMinimum();
         }
@@ -93,7 +94,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
 #if DEVTRACE
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
 // ReSharper disable InconsistentNaming
-        internal void DevTrace_VerifyConsistency(string descFormat, params object[] descArgs) {
+        public void DevTrace_VerifyConsistency(string descFormat, params object[] descArgs) {
 // ReSharper restore InconsistentNaming
             bool retval = true;
             if (scanLineVerify.IsLevel(1)) {
@@ -160,7 +161,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
         }
 
         [Conditional("TEST_MSAGL")]
-        internal static void Debug_VerifySidesDoNotIntersect(BasicObstacleSide side1, BasicObstacleSide side2) {
+        public static void Debug_VerifySidesDoNotIntersect(BasicObstacleSide side1, BasicObstacleSide side2) {
             Point intersect;
             if (!Point.LineLineIntersection(side1.Start, side1.End, side2.Start, side2.End, out intersect)) {
                 return;
@@ -221,12 +222,12 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
         #region DebugCurves
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        internal void Test_DumpScanLine() {
+        public void Test_DumpScanLine() {
             DebugCurveCollection.WriteToFile(Test_GetScanLineDebugCurves(), StaticGraphUtility.GetDumpFileName("ScanLine"));
         }
  // TEST
 
-        internal List<DebugCurve> Test_GetScanLineDebugCurves() {
+        public List<DebugCurve> Test_GetScanLineDebugCurves() {
 // ReSharper restore InconsistentNaming
             var debugCurves = new List<DebugCurve>();
 

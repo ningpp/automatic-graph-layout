@@ -1,5 +1,5 @@
-﻿namespace Microsoft.Msagl.DebugHelpers {
-    internal abstract class CurveStreamElement {
-        protected internal object Value;
+﻿﻿namespace Microsoft.Msagl.DebugHelpers {
+    public abstract class CurveStreamElement {
+        public object Value;
     }
 }

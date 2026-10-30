@@ -1,4 +1,4 @@
-//  
+﻿//  
 // PortManager.cs
 // MSAGL class for Port management for Rectilinear Edge Routing.
 //
@@ -19,7 +19,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
     /// This stores information mapping the App-level Ports (e.g. FloatingPort, RelativeFloatingPort,
     /// and MultiLocationFloatingPort) to the router's BasicScanPort subclasses (ObstaclePort and FreePoint).
     /// </summary>
-    internal class PortManager {
+    public class PortManager {
         // The mapping of Msagl.Port (which may be MultiLocation) to the underlying Obstacle.Shape.
         private readonly Dictionary<Port, ObstaclePort> obstaclePortMap = new Dictionary<Port, ObstaclePort>();
 
@@ -30,7 +30,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
         private readonly Set<Point> freePointLocationsUsedByRouteEdges = new Set<Point>();
 
         // Created to wrap the graph for adding transient vertices/edges to the graph.
-        internal TransientGraphUtility TransUtil { get; set; }
+        public TransientGraphUtility TransUtil { get; set; }
 
         // Owned by RectilinearEdgeRouter.
         private readonly VisibilityGraphGenerator graphGenerator;
@@ -143,7 +143,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
         }
 
         // Add path control points - source, target, and any waypoints.
-        internal void AddControlPointsToGraph(EdgeGeometry edgeGeom, Dictionary<Shape, Obstacle> shapeToObstacleMap) {
+        public void AddControlPointsToGraph(EdgeGeometry edgeGeom, Dictionary<Shape, Obstacle> shapeToObstacleMap) {
             this.GetPortSpliceLimitRectangle(edgeGeom);
             activeAncestors.Clear();
 
@@ -225,7 +225,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             }
         }
 
-        internal Set<Shape> FindAncestorsAndObstaclePort(Port port, out ObstaclePort oport) {
+        public Set<Shape> FindAncestorsAndObstaclePort(Port port, out ObstaclePort oport) {
             oport = FindObstaclePort(port);
             if (0 == AncestorSets.Count) {
                 return null;
@@ -255,7 +255,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             activeAncestors.Clear();
         }
 
-        internal void RemoveControlPointsFromGraph() {
+        public void RemoveControlPointsFromGraph() {
             ClearActiveAncestors();
             RemoveObstaclePortsFromGraph();
             RemoveFreePointsFromGraph();
@@ -307,7 +307,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             this.RemoveStaleFreePoints();
         }
 
-        internal ObstaclePort FindObstaclePort(Port port) {
+        public ObstaclePort FindObstaclePort(Port port) {
             ObstaclePort oport;
             if (obstaclePortMap.TryGetValue(port, out oport)) {
                 // First see if the obstacle's port list has changed without UpdateObstacles() being called.

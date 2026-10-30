@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -14,49 +14,49 @@ namespace Microsoft.Msagl.Routing.Rectilinear.Nudging {
         /// <summary>
         /// the corresponding edge geometry
         /// </summary>
-        internal EdgeGeometry EdgeGeometry { get; set; }
+        public EdgeGeometry EdgeGeometry { get; set; }
         /// <summary>
         /// the path points
         /// </summary>
-        internal IEnumerable<Point> PathPoints { get; set; }
+        public IEnumerable<Point> PathPoints { get; set; }
 
-        internal double Width { get { return EdgeGeometry.LineWidth;} }
+        public double Width { get { return EdgeGeometry.LineWidth;} }
 
         /// <summary>
         /// constructor
         /// </summary>
         /// <param name="edgeGeometry"></param>
-        internal Path(EdgeGeometry edgeGeometry) {
+        public Path(EdgeGeometry edgeGeometry) {
             EdgeGeometry = edgeGeometry;
         }
 
 
-        internal Point End {
+        public Point End {
             get {
                 return LastEdge.Target;
             }
         }
 
-        internal Point Start {
+        public Point Start {
             get {
                 return FirstEdge.Source;
             }
         }
 
         
-        internal IEnumerable<PathEdge> PathEdges {
+        public IEnumerable<PathEdge> PathEdges {
             get {
                 for (var e = FirstEdge; e != null; e = e.Next)
                     yield return e;
             }
         }
 
-        internal PathEdge FirstEdge { get; set; }
+        public PathEdge FirstEdge { get; set; }
 
-        internal PathEdge LastEdge { get; set; }
+        public PathEdge LastEdge { get; set; }
 
 
-        internal void AddEdge(PathEdge edge) {
+        public void AddEdge(PathEdge edge) {
             edge.Path = this;
             Debug.Assert(edge.Source == LastEdge.Target);
             LastEdge.Next = edge;
@@ -64,7 +64,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear.Nudging {
             LastEdge = edge;
         }
 
-        internal void SetFirstEdge(PathEdge edge) {
+        public void SetFirstEdge(PathEdge edge) {
             LastEdge = FirstEdge = edge;
             edge.Path = this;
         }

@@ -2,7 +2,10 @@ using System;
 using System.Collections.Generic;
 
 namespace Microsoft.Msagl.Core.Geometry {
-    internal class HullPointComparer:IComparer<HullPoint> {
+    /// <summary>
+    /// Compares hull points by their angle around the pivot point.
+    /// </summary>
+    public class HullPointComparer:IComparer<HullPoint> {
         Point pivot;
       
         /// <summary>
@@ -68,7 +71,10 @@ namespace Microsoft.Msagl.Core.Geometry {
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal HullPointComparer(Point pivotPoint) {
+        /// <summary>
+        /// Constructs a comparer with the given pivot point.
+        /// </summary>
+        public HullPointComparer(Point pivotPoint) {
             this.pivot = pivotPoint;
         }
         

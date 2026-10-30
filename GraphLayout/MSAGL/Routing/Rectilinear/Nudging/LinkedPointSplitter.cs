@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.Msagl.Core.DataStructures;
@@ -9,13 +9,13 @@ namespace Microsoft.Msagl.Routing.Rectilinear.Nudging {
     /// <summary>
     /// intersects a set of horizontal LinkedPoints with a set of vertical LinkedPoints
     /// </summary>
-    internal class LinkedPointSplitter {
+    public class LinkedPointSplitter {
         /// <summary>
         /// 
         /// </summary>
         /// <param name="horizontalPoints">no two horizontal segs overlap, but they can share an end point</param>
         /// <param name="verticalPoints">no two vertical segs overlap, but they can share an end point</param>
-        internal LinkedPointSplitter(List<LinkedPoint> horizontalPoints, List<LinkedPoint> verticalPoints) {
+        public LinkedPointSplitter(List<LinkedPoint> horizontalPoints, List<LinkedPoint> verticalPoints) {
             VerticalPoints = verticalPoints;
             HorizontalPoints=horizontalPoints;
         }
@@ -24,7 +24,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear.Nudging {
 
         List<LinkedPoint> VerticalPoints { get; set; }
 
-        internal void SplitPoints() {
+        public void SplitPoints() {
             if(VerticalPoints.Count==0 || HorizontalPoints.Count==0)
                 return; //there will be no intersections
             InitEventQueue();

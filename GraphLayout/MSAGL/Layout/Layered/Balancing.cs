@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Msagl.Core;
@@ -11,11 +11,11 @@ namespace Microsoft.Msagl.Layout.Layered {
     /// balances the layers by moving vertices with
     /// the same number of input-output edges to feasible layers with fewer nodes
     /// </summary>
-    internal class Balancing : AlgorithmBase{
+    public class Balancing : AlgorithmBase{
 
-        Set<int> jumpers = new Set<int>();
+        public Set<int> jumpers = new Set<int>();
 
-        Dictionary<int, IntPair> possibleJumperFeasibleIntervals;
+        public Dictionary<int, IntPair> possibleJumperFeasibleIntervals;
         /// <summary>
         /// numbers of vertices in layers 
         /// </summary>
@@ -34,12 +34,12 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// <param name="layering">the layering to change</param>
         /// <param name="nodeCount">shows how many nodes are represented be a node</param>
         /// <param name="cancelObj"></param>
-        static internal void Balance(Graph dag, int[] layering, int[] nodeCount, CancelToken cancelObj) {
+        public static void Balance(Graph dag, int[] layering, int[] nodeCount, CancelToken cancelObj) {
             Balancing b = new Balancing(dag, layering, nodeCount);
             b.Run(cancelObj);
         }
 
-        Balancing(Graph dag, int[] layering, int[]nodeCount) {
+        public Balancing(Graph dag, int[] layering, int[]nodeCount) {
             this.nodeCount = nodeCount;
             this.dag = dag;
             this.layering = layering;
@@ -51,12 +51,12 @@ namespace Microsoft.Msagl.Layout.Layered {
                 Jump(ChooseJumper());
         }
 
-        void Init() {
+        public void Init() {
             CalculateLayerCounts();
             InitJumpers();
         }
 
-        void Jump(int jumper) {
+        public void Jump(int jumper) {
             ProgressStep();
             this.jumpers.Delete(jumper);
             IntPair upLow = this.possibleJumperFeasibleIntervals[jumper];
@@ -71,7 +71,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         }
     
 
-        bool IsJumper(int v) {
+        public bool IsJumper(int v) {
             return possibleJumperFeasibleIntervals.ContainsKey(v);
         }
         /// <summary>
@@ -82,7 +82,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// </summary>
         /// <param name="jumperLayer">old layer of jumper</param>
         /// <param name="jumper"></param>
-        void UpdateRegionsForPossibleJumpersAndInsertJumpers(int jumperLayer, int jumper) {
+        public void UpdateRegionsForPossibleJumpersAndInsertJumpers(int jumperLayer, int jumper) {
             Set<int> neighborPossibleJumpers = new Set<int>();
             //update possible jumpers neighbors
             foreach (int v in new Pred(dag, jumper))
@@ -109,7 +109,7 @@ namespace Microsoft.Msagl.Layout.Layered {
                 this.CalculateRegionAndInsertJumper(v);
         }
 
-        void InitJumpers() {
+        public void InitJumpers() {
             int[] deltas = new int[this.dag.NodeCount];
             foreach (PolyIntEdge ie in dag.Edges) {
                 deltas[ie.Source] -= ie.Weight;
@@ -123,14 +123,14 @@ namespace Microsoft.Msagl.Layout.Layered {
                     CalculateRegionAndInsertJumper(i);
         }
 
-        void CalculateRegionAndInsertJumper(int i) {
+        public void CalculateRegionAndInsertJumper(int i) {
             IntPair ip = new IntPair(Up(i), Down(i));
             this.possibleJumperFeasibleIntervals[i] = ip;
 
             InsertJumper(ip.x, ip.y, i);
         }
 
-        void InsertJumper(int upLayer, int lowLayer, int jumper) {
+        public void InsertJumper(int upLayer, int lowLayer, int jumper) {
             int jumperLayer;
             int layerToJumpTo;
             if (CalcJumpInfo(upLayer, lowLayer, jumper, out jumperLayer, out layerToJumpTo))
@@ -147,7 +147,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// <param name="jumper"></param>
         /// <param name="jumperLayer"></param>
         /// <param name="layerToJumpTo"></param>
-        private bool CalcJumpInfo(int upLayer, int lowLayer, int jumper, out int jumperLayer, out int layerToJumpTo) {
+        public bool CalcJumpInfo(int upLayer, int lowLayer, int jumper, out int jumperLayer, out int layerToJumpTo) {
             jumperLayer = layering[jumper];
             layerToJumpTo = -1;
             int min = this.vertsCounts[jumperLayer] - 2*nodeCount[jumper];
@@ -170,7 +170,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        int Up(int i) {
+        public int Up(int i) {
             int ret = Int32.MaxValue;
             //minimum of incoming edge sources layeres
             foreach (PolyIntEdge ie in dag.InEdges(i)) {
@@ -189,7 +189,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        int Down(int i) {
+        public int Down(int i) {
             int ret = -Int32.MaxValue;
 
             foreach (PolyIntEdge ie in dag.OutEdges(i)) {
@@ -204,19 +204,22 @@ namespace Microsoft.Msagl.Layout.Layered {
             return ret;
         }
 
-        void CalculateLayerCounts() {
+        public void CalculateLayerCounts() {
             this.vertsCounts = new int[layering.Max() + 1];
-            foreach (int r in layering)
-                vertsCounts[r] += nodeCount[r];
+            for (int i = 0; i < layering.Length; i++)
+                vertsCounts[layering[i]] += nodeCount[i];
         }
 
-        int ChooseJumper() {
+        public int ChooseJumper() {
             //just return the first available
             foreach (int jumper in this.jumpers)
                 return jumper;
 
-            System.Diagnostics.Debug.Assert(false,"there are no jumpers to choose");
-            return 0;
+            // Callers (RunInternal) guarantee jumpers.Count > 0 before calling.
+            // Throw instead of Debug.Assert so the empty-set error path is
+            // observable on all build configurations and cannot silently return a
+            // fake node (which would corrupt the layering).
+            throw new InvalidOperationException("there are no jumpers to choose");
         }
     }
 }

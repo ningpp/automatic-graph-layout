@@ -1,5 +1,5 @@
 ﻿namespace Microsoft.Msagl.Routing.Spline.Bundling {
-    internal enum ChannelFlag {
+    public enum ChannelFlag {
         NotSet,
         FromRight,
         FromLeft

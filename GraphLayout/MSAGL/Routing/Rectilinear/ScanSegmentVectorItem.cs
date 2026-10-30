@@ -1,4 +1,4 @@
-﻿//
+﻿﻿//
 // ScanSegmentVectorItem.cs
 // MSAGL base class to create the visibility graph consisting of nlogn ScanSegment intersections for Rectilinear Edge Routing.
 //
@@ -10,20 +10,20 @@ using System.Diagnostics;
 using Microsoft.Msagl.Core.Geometry;
 
 namespace Microsoft.Msagl.Routing.Rectilinear {
-    internal partial class SparseVisibilityGraphGenerator {
+    public partial class SparseVisibilityGraphGenerator {
         /// <summary>
         /// This forms one slot in the scan segment vector.
         /// </summary>
-        internal class ScanSegmentVectorItem {
+        public class ScanSegmentVectorItem {
             /// <summary>
             /// The head of the linked list.
             /// </summary>
-            internal ScanSegment FirstSegment;
+            public ScanSegment FirstSegment;
 
             /// <summary>
             /// The current segment of the linked list, used when appending or intersecting.
             /// </summary>
-            internal ScanSegment CurrentSegment;
+            public ScanSegment CurrentSegment;
 
             /// <summary>
             /// Perpendicular coordinates that are not in a ScanSegment, due to either not having the ScanSegments created
@@ -31,7 +31,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             /// </summary>
             private List<double> pendingPerpCoords;
 
-            internal void AddPendingPerpendicularCoord(double coord) {
+            public void AddPendingPerpendicularCoord(double coord) {
                 if (pendingPerpCoords == null) {
                     pendingPerpCoords = new List<double>();
                 }
@@ -41,7 +41,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             /// <summary>
             /// Restores state between intersection passes.
             /// </summary>
-            internal void ResetForIntersections() {
+            public void ResetForIntersections() {
                 Debug.Assert(null != this.FirstSegment, "Empty ScanSegmentVectorItem");
                 this.CurrentSegment = this.FirstSegment;
             }
@@ -49,7 +49,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             /// <summary>
             /// Indicates whether ScanSegments in this item are horizontally or vertically oriented.
             /// </summary>
-            internal bool IsHorizontal {
+            public bool IsHorizontal {
                 get { return !this.FirstSegment.IsVertical; }
             }
 
@@ -57,20 +57,20 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             /// Returns the constant coordinate of the ScanSegments in this item, i.e. the coordinate
             /// that intersects the perpendicular axis.
             /// </summary>
-            internal double Coord { get; private set; }
+            public double Coord { get; private set; }
 
             /// <summary>
             /// Ctor, taking the parallel (constant) coordinate.
             /// </summary>
             /// <param name="coord">the parallel (constant) coordinate</param>
-            internal ScanSegmentVectorItem(double coord) {
+            public ScanSegmentVectorItem(double coord) {
                 this.Coord = coord;
             }
 
             /// <summary>
             /// Move along the linked list until we hit the ScanSegment that contains the point.
             /// </summary>
-            internal bool TraverseToSegmentContainingPoint(Point point) {
+            public bool TraverseToSegmentContainingPoint(Point point) {
                 // This is not a simple Next() because scan segments are extended "through" obstacles
                 // (intermixing overlapped and non-overlapped) and thus a ScanSegment's Start and End
                 // may not be in the vertexPoints collection and the ScanSegment must be skipped.
@@ -80,7 +80,6 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
 
                 var pointCoord = this.IsHorizontal ? point.Y : point.X;
                 if (!PointComparer.Equal(this.Coord, pointCoord)) {
-                    Debug.Assert(PointComparer.Compare(this.Coord, pointCoord) == -1, "point is before current Coord");
                     while (this.MoveNext()) {
                         // Skip to the end of the linked list if this point is not on the same coordinate.
                     }
@@ -120,19 +119,19 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             
             }
 
-            internal bool MoveNext() {
+            public bool MoveNext() {
                 this.CurrentSegment = this.CurrentSegment.NextSegment;
                 return this.HasCurrent;
             }
 
-            internal bool HasCurrent {
+            public bool HasCurrent {
                 get { return (null != this.CurrentSegment); }
             }
 
             /// <summary>
             /// Returns true if the point is the end of the current segment and there is an adjoining NextSegment.
             /// </summary>
-            internal bool PointIsCurrentEndAndNextStart(Point point) {
+            public bool PointIsCurrentEndAndNextStart(Point point) {
                 return (point == this.CurrentSegment.End) && (null != this.CurrentSegment.NextSegment) && (point == this.CurrentSegment.NextSegment.Start);
             }
 
@@ -141,7 +140,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             /// sparse-vector coordinate list.
             /// </summary>
             /// <param name="perpCoord"></param>
-            internal void AddPerpendicularCoord(double perpCoord) {
+            public void AddPerpendicularCoord(double perpCoord) {
                 var point = this.IsHorizontal ? new Point(perpCoord, this.Coord) : new Point(this.Coord, perpCoord);
                 this.TraverseToSegmentContainingPoint(point);
                 this.CurrentSegment.AddSparseVertexCoord(perpCoord);
@@ -157,7 +156,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
                 return (this.IsHorizontal ? "(H) Y == " : "(V) X == ") + this.Coord;
             }
 
-            internal void AppendScanSegment(ScanSegment segment) {
+            public void AppendScanSegment(ScanSegment segment) {
                 if (null == this.FirstSegment) {
                     this.FirstSegment = segment;
                 } else {
@@ -167,7 +166,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
                 this.CurrentSegment = segment;
             }
             
-            internal void AddPendingPerpendicularCoordsToScanSegments() {
+            public void AddPendingPerpendicularCoordsToScanSegments() {
                 if (this.pendingPerpCoords != null) {
                     this.ResetForIntersections();
                     foreach (var point in this.pendingPerpCoords) {

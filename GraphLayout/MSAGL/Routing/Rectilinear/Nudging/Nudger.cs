@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -27,7 +27,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear.Nudging {
         List<Path> Paths { get; set; }
 
         IEnumerable<Polyline> Obstacles { get; set; }
-        internal VisibilityGraph PathVisibilityGraph { get; set; }
+        public VisibilityGraph PathVisibilityGraph { get; set; }
 
         /// <summary>
         ///  "nudge" paths to decrease the number of intersections and stores the results inside WidePaths of "paths"
@@ -37,7 +37,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear.Nudging {
         /// <param name="obstacles">polygonal convex obstacles organized in a tree; the obstacles here are padded original obstacles</param>
         /// <param name="ancestorsSets"></param>
         /// <returns></returns>
-        internal Nudger(IEnumerable<Path> paths, double edgeSeparation, IEnumerable<Polyline> obstacles, 
+        public Nudger(IEnumerable<Path> paths, double edgeSeparation, IEnumerable<Polyline> obstacles, 
             Dictionary<Shape, Set<Shape>> ancestorsSets) {
             AncestorsSets = ancestorsSets;
             HierarchyOfGroups = RectangleNode<Shape, Point>.CreateRectangleNodeOnEnumeration(
@@ -82,7 +82,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear.Nudging {
         /// </summary>
         protected RectangleNode<Shape, Point> HierarchyOfGroups { get; set; }
 
-        internal void Calculate(Direction direction, bool mergePaths) {
+        public void Calculate(Direction direction, bool mergePaths) {
             NudgingDirection = direction;
             PathRefiner.RefinePaths(Paths, mergePaths);
             GetPathOrdersAndPathGraph();
@@ -157,7 +157,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear.Nudging {
         Direction NudgingDirection { get; set; }
 
         #region debugging
-        static internal ICurve[] GetCurvesForShow(IEnumerable<Path> paths, IEnumerable<Polyline> obstacles) {
+        static public ICurve[] GetCurvesForShow(IEnumerable<Path> paths, IEnumerable<Polyline> obstacles) {
             var ret = new List<ICurve>();
             foreach (var path in paths) {
                 var poly = new Polyline();
@@ -198,7 +198,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear.Nudging {
             }
         }
 
-        internal double EdgeSeparation { get; set; }
+        public double EdgeSeparation { get; set; }
 
         void PositionShiftedEdges() {
             //we are using 2*cornerFitRadius for the minimal edge separation
@@ -276,7 +276,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear.Nudging {
         }
 
         #region debug
-        internal static void ShowPathsFromPoints(IEnumerable<Path> paths, IEnumerable<Polyline> enumerable) {
+        public static void ShowPathsFromPoints(IEnumerable<Path> paths, IEnumerable<Polyline> enumerable) {
             var dd = new List<DebugCurve>();
             if (enumerable != null)
                 dd.AddRange(GetObstacleBoundaries(enumerable, "grey"));
@@ -296,12 +296,12 @@ namespace Microsoft.Msagl.Routing.Rectilinear.Nudging {
                 yield return new DebugCurve(startWidth + delta * i, color, new LineSegment(pts[i], pts[i + 1]));
         }
 
-          internal static void ShowParamPaths( Point s, Point e, params Path[] paths ) {
+          public static void ShowParamPaths( Point s, Point e, params Path[] paths ) {
               ShowOrderedPaths(null,paths,s,e);
           }
 
         //         ReSharper disable UnusedMember.Local
-        internal static void ShowOrderedPaths(IEnumerable<Polyline> obstacles, IEnumerable<Path> paths, Point s, Point e) {
+        public static void ShowOrderedPaths(IEnumerable<Polyline> obstacles, IEnumerable<Path> paths, Point s, Point e) {
             //           ReSharper restore UnusedMember.Local
             string[] colors = { "red", "green", "blue", "violet", "rose", "black" };
 
@@ -341,7 +341,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear.Nudging {
             }
         }
 
-        internal static IEnumerable<DebugCurve> GetTestEdgePathAsDebugCurves(double startWidth, double endWidth, string color, Path path) {
+        public static IEnumerable<DebugCurve> GetTestEdgePathAsDebugCurves(double startWidth, double endWidth, string color, Path path) {
             int count = path.PathPoints.Count();
 
             double deltaW = count > 1 ? (endWidth - startWidth) / (count - 1) : 1; //if count ==1 the value of deltaW does not matter
@@ -362,14 +362,14 @@ namespace Microsoft.Msagl.Routing.Rectilinear.Nudging {
         }
          // ReSharper disable UnusedMember.Local
         
-        static internal void ShowEdgePaths(IEnumerable<Polyline> obstacles, IEnumerable<Path> edgePaths) {
+        static public void ShowEdgePaths(IEnumerable<Polyline> obstacles, IEnumerable<Path> edgePaths) {
             // ReSharper restore UnusedMember.Local
             List<DebugCurve> debCurves = GetDebCurvesOfPaths(obstacles, edgePaths);
 
             LayoutAlgorithmSettings.ShowDebugCurvesEnumeration(debCurves);
         }
 
-        internal static List<DebugCurve> GetDebCurvesOfPaths(IEnumerable<Polyline> enumerable, IEnumerable<Path> edgePaths) {
+        public static List<DebugCurve> GetDebCurvesOfPaths(IEnumerable<Polyline> enumerable, IEnumerable<Path> edgePaths) {
             var debCurves = GetObstacleBoundaries(enumerable, "black");
             int i = 0;
 
@@ -378,7 +378,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear.Nudging {
             return debCurves;
         }
 
-        internal static void ShowPathsInLoop(IEnumerable<Polyline> enumerable, IEnumerable<Path> edgePaths, Point point) {
+        public static void ShowPathsInLoop(IEnumerable<Polyline> enumerable, IEnumerable<Path> edgePaths, Point point) {
             foreach (var edgePath in edgePaths.Where(path=>(path.PathPoints.First()-point).Length<1 ||(path.PathPoints.Last()-point).Length<1 )) {
                 var debCurves = GetObstacleBoundaries(enumerable, "black");
                 debCurves.AddRange(GetTestEdgePathAsDebugCurves(0.1, 4, "red", edgePath));
@@ -460,7 +460,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear.Nudging {
             yield return new DebugCurve(200, 1, "green", CurveFactory.CreateDiamond(3, 3, p));
         }
 
-        static internal IEnumerable<DebugCurve> PathDebugCurvesFromPoint(Path path) {
+        static public IEnumerable<DebugCurve> PathDebugCurvesFromPoint(Path path) {
             var l = new List<Point>(path.PathPoints);
             for (int i = 0; i < l.Count - 1; i++)
                 yield return new DebugCurve(4, "red", new LineSegment(l[i], l[i + 1]));
@@ -486,7 +486,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear.Nudging {
         //        }
 
 
-        static internal List<DebugCurve> GetObstacleBoundaries(IEnumerable<Polyline> obstacles, string color) {
+        static public List<DebugCurve> GetObstacleBoundaries(IEnumerable<Polyline> obstacles, string color) {
             var debugCurves = new List<DebugCurve>();
             if (obstacles != null)
                 debugCurves.AddRange(obstacles.Select(poly => new DebugCurve(50, 0.3, color, poly)));
@@ -882,7 +882,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear.Nudging {
         /// <param name="ancestorsSets"></param>
         /// <param name="removeStaircases"></param>
         /// <returns>the mapping of the path to its modified path</returns>
-        internal static void NudgePaths(IEnumerable<Path> paths, double edgeSeparation, IEnumerable<Polyline> paddedObstacles, Dictionary<Shape, Set<Shape>> ancestorsSets, bool removeStaircases) {
+        public static void NudgePaths(IEnumerable<Path> paths, double edgeSeparation, IEnumerable<Polyline> paddedObstacles, Dictionary<Shape, Set<Shape>> ancestorsSets, bool removeStaircases) {
             if (!paths.Any())
                 return;
             var nudger = new Nudger(paths, edgeSeparation, paddedObstacles, ancestorsSets);
@@ -900,7 +900,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear.Nudging {
             
         }
 
-        internal static Dictionary<Port, Shape> MapPortsToShapes(IEnumerable<Shape> listOfShapes) {
+        public static Dictionary<Port, Shape> MapPortsToShapes(IEnumerable<Shape> listOfShapes) {
             var portToShapes = new Dictionary<Port, Shape>();
             foreach (Shape shape in listOfShapes)
                 foreach (Port port in shape.Ports)

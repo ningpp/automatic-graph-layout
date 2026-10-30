@@ -1,21 +1,21 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Microsoft.Msagl.Core.Geometry;
 using Microsoft.Msagl.Core.Geometry.Curves;
 using Microsoft.Msagl.Core;
 
 namespace Microsoft.Msagl.Routing.Visibility {
-    internal class ActiveEdgeComparerWithRay : IComparer<PolylinePoint> {
+    public class ActiveEdgeComparerWithRay : IComparer<PolylinePoint> {
         Point pivot;
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Point Pivot {
+        public Point Pivot {
             get { return pivot; }
             set { pivot = value; }
         }
         Point pointOnTheRay;
 
-        internal Point IntersectionOfTheRayAndInsertedEdge {
+        public Point IntersectionOfTheRayAndInsertedEdge {
             get { return pointOnTheRay; }
             set { pointOnTheRay = value; }
         }
@@ -55,17 +55,17 @@ namespace Microsoft.Msagl.Routing.Visibility {
             return Pivot + y * ray;
         }
 
-        internal Point IntersectEdgeWithRay(PolylinePoint side, Point ray){
+        public Point IntersectEdgeWithRay(PolylinePoint side, Point ray){
             return IntersectEdgeWithRay(side.Point, side.NextOnPolyline.Point, ray);
         }
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal ActiveEdgeComparerWithRay(Point pivot, Point pointOnTheRay) {
+        public ActiveEdgeComparerWithRay(Point pivot, Point pointOnTheRay) {
             this.pivot = pivot;
             this.pointOnTheRay = pointOnTheRay;
         }
 
-        internal ActiveEdgeComparerWithRay() {}
+        public ActiveEdgeComparerWithRay() {}
     }
 }

@@ -1,4 +1,4 @@
-//
+﻿﻿//
 // SegmentIntersector.cs
 // MSAGL class for intersecting Rectilinear Edge Routing ScanLine segments.
 //
@@ -12,12 +12,12 @@ using Microsoft.Msagl.Core.Geometry;
 using Microsoft.Msagl.Routing.Visibility;
 
 namespace Microsoft.Msagl.Routing.Rectilinear {
-    internal class SegmentIntersector : IComparer<SegmentIntersector.SegEvent>, IComparer<ScanSegment> {
+    public class SegmentIntersector : IComparer<SegmentIntersector.SegEvent>, IComparer<ScanSegment> {
         // The event types.  We sweep vertically, with a horizontal scanline, so the vertical
         // segments that are active and have X coords within the current vertical segment's
         // span all create intersections with it.  All events are ordered on Y coordinate then X.
 
-        internal SegmentIntersector() {
+        public SegmentIntersector() {
             verticalSegmentsScanLine = new RbTree<ScanSegment>(this);
             findFirstPred = new Func<ScanSegment, bool>(IsVSegInHSegRange);
         }
@@ -27,7 +27,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
         }
 
         // This creates the VisibilityVertex objects along the segments.
-        internal VisibilityGraph Generate(IEnumerable<ScanSegment> hSegments, IEnumerable<ScanSegment> vSegments) {
+        public VisibilityGraph Generate(IEnumerable<ScanSegment> hSegments, IEnumerable<ScanSegment> vSegments) {
             foreach (ScanSegment seg in vSegments) {
                 eventList.Add(new SegEvent(SegEventType.VOpen, seg));
                 eventList.Add(new SegEvent(SegEventType.VClose, seg));
@@ -84,7 +84,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
         // but may be in an external "corner" of intersecting sides for a small enough span
         // that no other segment crosses them.  In that case we don't need them and they 
         // would require extra handling later.
-        internal void RemoveSegmentsWithNoVisibility(ScanSegmentTree horizontalScanSegments,
+        public void RemoveSegmentsWithNoVisibility(ScanSegmentTree horizontalScanSegments,
                                                      ScanSegmentTree verticalScanSegments) {
             foreach (ScanSegment seg in segmentsWithoutVisibility) {
                 (seg.IsVertical ? verticalScanSegments : horizontalScanSegments).Remove(seg);
@@ -245,7 +245,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
 
         #region Nested type: SegEvent
 
-        internal class SegEvent {
+        public class SegEvent {
             internal SegEvent(SegEventType eventType, ScanSegment seg) {
                 EventType = eventType;
                 Segment = seg;

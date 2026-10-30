@@ -1,9 +1,9 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.Msagl.Core.DataStructures;
 
 namespace Microsoft.Msagl.Core.GraphAlgorithms {
 
-    internal class GraphForCycleRemoval {
+    public class GraphForCycleRemoval {
         /// <summary>
         /// this dictionary contains only buckets with nodes which are sources in the graph of constrained edges
         /// </summary>
@@ -13,7 +13,7 @@ namespace Microsoft.Msagl.Core.GraphAlgorithms {
         Set<int> sinks=new Set<int>();
         Set<IntPair> edgesToKeep = new Set<IntPair>();
 
-        internal void AddEdge(IntPair edge) {
+        public void AddEdge(IntPair edge) {
             edgesToKeep.Insert(edge);
             int source = edge.First; int target = edge.Second;
             GetOrCreateNodeInfo(source).AddOutEdge(target);
@@ -30,17 +30,17 @@ namespace Microsoft.Msagl.Core.GraphAlgorithms {
             return nodeInfo;
         }
 
-        internal void AddConstraintEdge(IntPair intPair) {
+        public void AddConstraintEdge(IntPair intPair) {
             int source = intPair.First; int target = intPair.Second;
             GetOrCreateNodeInfo(source).AddOutConstrainedEdge(target);
             GetOrCreateNodeInfo(target).AddInConstrainedEdge(source);
         }
 
-        internal bool IsEmpty() {
+        public bool IsEmpty() {
             return nodeInfoDictionary.Count == 0;
         }
 
-        internal void RemoveNode(int u) {
+        public void RemoveNode(int u) {
             sources.Remove(u);
             sinks.Remove(u);
             RemoveNodeFromItsBucket(u);
@@ -92,7 +92,7 @@ namespace Microsoft.Msagl.Core.GraphAlgorithms {
 
 
 
-        internal bool TryFindVertexWithNoIncomingConstrainedEdgeAndMaximumOutDegreeMinusInDedree(out int u) {
+        public bool TryFindVertexWithNoIncomingConstrainedEdgeAndMaximumOutDegreeMinusInDedree(out int u) {
             var enumerator = this.deltaDegreeBucketsForSourcesInConstrainedSubgraph.GetEnumerator();
             if (enumerator.MoveNext()) {
                 var bucketSet = enumerator.Current.Value;
@@ -106,7 +106,7 @@ namespace Microsoft.Msagl.Core.GraphAlgorithms {
             return false;
         }
 
-        internal bool TryGetSource(out int u) {
+        public bool TryGetSource(out int u) {
             var enumerator = this.sources.GetEnumerator();
             if (enumerator.MoveNext()) {
                 u = enumerator.Current;
@@ -116,7 +116,7 @@ namespace Microsoft.Msagl.Core.GraphAlgorithms {
             return false;
         }
 
-        internal bool TryGetSink(out int u) {
+        public bool TryGetSink(out int u) {
             var enumerator = this.sinks.GetEnumerator();
             if (enumerator.MoveNext()) {
                 u = enumerator.Current;
@@ -126,11 +126,11 @@ namespace Microsoft.Msagl.Core.GraphAlgorithms {
             return false;
         }
 
-        internal IEnumerable<IntPair> GetOriginalIntPairs() {
+        public IEnumerable<IntPair> GetOriginalIntPairs() {
             return this.edgesToKeep;
         }
 
-        internal void Initialize() {
+        public void Initialize() {
             foreach (var p in nodeInfoDictionary) 
                 AddNodeToBucketsSourcesAndSinks(p.Key, p.Value);
         }

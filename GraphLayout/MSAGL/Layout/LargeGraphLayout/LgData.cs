@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -41,11 +41,11 @@ namespace Microsoft.Msagl.Layout.LargeGraphLayout {
 #endregion  end of Level class
 
         
-        internal void AddConnectedGeomGraph(GeometryGraph geomGraph) {
+        public void AddConnectedGeomGraph(GeometryGraph geomGraph) {
             _connectedComponents.Add(geomGraph);
         }
 
-        internal IEnumerable<GeometryGraph> ConnectedGeometryGraphs {
+        public IEnumerable<GeometryGraph> ConnectedGeometryGraphs {
             get { return _connectedComponents; }
         }
 

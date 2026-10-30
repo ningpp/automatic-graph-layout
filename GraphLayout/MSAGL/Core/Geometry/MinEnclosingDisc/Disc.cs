@@ -108,6 +108,10 @@ namespace Microsoft.Msagl.Core.Geometry
         public bool OnBoundary(Point point)
         {
             double d = Distance2(point);
+            if (d == 0 && r2 == 0)
+            {
+                return true;
+            }
             return Math.Abs(d - r2) / (d + r2) < 1e-5;
         }
         /// <summary>
@@ -163,7 +167,7 @@ namespace Microsoft.Msagl.Core.Geometry
             {
                 Point LL = new Point(
                         Math.Min(p1.X, Math.Min(p2.X, p3.X)),
-                        Math.Min(p1.Y, Math.Max(p2.Y, p3.Y))),
+                        Math.Min(p1.Y, Math.Min(p2.Y, p3.Y))),
                       UR = new Point(
                         Math.Max(p1.X, Math.Max(p2.X, p3.X)),
                         Math.Max(p1.Y, Math.Max(p2.Y, p3.Y)));

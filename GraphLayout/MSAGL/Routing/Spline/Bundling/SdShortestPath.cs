@@ -12,11 +12,11 @@ using Microsoft.Msagl.Routing.Visibility;
 using Microsoft.Msagl.DebugHelpers;
 
 namespace Microsoft.Msagl.Routing.Spline.Bundling {
-    internal class SdShortestPath {
+    public class SdShortestPath {
         internal VisibilityGraph VisibilityGraph { get; set; }
         internal Func<EdgeGeometry, List<Shape>> MakeTransparentShapesOfEdgeGeometry { get; set; }
         internal BundlingSettings BundlingSettings { get; set; }
-        internal EdgeGeometry[] EdgeGeometries { get; set; }
+        public EdgeGeometry[] EdgeGeometries { get; set; }
         internal RectangleNode<Polyline, Point> ObstacleHierarchy { get; set; }
 
         SdVertex[] vertexArray;

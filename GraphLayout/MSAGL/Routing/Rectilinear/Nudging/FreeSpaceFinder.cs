@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -15,16 +15,16 @@ namespace Microsoft.Msagl.Routing.Rectilinear.Nudging {
     /// <summary>
     /// The class is looking for the free space around AxisEdges
     /// </summary>
-    internal class FreeSpaceFinder : LineSweeperBase, IComparer<AxisEdgesContainer> {
+    public class FreeSpaceFinder : LineSweeperBase, IComparer<AxisEdgesContainer> {
 
         static double AreaComparisonEpsilon = ApproximateComparer.IntersectionEpsilon;
         readonly PointProjection xProjection;
         
-        internal static double X(Point p){return p.X;}
-        internal static double MinusY(Point p) { return -p.Y; }
+        public static double X(Point p){return p.X;}
+        public static double MinusY(Point p) { return -p.Y; }
 
         readonly RbTree<AxisEdgesContainer> edgeContainersTree;
-        internal Dictionary<AxisEdge, List<PathEdge>> PathOrders { get; set; }
+        public Dictionary<AxisEdge, List<PathEdge>> PathOrders { get; set; }
 
         /// <summary>
         /// 
@@ -34,7 +34,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear.Nudging {
         /// <param name="axisEdgesToObstaclesTheyOriginatedFrom"></param>
         /// <param name="pathOrders"></param>
         /// <param name="axisEdges">edges to find the empty space around</param>
-        internal FreeSpaceFinder(Direction direction, IEnumerable<Polyline> obstacles, Dictionary<AxisEdge,Polyline> axisEdgesToObstaclesTheyOriginatedFrom, Dictionary<AxisEdge, List<PathEdge>> pathOrders, 
+        public FreeSpaceFinder(Direction direction, IEnumerable<Polyline> obstacles, Dictionary<AxisEdge,Polyline> axisEdgesToObstaclesTheyOriginatedFrom, Dictionary<AxisEdge, List<PathEdge>> pathOrders, 
             IEnumerable<AxisEdge> axisEdges): base(obstacles, new CompassVector(direction).ToPoint()) {
             DirectionPerp = new CompassVector(direction).Right.ToPoint();
             PathOrders = pathOrders;
@@ -62,7 +62,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear.Nudging {
         /// <summary>
         /// calculates the right offsets
         /// </summary>
-        internal void FindFreeSpace() {
+        public void FindFreeSpace() {
             InitTheQueueOfEvents();
             ProcessEvents();
         //    ShowAxisEdges();            

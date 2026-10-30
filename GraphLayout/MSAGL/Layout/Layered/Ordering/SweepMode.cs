@@ -1,5 +1,5 @@
-﻿namespace Microsoft.Msagl.Layout.Layered {
-    internal enum SweepMode {
+﻿﻿namespace Microsoft.Msagl.Layout.Layered {
+    public enum SweepMode {
         ComingFromBelow,
         ComingFromAbove,
         Starting

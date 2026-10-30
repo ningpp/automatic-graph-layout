@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace Microsoft.Msagl.Layout.Layered {
     /// <summary>
@@ -7,14 +7,14 @@ namespace Microsoft.Msagl.Layout.Layered {
     /// 
     /// </summary>
     public class LayerEdge {
-        internal int Weight = 1;
-        internal LayerEdge(int source, int target, int crossingWeight, int weight) {
+        public int Weight = 1;
+        public LayerEdge(int source, int target, int crossingWeight, int weight) {
             this.Source = source;
             this.Target = target;
             this.crossingWeight = crossingWeight;
             Weight = weight;
         }
-        internal LayerEdge(int source, int target, int crossingWeight):this(source,target,crossingWeight,1) {            
+        public LayerEdge(int source, int target, int crossingWeight):this(source,target,crossingWeight,1) {            
         }
         int source;
         /// <summary>

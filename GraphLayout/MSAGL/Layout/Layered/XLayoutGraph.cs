@@ -11,7 +11,7 @@ namespace Microsoft.Msagl.Layout.Layered
     /// Follows the idea from Gansner etc 93, creating a special graph
     /// for x-coordinates calculation
     /// </summary>
-    internal class XLayoutGraph : BasicGraphOnEdges<PolyIntEdge>
+    public class XLayoutGraph : BasicGraphOnEdges<PolyIntEdge>
     {
 
         ProperLayeredGraph layeredGraph;//the result of layering

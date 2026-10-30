@@ -1,7 +1,7 @@
 namespace Microsoft.Msagl.Prototype.LayoutEditing {
-    internal class GraphRestoreData:RestoreData {
+    public class GraphRestoreData:RestoreData {
 //        internal Rectangle rectangle;
-        internal GraphRestoreData() {
+        public GraphRestoreData() {
            // this.rectangle = rect;
         }
     }

@@ -18,7 +18,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear{
     /// This is a point on a path that is not associated with an obstacle, such as
     /// a port for the end of a dragged path, or a waypoint.
     /// </summary>
-    internal class FreePoint {
+    public class FreePoint {
 
         // The VisibilityVertex for this path point; created if it does not already exist.
         internal VisibilityVertex Vertex { get; private set; }

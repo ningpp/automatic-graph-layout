@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Windows.Forms;
 using Microsoft.Msagl.Core.DataStructures;
 using Microsoft.Msagl.Core.Geometry;
 using Microsoft.Msagl.Core.Geometry.Curves;
@@ -38,6 +37,20 @@ namespace Microsoft.Msagl.UnitTests
         }
 
         /// <summary>
+        /// Verify Up Down Constraint in the transformed (output) coordinate system.
+        /// </summary>
+        internal static void ValidateUpDownConstraint(Node up, Node down, PlaneTransformation transformation)
+        {
+            if (up == down || up is Cluster || down is Cluster)
+            {
+                return;
+            }
+
+            // "Up" in the graph's natural orientation maps to transformation * (0,1) in output space.
+            ValidateDirectionalConstraint(up, down, transformation * new Point(0, 1), "down");
+        }
+
+        /// <summary>
         /// Verify Up Down Vertical Constraint
         /// </summary>
         internal static void ValidateUpDownVerticalConstraint(Node up, Node down)
@@ -56,6 +69,101 @@ namespace Microsoft.Msagl.UnitTests
                 return;
             }
             Assert.IsTrue(left.BoundingBox.Right < right.BoundingBox.Left, string.Format("Node (ID: {0}, BoundingBox: {1}) not on left side of Node (ID: {2}, BoundingBox: {3})", left.UserData, left.BoundingBox.ToString(), right.UserData, right.BoundingBox.ToString()));
+        }
+
+        /// <summary>
+        /// Verify Left Right Constraint in the transformed (output) coordinate system.
+        /// </summary>
+        internal static void ValidateLeftRightConstraint(Node left, Node right, PlaneTransformation transformation)
+        {
+            if (left == right || left is Cluster || right is Cluster)
+            {
+                return;
+            }
+
+            // "Left to right" in the graph's natural orientation maps to transformation * (1,0) in output
+            // space, i.e. the right node leads in that direction from the left node.
+            Point direction = transformation * new Point(1, 0);
+            if (Math.Abs(direction.X) > Math.Abs(direction.Y))
+            {
+                if (direction.X > 0)
+                {
+                    Assert.IsTrue(right.BoundingBox.Left > left.BoundingBox.Right,
+                        string.Format("Node (ID: {0}, BoundingBox: {1}) not on right side of Node (ID: {2}, BoundingBox: {3})",
+                            right.UserData, right.BoundingBox, left.UserData, left.BoundingBox));
+                }
+                else
+                {
+                    Assert.IsTrue(right.BoundingBox.Right < left.BoundingBox.Left,
+                        string.Format("Node (ID: {0}, BoundingBox: {1}) not on left side of Node (ID: {2}, BoundingBox: {3})",
+                            right.UserData, right.BoundingBox, left.UserData, left.BoundingBox));
+                }
+            }
+            else if (direction.Y > 0)
+            {
+                Assert.IsTrue(right.BoundingBox.Bottom > left.BoundingBox.Top,
+                    string.Format("Node (ID: {0}, BoundingBox: {1}) not above Node (ID: {2}, BoundingBox: {3})",
+                        right.UserData, right.BoundingBox, left.UserData, left.BoundingBox));
+            }
+            else
+            {
+                Assert.IsTrue(right.BoundingBox.Top < left.BoundingBox.Bottom,
+                    string.Format("Node (ID: {0}, BoundingBox: {1}) not below Node (ID: {2}, BoundingBox: {3})",
+                        right.UserData, right.BoundingBox, left.UserData, left.BoundingBox));
+            }
+        }
+
+        static void ValidateDirectionalConstraint(Node first, Node second, Point direction, string secondName)
+        {
+            if (Math.Abs(direction.X) > Math.Abs(direction.Y))
+            {
+                if (direction.X < 0)
+                {
+                    Assert.IsTrue(first.BoundingBox.Right < second.BoundingBox.Left,
+                        string.Format("Node (ID: {0}, BoundingBox: {1}) not {2} of Node (ID: {3}, BoundingBox: {4})",
+                            first.UserData, first.BoundingBox, secondName, second.UserData, second.BoundingBox));
+                }
+                else
+                {
+                    Assert.IsTrue(first.BoundingBox.Left > second.BoundingBox.Right,
+                        string.Format("Node (ID: {0}, BoundingBox: {1}) not {2} of Node (ID: {3}, BoundingBox: {4})",
+                            first.UserData, first.BoundingBox, secondName, second.UserData, second.BoundingBox));
+                }
+            }
+            else if (direction.Y > 0)
+            {
+                Assert.IsTrue(first.BoundingBox.Bottom > second.BoundingBox.Top,
+                    string.Format("Node (ID: {0}, BoundingBox: {1}) not {2} of Node (ID: {3}, BoundingBox: {4})",
+                        first.UserData, first.BoundingBox, secondName, second.UserData, second.BoundingBox));
+            }
+            else
+            {
+                Assert.IsTrue(first.BoundingBox.Top < second.BoundingBox.Bottom,
+                    string.Format("Node (ID: {0}, BoundingBox: {1}) not {2} of Node (ID: {3}, BoundingBox: {4})",
+                        first.UserData, first.BoundingBox, secondName, second.UserData, second.BoundingBox));
+            }
+        }
+
+        /// <summary>
+        /// Verify Up Down Vertical Constraint in the transformed (output) coordinate system.
+        /// </summary>
+        internal static void ValidateUpDownVerticalConstraint(Node up, Node down, PlaneTransformation transformation)
+        {
+            ValidateUpDownConstraint(up, down, transformation);
+
+            Point direction = transformation * new Point(0, 1);
+            if (Math.Abs(direction.X) > Math.Abs(direction.Y))
+            {
+                Assert.AreEqual(up.Center.Y, down.Center.Y, Tolerance,
+                    string.Format("Node (ID: {0}, BoundingBox: {1}) not exactly vertically over Node (ID: {2}, BoundingBox: {3})",
+                        up.UserData, up.BoundingBox, down.UserData, down.BoundingBox));
+            }
+            else
+            {
+                Assert.AreEqual(up.Center.X, down.Center.X, Tolerance,
+                    string.Format("Node (ID: {0}, BoundingBox: {1}) not exactly vertically over Node (ID: {2}, BoundingBox: {3})",
+                        up.UserData, up.BoundingBox, down.UserData, down.BoundingBox));
+            }
         }
 
         /// <summary>

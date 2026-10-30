@@ -1,18 +1,18 @@
-using Microsoft.Msagl.Core.Geometry;
+﻿using Microsoft.Msagl.Core.Geometry;
 using Microsoft.Msagl.Core.Geometry.Curves;
 
 namespace Microsoft.Msagl.Routing.Spline.ConeSpanner {
-    internal class LeftObstacleSide : ObstacleSide {
+    public class LeftObstacleSide : ObstacleSide {
         readonly Point end;
-        internal LeftObstacleSide(PolylinePoint startVertex)
+        public LeftObstacleSide(PolylinePoint startVertex)
             : base(startVertex) {
             end = startVertex.NextOnPolyline.Point;
         }
-        internal override Point End {
+        public override Point End {
             get { return end; }
         }
 
-        internal override PolylinePoint EndVertex {
+        public override PolylinePoint EndVertex {
             get { return StartVertex.NextOnPolyline; }
         }
 

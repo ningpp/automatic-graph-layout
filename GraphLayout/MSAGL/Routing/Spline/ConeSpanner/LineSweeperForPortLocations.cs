@@ -10,6 +10,7 @@ using Microsoft.Msagl.Routing.Visibility;
 using Microsoft.Msagl.Core.Layout;
 using Microsoft.Msagl.DebugHelpers;
 using Microsoft.Msagl.DebugHelpers.Persistence;
+using System.Diagnostics.CodeAnalysis;
 
 
 namespace Microsoft.Msagl.Routing.Spline.ConeSpanner {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.Msagl.Core;
 using Microsoft.Msagl.Core.DataStructures;
@@ -21,7 +22,7 @@ namespace Microsoft.Msagl.Routing.ConstrainedDelaunayTriangulation {
         readonly Func<CdtSite, CdtSite, CdtEdge> createEdgeDelegate;
         CdtSite p_1;
 
-        internal CdtSweeper(List<CdtSite> listOfSites, CdtSite p_1, CdtSite p_2, 
+        public CdtSweeper(List<CdtSite> listOfSites, CdtSite p_1, CdtSite p_2, 
             Func<CdtSite, CdtSite, CdtEdge> createEdgeDelegate) {
             this.listOfSites=listOfSites;
             if (listOfSites.Count == 0)
@@ -36,7 +37,7 @@ namespace Microsoft.Msagl.Routing.ConstrainedDelaunayTriangulation {
          //   ShowFront();
         }
 
-        internal Set<CdtTriangle> Triangles {
+        public Set<CdtTriangle> Triangles {
             get { return triangles; }
         }
 
@@ -150,7 +151,7 @@ namespace Microsoft.Msagl.Routing.ConstrainedDelaunayTriangulation {
                 RemoveTriangleWithEdges(triangles, t);
         }
 
-       internal static void RemoveTriangleWithEdges(Set<CdtTriangle> cdtTriangles, CdtTriangle t) {
+       public static void RemoveTriangleWithEdges(Set<CdtTriangle> cdtTriangles, CdtTriangle t) {
             cdtTriangles.Remove(t);
             foreach (var e in t.Edges) {
                 if (e.CwTriangle == t)
@@ -161,7 +162,7 @@ namespace Microsoft.Msagl.Routing.ConstrainedDelaunayTriangulation {
             }
         }
        
-        internal static void RemoveTriangleButLeaveEdges(Set<CdtTriangle> cdtTriangles, CdtTriangle t) {
+        public static void RemoveTriangleButLeaveEdges(Set<CdtTriangle> cdtTriangles, CdtTriangle t) {
            cdtTriangles.Remove(t);
            foreach (var e in t.Edges) 
                if (e.CwTriangle == t)
@@ -233,7 +234,7 @@ namespace Microsoft.Msagl.Routing.ConstrainedDelaunayTriangulation {
             ShowFront(Triangles, front, null, null);
         }
 
-        internal static void ShowFront(IEnumerable<CdtTriangle> cdtTriangles, RbTree<CdtFrontElement> cdtFrontElements, IEnumerable<ICurve> redCurves, IEnumerable<ICurve> blueCurves) {
+        public static void ShowFront(IEnumerable<CdtTriangle> cdtTriangles, RbTree<CdtFrontElement> cdtFrontElements, IEnumerable<ICurve> redCurves, IEnumerable<ICurve> blueCurves) {
             List<DebugCurve> ls = new List<DebugCurve>();
             if (redCurves != null)
                 foreach (var c in redCurves)
@@ -515,7 +516,7 @@ namespace Microsoft.Msagl.Routing.ConstrainedDelaunayTriangulation {
             return d.X <= -0.5 * d.Y;
         }
 
-        internal static RBNode<CdtFrontElement> FindNodeInFrontBySite(RbTree<CdtFrontElement> cdtFrontElements, CdtSite piSite) {
+        public static RBNode<CdtFrontElement> FindNodeInFrontBySite(RbTree<CdtFrontElement> cdtFrontElements, CdtSite piSite) {
             return  cdtFrontElements.FindLast(x => x.LeftSite.Point.X <= piSite.Point.X);
         }
 

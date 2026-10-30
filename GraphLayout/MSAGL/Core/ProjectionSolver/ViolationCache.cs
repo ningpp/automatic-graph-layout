@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ViolationCache.cs" company="Microsoft">
 //   (c) Microsoft Corporation.  All rights reserved.
 // </copyright>
@@ -56,7 +56,7 @@ namespace Microsoft.Msagl.Core.ProjectionSolver
             get { return this.numConstraints == MaxConstraints; }
         }
 
-        internal void Clear()
+        public void Clear()
         {
             LowViolation = 0.0;
             this.numConstraints = 0;
@@ -153,7 +153,7 @@ namespace Microsoft.Msagl.Core.ProjectionSolver
             return maxViolatedConstraint;
         }
 
-        internal void Insert(Constraint constraintToInsert, double insertViolation)
+        public void Insert(Constraint constraintToInsert, double insertViolation)
         {
             // This should be checked by the caller (instead of here, for perf reasons).
             Debug.Assert(constraintToInsert.Violation > LowViolation, "constraintToInsert.Violation must be > LowViolation");
@@ -250,7 +250,7 @@ namespace Microsoft.Msagl.Core.ProjectionSolver
         {
             internal int NumberOfCalls;
             internal int NumberOfHits;
-            internal void Clear()
+            public void Clear()
             {
                 this.NumberOfCalls = 0;
                 this.NumberOfHits = 0;

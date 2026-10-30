@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.Msagl.Core.Geometry;
@@ -8,12 +8,12 @@ namespace Microsoft.Msagl.Routing.Rectilinear.Nudging {
     ///Avoid a situation where two paths cross each other more than once. Remove self loops.
     /// 
     /// </summary>
-    internal class PathMerger{
-        internal PathMerger(IEnumerable<Path> paths){
+    public class PathMerger{
+        public PathMerger(IEnumerable<Path> paths){
             Paths = paths;
         }
 
-        internal IEnumerable<Path> Paths { get; set; }
+        public IEnumerable<Path> Paths { get; set; }
 
         readonly Dictionary<Point, Dictionary<Path, LinkedPoint>> verticesToPathOffsets =
             new Dictionary<Point, Dictionary<Path, LinkedPoint>>();
@@ -22,7 +22,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear.Nudging {
         /// <summary>
         /// Avoid a situation where two paths cross each other more than once. Remove self loops.
         /// </summary>
-        internal void MergePaths(){
+        public void MergePaths(){
             InitVerticesToPathOffsetsAndRemoveSelfCycles();
             foreach (var path in Paths)
                 ProcessPath(path);

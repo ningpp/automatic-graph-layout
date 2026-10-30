@@ -1,4 +1,4 @@
-//
+﻿//
 // Clump.cs
 // MSAGL class for accreting clumps of overlapped obstacles for Rectilinear Edge Routing.
 //
@@ -10,8 +10,8 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
     /// <summary>
     /// This is the list of obstacles in the clump.
     /// </summary>
-    internal class Clump : List<Obstacle> {
-        internal Clump(IEnumerable<Obstacle> obstacles) {
+    public class Clump : List<Obstacle> {
+        public Clump(IEnumerable<Obstacle> obstacles) {
             this.AddRange(obstacles);
         }
         /// <summary>

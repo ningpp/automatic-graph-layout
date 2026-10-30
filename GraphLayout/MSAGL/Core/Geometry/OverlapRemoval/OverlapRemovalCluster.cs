@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="OverlapRemovalCluster.cs" company="Microsoft">
 //   (c) Microsoft Corporation.  All rights reserved.
 // </copyright>
@@ -164,7 +164,7 @@ namespace Microsoft.Msagl.Core.Geometry
 #endif // VERBOSE
 
         // The number of node IDs used by a Cluster - for the cluster itself and its fake nodes.
-        internal static uint NumInternalNodes
+        public static uint NumInternalNodes
         {
             get { return 3; }
         }
@@ -268,7 +268,7 @@ namespace Microsoft.Msagl.Core.Geometry
         }
 
         // This is internal rather than  so Test_OverlapRemoval can see it.
-        internal static double CalcBorderWidth(double margin)
+        public static double CalcBorderWidth(double margin)
         {
             // Margin applies only to the inside edge.
             if (margin > 0.0)
@@ -320,7 +320,7 @@ namespace Microsoft.Msagl.Core.Geometry
             }
         }
 
-        internal void Generate(Solver solver, OverlapRemovalParameters parameters, bool isHorizontal)
+        public void Generate(Solver solver, OverlapRemovalParameters parameters, bool isHorizontal)
         {
             ProcessClusterHierarchy(this,
                     cluster => cluster.IsInSolver = cluster.GenerateWorker(solver, parameters, isHorizontal));
@@ -707,12 +707,12 @@ namespace Microsoft.Msagl.Core.Geometry
         //   variable FROM which we create the constraint.
         // - Else it is being operated on as the right neighbour, so use its left border as the
         //   variable TO which we create the constraint.
-        internal static OverlapRemovalNode GetLeftConstraintNode(OverlapRemovalNode node)
+        public static OverlapRemovalNode GetLeftConstraintNode(OverlapRemovalNode node)
         {
             var cluster = node as OverlapRemovalCluster;
             return (cluster != null) ? cluster.RightBorderNode : node;
         }
-        internal static OverlapRemovalNode GetRightConstraintNode(OverlapRemovalNode node)
+        public static OverlapRemovalNode GetRightConstraintNode(OverlapRemovalNode node)
         {
             var cluster = node as OverlapRemovalCluster;
             return ( cluster != null) ? cluster.LeftBorderNode : node;
@@ -1005,7 +1005,7 @@ int numLeftNeighbors = currentNode.LeftNeighbors.Count;
         }
 
         // Overrides Node.UpdateFromVariable.
-        internal override void UpdateFromVariable()
+        public override void UpdateFromVariable()
         {
             ProcessClusterHierarchy(this, cluster => cluster.UpdateFromVariableWorker());
         }

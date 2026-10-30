@@ -1,8 +1,8 @@
 using Microsoft.Msagl.Core.Geometry;
 
 namespace Microsoft.Msagl.Routing.Spline.ConeSpanner {
-    abstract internal class SweepEvent {
-        abstract internal Point Site { get; }
+    public abstract class SweepEvent {
+        public abstract Point Site { get; }
 
         /// <summary/>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object,System.Object)")]

@@ -1,16 +1,16 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.Msagl.Core.Geometry;
 using Microsoft.Msagl.Core;
 
 namespace Microsoft.Msagl.Routing.Visibility {
-    internal class ObstacleSideComparer : IComparer<SegmentBase> {
+    public class ObstacleSideComparer : IComparer<SegmentBase> {
 
         readonly LineSweeperBase lineSweeper;
 
 
-        internal ObstacleSideComparer(LineSweeperBase lineSweeper) {
+        public ObstacleSideComparer(LineSweeperBase lineSweeper) {
             this.lineSweeper = lineSweeper;
         }
 
@@ -34,11 +34,11 @@ namespace Microsoft.Msagl.Routing.Visibility {
         }
 
 
-        internal void SetOperand(SegmentBase side) {
+        public void SetOperand(SegmentBase side) {
             x = IntersectionOfSideAndSweepLine(side);
         }
 
-        internal Point IntersectionOfSideAndSweepLine(SegmentBase obstacleSide) {
+        public Point IntersectionOfSideAndSweepLine(SegmentBase obstacleSide) {
             var den = obstacleSide.Direction * lineSweeper.SweepDirection;
             Debug.Assert(Math.Abs(den) > ApproximateComparer.DistanceEpsilon);
             var t = (lineSweeper.Z - obstacleSide.Start * lineSweeper.SweepDirection) / den;

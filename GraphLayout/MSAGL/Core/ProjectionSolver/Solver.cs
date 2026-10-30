@@ -279,6 +279,13 @@ namespace Microsoft.Msagl.Core.ProjectionSolver
                         );
             }
 
+            if (double.IsNaN(gap) || double.IsInfinity(gap))
+            {
+                throw new ArgumentOutOfRangeException("gap",
+                    "Invalid Constraint Gap" // TEST_MSAGL
+                    );
+            }
+
             if (left == right)
             {
                 throw new ArgumentException(

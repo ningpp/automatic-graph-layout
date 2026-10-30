@@ -32,7 +32,7 @@ namespace Microsoft.Msagl.Core.GraphAlgorithms {
         /// <param name="graph"></param>
         /// <param name="weight"></param>
         /// <param name="root">the node we start building the tree</param>
-        internal MinimumSpanningTreeByPrim(BasicGraphOnEdges<IEdge> graph, Func<IEdge, double> weight, int root) {
+        public MinimumSpanningTreeByPrim(BasicGraphOnEdges<IEdge> graph, Func<IEdge, double> weight, int root) {
             this.graph = graph;
             this.weight = weight;
             this.root = root;
@@ -49,7 +49,9 @@ namespace Microsoft.Msagl.Core.GraphAlgorithms {
         /// <returns></returns>
         public IList<IEdge> GetTreeEdges()
         {
-            var ret = new List<IEdge>(graph.NodeCount - 1);
+            if (graph.NodeCount == 0)
+                return new List<IEdge>();
+            var ret = new List<IEdge>(Math.Max(0, graph.NodeCount - 1));
             Init();
             while (ret.Count < graph.NodeCount - 1 && q.Count > 0) //some nodes might have no edges
                 AddEdgeToTree(ret);
@@ -58,6 +60,8 @@ namespace Microsoft.Msagl.Core.GraphAlgorithms {
 
         void AddEdgeToTree(List<IEdge> ret) {
             var v = q.Dequeue();
+            if (NodeIsInTree(v))
+                return; //the same vertex can be enqueued several times when the graph stores both directions of an undirected edge
             var e = hedgehog[v];
             treeNodes.Insert(v);
             ret.Add(e);

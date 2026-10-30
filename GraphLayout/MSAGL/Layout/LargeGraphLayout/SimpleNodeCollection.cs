@@ -1,10 +1,10 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using Microsoft.Msagl.Core.Layout;
 
 namespace Microsoft.Msagl.Layout.LargeGraphLayout {
-    internal class SimpleNodeCollection : IList<Node> {
+    public class SimpleNodeCollection : IList<Node> {
         List<Node> nodes;
 
         public SimpleNodeCollection(IEnumerable<Node> nodes) {

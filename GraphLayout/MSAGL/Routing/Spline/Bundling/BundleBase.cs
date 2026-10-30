@@ -6,49 +6,49 @@ using Microsoft.Msagl.Core.Geometry.Curves;
 using System.Diagnostics;
 
 namespace Microsoft.Msagl.Routing.Spline.Bundling {
-    internal class BundleBase {
+    public class BundleBase {
 
         /// <summary>
         /// only one of those is not null
         /// </summary>
-        internal BundleInfo OutgoingBundleInfo;
+        public BundleInfo OutgoingBundleInfo;
 
-        internal BundleInfo IncomingBundleInfo;
+        public BundleInfo IncomingBundleInfo;
 
         readonly Point[] points;
 
         readonly Point[] tangents;
 
-        internal OrientedHubSegment[] OrientedHubSegments;
+        public OrientedHubSegment[] OrientedHubSegments;
 
         /// <summary>
         /// boundary of cluster or hub containing this base 
         /// </summary>
-        internal ICurve Curve;
+        public ICurve Curve;
 
         /// <summary>
         /// this bundle base sits on a cluster boundary and the opposite base sits on a child of the cluster 
         /// </summary>
-        internal bool IsParent;
+        public bool IsParent;
 
         /// <summary>
         /// if true then the base sits on a real node or cluster, otherwise it belongs to an intermediate hub
         /// </summary>
-        internal bool BelongsToRealNode;
+        public bool BelongsToRealNode;
 
         /// <summary>
         /// position of the station containing the base
         /// (could be a center of a hub, or a point on the boundary of a cluster)
         /// </summary>
-        internal Point Position;
+        public Point Position;
 
         //need for debug only
-        internal int stationIndex;
+        public int stationIndex;
 
         /// <summary>
         /// constructor
         /// </summary>
-        internal BundleBase(int count, ICurve boundaryCurve, Point position, bool belongsToRealNode, int stationIndex) {
+        public BundleBase(int count, ICurve boundaryCurve, Point position, bool belongsToRealNode, int stationIndex) {
             BelongsToRealNode = belongsToRealNode;
             Curve = boundaryCurve;
             Position = position;
@@ -59,19 +59,19 @@ namespace Microsoft.Msagl.Routing.Spline.Bundling {
             ParameterSpan = Curve.ParEnd - Curve.ParStart;
         }
 
-        internal Point CurveCenter { get { return Curve.BoundingBox.Center; } }
+        public Point CurveCenter { get { return Curve.BoundingBox.Center; } }
 
-        internal BundleBase OppositeBase { get { return OutgoingBundleInfo != null ? OutgoingBundleInfo.TargetBase : IncomingBundleInfo.SourceBase; } }
+        public BundleBase OppositeBase { get { return OutgoingBundleInfo != null ? OutgoingBundleInfo.TargetBase : IncomingBundleInfo.SourceBase; } }
 
-        internal int Count { get { return points.Length; } }
+        public int Count { get { return points.Length; } }
 
-        internal Point[] Points { get { return points; } }
+        public Point[] Points { get { return points; } }
 
-        internal Point[] Tangents { get { return tangents; } }
+        public Point[] Tangents { get { return tangents; } }
 
         double initialMidParameter;
 
-        internal double InitialMidParameter {
+        public double InitialMidParameter {
             get { return initialMidParameter; }
             set {
                 initialMidParameter = value;
@@ -79,13 +79,13 @@ namespace Microsoft.Msagl.Routing.Spline.Bundling {
             }
         }
 
-        internal Point InitialMidPoint { get; set; }
+        public Point InitialMidPoint { get; set; }
 
         double parRight;
         /// <summary>
         /// corresponds to the left point of the base
         /// </summary>
-        internal double ParRight {
+        public double ParRight {
             get { return parRight; }
             set {
                 parRight = value;
@@ -97,7 +97,7 @@ namespace Microsoft.Msagl.Routing.Spline.Bundling {
         /// <summary>
         /// corresponds to the right point of the base
         /// </summary>
-        internal double ParLeft {
+        public double ParLeft {
             get { return parLeft; }
             set {
                 parLeft = value;
@@ -105,37 +105,37 @@ namespace Microsoft.Msagl.Routing.Spline.Bundling {
             }
         }
 
-        internal double ParMid {
+        public double ParMid {
             get { return (parRight + parLeft) / 2; }
         }
 
-        internal Point RightPoint { get; set; }
+        public Point RightPoint { get; set; }
 
-        internal Point LeftPoint { get; set; }
+        public Point LeftPoint { get; set; }
 
-        internal Point MidPoint {
+        public Point MidPoint {
             get { return (RightPoint + LeftPoint) / 2; }
         }
 
         //previous in ccw order
-        internal BundleBase Prev;
+        public BundleBase Prev;
         //next in ccw order
-        internal BundleBase Next;
+        public BundleBase Next;
 
-        internal double ParameterSpan;
+        public double ParameterSpan;
 
-        internal double Span { get { return SpanBetweenTwoPoints(parRight, parLeft); } }
+        public double Span { get { return SpanBetweenTwoPoints(parRight, parLeft); } }
 
-        internal double SpanBetweenTwoPoints(double right, double left) {
+        public double SpanBetweenTwoPoints(double right, double left) {
             return (right <= left ? left - right : left - right + ParameterSpan);
         }
 
-        internal Point RotateLeftPoint(int rotationOfSourceLeftPoint, double parameterChange) {
+        public Point RotateLeftPoint(int rotationOfSourceLeftPoint, double parameterChange) {
             if (rotationOfSourceLeftPoint == 0) return LeftPoint;
             return RotatePoint(rotationOfSourceLeftPoint, parLeft, parameterChange);
         }
 
-        internal Point RotateRigthPoint(int rotationOfSourceRightPoint, double parameterChange) {
+        public Point RotateRigthPoint(int rotationOfSourceRightPoint, double parameterChange) {
             if (rotationOfSourceRightPoint == 0) return RightPoint;
             return RotatePoint(rotationOfSourceRightPoint, parRight, parameterChange);
         }
@@ -149,7 +149,7 @@ namespace Microsoft.Msagl.Routing.Spline.Bundling {
             return Curve[t];
         }
 
-        internal double AdjustParam(double t) {
+        public double AdjustParam(double t) {
             if (t > Curve.ParEnd)
                 t = Curve.ParStart + (t - Curve.ParEnd);
             else if (t < Curve.ParStart)
@@ -157,7 +157,7 @@ namespace Microsoft.Msagl.Routing.Spline.Bundling {
             return t;
         }
 
-        internal void RotateBy(int rotationOfRightPoint, int rotationOfLeftPoint, double parameterChange) {
+        public void RotateBy(int rotationOfRightPoint, int rotationOfLeftPoint, double parameterChange) {
             double change = ParameterSpan * parameterChange;
             if (rotationOfRightPoint != 0)
                 ParRight = AdjustParam(ParRight + rotationOfRightPoint * change);
@@ -165,11 +165,11 @@ namespace Microsoft.Msagl.Routing.Spline.Bundling {
                 ParLeft = AdjustParam(ParLeft + rotationOfLeftPoint * change);
         }
 
-        internal bool Intersect(BundleBase other) {
+        public bool Intersect(BundleBase other) {
             return Intersect(parRight, parLeft, other.parRight, other.parLeft);
         }
 
-        internal bool Intersect(double lParRight, double lParLeft, double rParRight, double rParLeft) {
+        public bool Intersect(double lParRight, double lParLeft, double rParRight, double rParLeft) {
             if (lParRight > lParLeft)
                 return Intersect(lParRight, Curve.ParEnd, rParRight, rParLeft) || Intersect(Curve.ParStart, lParLeft, rParRight, rParLeft);
 
@@ -184,7 +184,7 @@ namespace Microsoft.Msagl.Routing.Spline.Bundling {
             return true;
         }
 
-        internal bool RelativeOrderOfBasesIsPreserved(int rotationOfRightPoint, int rotationOfLeftPoint, double parameterChange) {
+        public bool RelativeOrderOfBasesIsPreserved(int rotationOfRightPoint, int rotationOfLeftPoint, double parameterChange) {
             double change = ParameterSpan * parameterChange;
 
             //we do not swap parRight and parLeft

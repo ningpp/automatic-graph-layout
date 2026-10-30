@@ -30,21 +30,21 @@ namespace Microsoft.Msagl.Core.Geometry.Curves {
         double bMin; double bMax;
         double aGuess; double bGuess;
         double aSolution;
-        internal double ASolution {
+        public double ASolution {
             get { return aSolution; }
         }
         double bSolution;
-        internal double BSolution {
+        public double BSolution {
             get { return bSolution; }
         }
 
         Point aPoint;
-        internal Point APoint { get { return aPoint; } }
+        public Point APoint { get { return aPoint; } }
 
         Point bPoint;
-        internal Point BPoint { get { return bPoint; } }
+        public Point BPoint { get { return bPoint; } }
         bool status;
-        internal bool Status { get { return status; } }
+        public bool Status { get { return status; } }
         double si;
         double ti;
 
@@ -134,12 +134,12 @@ namespace Microsoft.Msagl.Core.Geometry.Curves {
         /// <param name="y"></param>
         /// <param name="u"></param>
         /// <param name="w"></param>
-        internal static double Delta(double x, double y, double u, double w) {
+        public static double Delta(double x, double y, double u, double w) {
             return x * w - u * y;
         }
         //Fs + Fss*ds + Fst*dt = 0
         //Ft + Fst*ds + Ftt*dt = 0
-        internal void Solve() {
+        public void Solve() {
 
             int numberOfBoundaryCrossings = 0;
             const int maxNumberOfBoundaryCrossings = 10;

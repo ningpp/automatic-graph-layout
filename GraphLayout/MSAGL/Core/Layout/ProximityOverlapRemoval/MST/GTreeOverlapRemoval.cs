@@ -14,9 +14,9 @@ using Microsoft.Msagl.Routing;
 using Microsoft.Msagl.Routing.ConstrainedDelaunayTriangulation;
 
 namespace Microsoft.Msagl.Core.Layout.ProximityOverlapRemoval.MinimumSpanningTree {
-    internal struct OverlappedEdge {
-        internal int source; internal int target; internal double overlapFactor; internal double idealDistance; internal double weight;
-        internal static OverlappedEdge Create(int source, int target, double overlapFactor, double idealDistance, double weight) => new OverlappedEdge { source = source, target = target, overlapFactor = overlapFactor, idealDistance = idealDistance, weight = weight };
+    public struct OverlappedEdge {
+        public int source; public int target; public double overlapFactor; public double idealDistance; public double weight;
+        public static OverlappedEdge Create(int source, int target, double overlapFactor, double idealDistance, double weight) => new OverlappedEdge { source = source, target = target, overlapFactor = overlapFactor, idealDistance = idealDistance, weight = weight };
     }
     /// <summary>
     /// Overlap Removal using Minimum Spanning Tree on the delaunay triangulation. The edge weight corresponds to the amount of overlap between two nodes.

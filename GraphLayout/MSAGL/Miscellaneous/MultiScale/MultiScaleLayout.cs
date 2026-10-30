@@ -9,7 +9,7 @@ using Microsoft.Msagl.Layout.Incremental;
 
 namespace Microsoft.Msagl.Prototype.MultiScale
 {
-    class MultiScaleLayout
+    public class MultiScaleLayout
     {
         /// <summary>
         /// Fastest method we have for laying out large graphs.  Also does a pretty good job

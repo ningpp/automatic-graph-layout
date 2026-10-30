@@ -508,6 +508,9 @@ namespace Microsoft.Msagl.DebugHelpers {
         LabelVisibleFromScale,
         LabelOffset,
         LabelWidthToHeightRatio,
+        MinimalWidth,
+        MinimalHeight,
+        LayeringOnly,
         Unknown
     }
 }

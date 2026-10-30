@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Constraint.cs" company="Microsoft">
 //   (c) Microsoft Corporation.  All rights reserved.
 // </copyright>
@@ -88,7 +88,7 @@ namespace Microsoft.Msagl.Core.ProjectionSolver
         internal void UpdateGap(double newGap) { this.Gap = newGap; }
 
 #if VERIFY || VERBOSE
-        internal uint Id { get; private set; }
+        public uint Id { get; private set; }
 #endif // VERIFY || VERBOSE
 
         // The Constraint constructor takes the two variables and their required distance.
@@ -142,7 +142,7 @@ namespace Microsoft.Msagl.Core.ProjectionSolver
 #endif // VERIFY || VERBOSE
         }
 
-        internal double Violation
+        public double Violation
         {
             // If the difference in position is negative or zero, it means the startpos of the Rhs
             // node is greater than or equal to the gap and thus there's no violation.

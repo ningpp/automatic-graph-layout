@@ -13,7 +13,7 @@ namespace Microsoft.Msagl.Core.Layout {
     /// </summary>
     public partial class LgNodeInfo : LgInfoBase {
         //these needed for shortest path calculations
-        internal bool Processed;
+        public bool Processed;
         public int PartiteSet;
         /// <summary>
         /// underlying geometry node
@@ -27,7 +27,7 @@ namespace Microsoft.Msagl.Core.Layout {
             get { return BoundaryOnLayer; }
         }
 
-        internal LgNodeInfo(Node geometryNode) {
+        public LgNodeInfo(Node geometryNode) {
             GeometryNode = geometryNode;
             //OriginalCurveOfGeomNode = geometryNode.BoundaryCurve.Clone();
         }

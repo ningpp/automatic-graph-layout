@@ -1,21 +1,21 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.Msagl.Core.DataStructures;
 
 namespace Microsoft.Msagl.Core.GraphAlgorithms {
-    internal class NodeInfo {
+    public class NodeInfo {
         Set<int> outEdges = new Set<int>();
 
-        internal Set<int> OutEdges {
+        public Set<int> OutEdges {
             get { return outEdges; }
         }
         Set<int> inEdges = new Set<int>();
 
-        internal Set<int> InEdges {
+        public Set<int> InEdges {
             get { return inEdges; }
         }
         Set<int> outConstrainedEdges = new Set<int>();
 
-        internal Set<int> OutConstrainedEdges {
+        public Set<int> OutConstrainedEdges {
             get { return outConstrainedEdges; }
         }
 
@@ -27,47 +27,47 @@ namespace Microsoft.Msagl.Core.GraphAlgorithms {
         /// <summary>
         /// it is the out degree without the in degree
         /// </summary>
-        internal int DeltaDegree {
+        public int DeltaDegree {
             get { return InDegree-OutDegree; }
         }
-        internal void AddOutEdge(int v) {
+        public void AddOutEdge(int v) {
             outEdges.Insert(v);
         }
-        internal void RemoveOutEdge(int v) {
+        public void RemoveOutEdge(int v) {
             outEdges.Remove(v);
         }
 
-        internal void AddInEdge(int v) {
+        public void AddInEdge(int v) {
             inEdges.Insert(v);
         }
-        internal void RemoveInEdge(int v) {
+        public void RemoveInEdge(int v) {
             inEdges.Remove(v);
         }
-        internal void AddOutConstrainedEdge(int v) {
+        public void AddOutConstrainedEdge(int v) {
             outConstrainedEdges.Insert(v);
         }
-        internal void RemoveOutConstrainedEdge(int v) {
+        public void RemoveOutConstrainedEdge(int v) {
             outConstrainedEdges.Remove(v);
         }
 
-        internal void AddInConstrainedEdge(int v) {
+        public void AddInConstrainedEdge(int v) {
             inConstrainedEdges.Insert(v);
         }
-        internal void RemoveInConstrainedEdge(int v) {
+        public void RemoveInConstrainedEdge(int v) {
             inConstrainedEdges.Remove(v);
         }
 
-        internal int OutDegree {
+        public int OutDegree {
             get {
                 return outEdges.Count+outConstrainedEdges.Count;
             }
         }
-        internal int InDegreeOfConstrainedEdges {
+        public int InDegreeOfConstrainedEdges {
             get {
                 return inConstrainedEdges.Count;
             }
         }
-        internal int InDegree {
+        public int InDegree {
             get { return inEdges.Count+inConstrainedEdges.Count; }
         }
 
@@ -75,7 +75,7 @@ namespace Microsoft.Msagl.Core.GraphAlgorithms {
         /// <summary>
         /// including constrained neighbors
         /// </summary>
-        internal IEnumerable<int> AllNeighbors {
+        public IEnumerable<int> AllNeighbors {
             get {
                 foreach (int v in this.OutConstrainedEdges)
                     yield return v;

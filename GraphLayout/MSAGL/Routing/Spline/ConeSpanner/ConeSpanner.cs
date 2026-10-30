@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -9,7 +9,7 @@ using Microsoft.Msagl.Core.Geometry.Curves;
 using Microsoft.Msagl.Routing.Visibility;
 
 namespace Microsoft.Msagl.Routing.Spline.ConeSpanner {
-    internal class ConeSpanner : AlgorithmBase {
+    public class ConeSpanner : AlgorithmBase {
         readonly IEnumerable<Polyline> _obstacles;
         // double coneAngle = Math.PI / 18;// ten degrees
         //double coneAngle = Math.PI / 9;// twenty degrees
@@ -21,12 +21,12 @@ namespace Microsoft.Msagl.Routing.Spline.ConeSpanner {
 
 
 
-        internal ConeSpanner(IEnumerable<Polyline> obstacles, VisibilityGraph visibilityGraph) {
+        public ConeSpanner(IEnumerable<Polyline> obstacles, VisibilityGraph visibilityGraph) {
             this._obstacles = VisibilityGraph.OrientHolesClockwise(obstacles);
             this._visibilityGraph = visibilityGraph;
         }
 
-        internal ConeSpanner(IEnumerable<Polyline> obstacles, VisibilityGraph visibilityGraph, double coneAngle,
+        public ConeSpanner(IEnumerable<Polyline> obstacles, VisibilityGraph visibilityGraph, double coneAngle,
                              Set<Point> ports, Polyline borderPolyline)
             : this(obstacles, visibilityGraph) {
             Debug.Assert(borderPolyline == null || obstacles.All(o => Curve.CurveIsInsideOther(o, borderPolyline)));
@@ -43,7 +43,7 @@ namespace Microsoft.Msagl.Routing.Spline.ConeSpanner {
             ConeAngle = coneAngle;
         }
 
-        internal double ConeAngle {
+        public double ConeAngle {
             get { return coneAngle; }
             set { coneAngle = value; }
         }
@@ -56,12 +56,12 @@ namespace Microsoft.Msagl.Routing.Spline.ConeSpanner {
         /// An edge is added to the visibility graph only if it is found at least twice: 
         /// once sweeping with a direction d and the second time with -d
         /// </summary>
-        internal bool Bidirectional {
+        public bool Bidirectional {
             get { return _bidirectional; }
             set { _bidirectional = value; }
         }
 
-        internal static int GetTotalSteps(double coneAngle) {
+        public static int GetTotalSteps(double coneAngle) {
 #if SHARPKIT //https://github.com/SharpKit/SharpKit/issues/4 integer rounding issue
             return ((int)((2 * Math.PI - coneAngle / 2) / coneAngle)) + 1;
 #else

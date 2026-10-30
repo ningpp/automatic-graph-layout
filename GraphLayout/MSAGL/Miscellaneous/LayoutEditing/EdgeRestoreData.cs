@@ -13,7 +13,7 @@ namespace Microsoft.Msagl.Prototype.LayoutEditing{
         Point labelCenter;
 
         [SuppressMessage("Microsoft.Performance", "CA1804:RemoveUnusedLocals", MessageId = "p")]
-        internal EdgeRestoreData(Edge edge) {
+        public EdgeRestoreData(Edge edge) {
             if (edge.UnderlyingPolyline == null) {
                 var asCurve = (edge.Curve as Curve) ?? new Curve(new List<ICurve> {edge.Curve});
                 edge.UnderlyingPolyline =

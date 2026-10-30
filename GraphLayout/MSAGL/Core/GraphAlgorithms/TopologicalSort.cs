@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace Microsoft.Msagl.Core.GraphAlgorithms{
@@ -27,7 +27,7 @@ namespace Microsoft.Msagl.Core.GraphAlgorithms{
         /// </summary>
         /// <param name="graph"></param>
         /// <returns></returns>
-        internal static int[] GetOrder<TEdge>(BasicGraphOnEdges<TEdge> graph) where TEdge : IEdge{
+        public static int[] GetOrder<TEdge>(BasicGraphOnEdges<TEdge> graph) where TEdge : IEdge{
             var visited = new bool[graph.NodeCount];
 
             //no recursion! So we have to organize a stack
@@ -78,7 +78,7 @@ namespace Microsoft.Msagl.Core.GraphAlgorithms{
         /// e.Target=arr[j], then i is less than j
         /// </summary>
         /// <returns></returns>
-        internal static int[] GetOrderOnEdges<TEdge>(IEnumerable<TEdge> edges) where TEdge : IEdge {
+        public static int[] GetOrderOnEdges<TEdge>(IEnumerable<TEdge> edges) where TEdge : IEdge {
             var visited = new Dictionary<int,bool>();
             var graph = new Dictionary<int, List<int>>();
             foreach (var e in edges) {
@@ -105,7 +105,10 @@ namespace Microsoft.Msagl.Core.GraphAlgorithms{
 
                 visited[cu] = true;
                 List<int> glist;
-                if (!graph.TryGetValue(u, out glist)) continue;
+                if (!graph.TryGetValue(u, out glist)) {
+                    order.Add(u);
+                    continue;
+                }
                 if (glist == null) continue;
                 en = glist.GetEnumerator();
                 do {

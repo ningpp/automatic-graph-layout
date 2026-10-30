@@ -11,8 +11,8 @@ using Microsoft.Msagl.Routing.ConstrainedDelaunayTriangulation;
 
 namespace Microsoft.Msagl.Routing.Spline.Bundling {
     [DebuggerDisplay("[{SerialNumber}] ({Position.X},{Position.Y})")]
-    internal class Station {
-        internal Station(int serialNumber, bool isRealNode, Point position) {
+    public class Station {
+        public Station(int serialNumber, bool isRealNode, Point position) {
             this.SerialNumber = serialNumber;
             this.IsRealNode = isRealNode;
             this.Position = position;
@@ -21,52 +21,52 @@ namespace Microsoft.Msagl.Routing.Spline.Bundling {
         /// <summary>
         /// id of the station (used for comparison)
         /// </summary>
-        internal readonly int SerialNumber;
+        public readonly int SerialNumber;
 
         /// <summary>
         /// if true the station is a center of an obstacle
         /// </summary>
-        internal readonly bool IsRealNode;
+        public readonly bool IsRealNode;
 
         /// <summary>
         /// radius of the corresponding hub
         /// </summary>
-        internal double Radius;
+        public double Radius;
 
         /// <summary>
         /// position of the corresponding hub
         /// </summary>
-        internal Point Position;
+        public Point Position;
 
         /// <summary>
         /// neighbors sorted in counter-clockwise order around the station
         /// </summary>
-        internal Station[] Neighbors;
+        public Station[] Neighbors;
 
         /// <summary>
         /// it maps each neighbor to its hub
         /// </summary>
-        internal Dictionary<Station, BundleBase> BundleBases = new Dictionary<Station, BundleBase>();
+        public Dictionary<Station, BundleBase> BundleBases = new Dictionary<Station, BundleBase>();
 
         /// <summary>
         /// it maps a node to a set of tight polylines that can contain the node
         /// </summary>
-        internal Set<Polyline> EnterableTightPolylines;
+        public Set<Polyline> EnterableTightPolylines;
 
         /// <summary>
         /// it maps a node to a set of loose polylines that can contain the node
         /// </summary>
-        internal Set<Polyline> EnterableLoosePolylines;
+        public Set<Polyline> EnterableLoosePolylines;
 
         /// <summary>
         /// MetroNodeInfos corresponding to the node
         /// </summary>
-        internal List<MetroNodeInfo> MetroNodeInfos = new List<MetroNodeInfo>();
+        public List<MetroNodeInfo> MetroNodeInfos = new List<MetroNodeInfo>();
 
         /// <summary>
         /// curve of the hub
         /// </summary>
-        internal ICurve BoundaryCurve;
+        public ICurve BoundaryCurve;
 
         public static bool operator <(Station a, Station b) {
             Debug.Assert(a == b || a.SerialNumber != b.SerialNumber);
@@ -83,22 +83,22 @@ namespace Microsoft.Msagl.Routing.Spline.Bundling {
         /// <summary>
         /// triangle of cdt where the station is situated
         /// </summary>
-        internal CdtTriangle CdtTriangle;
+        public CdtTriangle CdtTriangle;
 
-        internal double cachedRadiusCost;
+        public double cachedRadiusCost;
 
-        internal double cachedBundleCost;
+        public double cachedBundleCost;
 
-        internal double cachedIdealRadius;
+        public double cachedIdealRadius;
 
         #endregion
 
-        internal void AddEnterableLoosePolyline(Polyline poly) {
+        public void AddEnterableLoosePolyline(Polyline poly) {
             if (EnterableLoosePolylines == null)
                 EnterableLoosePolylines = new Set<Polyline>();
             EnterableLoosePolylines.Insert(poly);
         }
-        internal void AddEnterableTightPolyline(Polyline poly) {
+        public void AddEnterableTightPolyline(Polyline poly) {
             if (EnterableTightPolylines == null)
                 EnterableTightPolylines = new Set<Polyline>();
             EnterableTightPolylines.Insert(poly);

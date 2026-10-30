@@ -20,7 +20,7 @@ namespace Microsoft.Msagl.Routing.Spline.Bundling {
     ///  'real' edges are original graph edges
     ///  'virtual' edges are polyline segments
     /// </summary>
-    internal class MetroGraphData {
+    public class MetroGraphData {
         internal List<Station> Stations;
 
         /// info on the edges passing through a couple

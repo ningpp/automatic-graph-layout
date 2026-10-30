@@ -1,15 +1,15 @@
-﻿using Microsoft.Msagl.Core.Geometry;
+﻿﻿using Microsoft.Msagl.Core.Geometry;
 
 namespace Microsoft.Msagl.Core.Layout
 {
-    internal class RectangleObstacle : IObstacle
+    public class RectangleObstacle : IObstacle
     {
-        internal RectangleObstacle(Rectangle r)
+        public RectangleObstacle(Rectangle r)
         {
             this.Rectangle = r;
         }
 
-        internal RectangleObstacle(Rectangle r, object data)
+        public RectangleObstacle(Rectangle r, object data)
         {
             this.Rectangle = r;
             this.Data = data;

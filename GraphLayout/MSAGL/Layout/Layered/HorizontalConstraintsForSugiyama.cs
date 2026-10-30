@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -7,7 +7,7 @@ using Microsoft.Msagl.Core.GraphAlgorithms;
 using Microsoft.Msagl.Core.Layout;
 
 namespace Microsoft.Msagl.Layout.Layered {
-    internal class HorizontalConstraintsForSugiyama {
+    public class HorizontalConstraintsForSugiyama {
         readonly Set<Tuple<Node, Node>> leftRightConstraints = new Set<Tuple<Node, Node>>();
         readonly Set<Tuple<Node, Node>> leftRightNeighbors = new Set<Tuple<Node, Node>>();
 
@@ -21,47 +21,58 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// <summary>
         /// The right most node to the left of the  block is called a block root. The root does not belong to its block.
         /// </summary>
-        internal Dictionary<int, List<int>> BlockRootToBlock = new Dictionary<int, List<int>>();
+        public Dictionary<int, List<int>> BlockRootToBlock = new Dictionary<int, List<int>>();
 
-        internal Set<Tuple<int, int>> LeftRighInts;
+        public Set<Tuple<int, int>> LeftRighInts;
 
         /// <summary>
         /// the set of integer pairs (i,j) such that i is a left neighbor of j
         /// </summary>
-        internal Set<Tuple<int, int>> LeftRightIntNeibs;
+        public Set<Tuple<int, int>> LeftRightIntNeibs;
 
-        internal Set<Tuple<int, int>> VerticalInts;
+        public Set<Tuple<int, int>> VerticalInts;
         Dictionary<Node, int> nodeIdToIndex;
 
-        internal Set<Tuple<Node, Node>> LeftRightNeighbors {
+        public Set<Tuple<Node, Node>> LeftRightNeighbors {
             get { return leftRightNeighbors; }
         }
 
-        internal Set<Tuple<Node, Node>> UpDownVerticalConstraints {
+        public Set<Tuple<Node, Node>> UpDownVerticalConstraints {
             get { return upDownVerticalConstraints; }
         }
 
-        internal Set<Tuple<Node, Node>> LeftRightConstraints {
+        public Set<Tuple<Node, Node>> LeftRightConstraints {
             get { return leftRightConstraints; }
         }
 
-        internal bool IsEmpty {
+        public bool IsEmpty {
             get {
                 return LeftRightNeighbors.Count == 0 && UpDownVerticalConstraints.Count == 0 &&
                        LeftRightConstraints.Count == 0;
             }
         }
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        internal void Clear() {}
+        public void Clear() {
+            leftRightConstraints.Clear();
+            leftRightNeighbors.Clear();
+            upDownVerticalConstraints.Clear();
+            nodeToBlockRoot.Clear();
+            BlockRootToBlock.Clear();
+            if (LeftRighInts != null)
+                LeftRighInts.Clear();
+            if (LeftRightIntNeibs != null)
+                LeftRightIntNeibs.Clear();
+            if (VerticalInts != null)
+                VerticalInts.Clear();
+        }
 
 
-        internal void AddSameLayerNeighbors(List<Node> neighbors) {
+        public void AddSameLayerNeighbors(List<Node> neighbors) {
             for (int i = 0; i < neighbors.Count - 1; i++)
                 AddSameLayerNeighborsPair(neighbors[i], neighbors[i + 1]);
         }
 
-        internal void AddSameLayerNeighborsPair(Node leftNode, Node rightNode) {
+        public void AddSameLayerNeighborsPair(Node leftNode, Node rightNode) {
             LeftRightNeighbors.Insert(new Tuple<Node, Node>(leftNode, rightNode));
         }
 
@@ -102,7 +113,7 @@ namespace Microsoft.Msagl.Layout.Layered {
             return -1;
         }
 
-        internal void PrepareForOrdering(Dictionary<Node, int> nodeToIndexParameter, int[] yLayers) {
+        public void PrepareForOrdering(Dictionary<Node, int> nodeToIndexParameter, int[] yLayers) {
             nodeIdToIndex = nodeToIndexParameter;
             MapNodesToToIntegers(yLayers);
         

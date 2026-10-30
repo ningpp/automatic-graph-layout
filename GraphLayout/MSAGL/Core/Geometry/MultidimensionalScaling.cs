@@ -26,8 +26,8 @@ namespace Microsoft.Msagl.Core.Geometry {
                     mean += matrix[i][j];
                 }
             }
-            for (int i = 0; i < matrix.Length; i++) rowMean[i] /= matrix.Length;
-            for (int j = 0; j < matrix[0].Length; j++) colMean[j] /= matrix[0].Length;
+            for (int i = 0; i < matrix.Length; i++) rowMean[i] /= matrix[0].Length;
+            for (int j = 0; j < matrix[0].Length; j++) colMean[j] /= matrix.Length;
             mean /= matrix.Length;
             mean /= matrix[0].Length;
             for (int i = 0; i < matrix.Length; i++) {
@@ -176,19 +176,39 @@ namespace Microsoft.Msagl.Core.Geometry {
             u2 = RandomUnitLengthVector(n, 1); lambda2 = 0;
             double r = 0;
             double limit = 1.0 - epsilon;
-            // iterate until convergence but at most 30 steps
+            // iterate until convergence but at most maxIterations steps
             for (int i = 0; (i < maxIterations && r < limit); i++) {
                 double[] x1 = Multiply(A, u1);
-                double[] x2 = Multiply(A, u2);
-
                 lambda1 = Normalize(x1);
-                lambda2 = Normalize(x2);
-                MakeOrthogonal(x2, x1);
-                Normalize(x2);
 
-                // convergence is assumed if the inner product of
-                // two consecutive (unit length) iterates is close to 1
-                r = Math.Min(DotProduct(u1, x1), DotProduct(u2, x2));
+                double[] x2 = Multiply(A, u2);
+                double x2Norm = Norm(x2);
+                if (x2Norm == 0) {
+                    // u2 is already in the (numerical) null space of A.
+                    lambda2 = 0;
+                    r = DotProduct(u1, x1);
+                } else {
+                    MakeOrthogonal(x2, x1);
+                    double residualNorm = Norm(x2);
+                    if (residualNorm <= 1e-12 * x2Norm) {
+                        // The second iterate is parallel to the first one up to
+                        // round-off, so A is (numerically) rank deficient. Do
+                        // not normalize the residual: that would amplify noise
+                        // into a spurious second eigenpair.
+                        lambda2 = 0;
+                        for (int j = 0; j < x2.Length; j++) x2[j] = 0;
+                        r = DotProduct(u1, x1);
+                    } else {
+                        Normalize(x2);
+                        // convergence is assumed if the inner product of
+                        // two consecutive (unit length) iterates is close to 1
+                        r = Math.Min(DotProduct(u1, x1), DotProduct(u2, x2));
+                        // lambda2 must be taken from the deflated vector, not
+                        // from A*u2 before orthogonalization, otherwise the
+                        // dominant component leaks into the second eigenvalue.
+                        lambda2 = Norm(Multiply(A, x2));
+                    }
+                }
                 u1 = x1;
                 u2 = x2;
             }
@@ -307,7 +327,7 @@ namespace Microsoft.Msagl.Core.Geometry {
                     double xNew = 0;
                     double yNew = 0;
                     for (int j = 0; j < n; j++) {
-                        if (i != j) {
+                        if (index[i] != j) {
                             double inv = Math.Sqrt(Math.Pow(x[index[i]] - x[j], 2) + Math.Pow(y[index[i]] - y[j], 2));
                             if (inv > 0) inv = 1 / inv;
                             xNew += w[i][j] * (x[j] + d[i][j] * (x[index[i]] - x[j]) * inv);

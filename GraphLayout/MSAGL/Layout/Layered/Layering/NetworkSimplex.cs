@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +12,9 @@ namespace Microsoft.Msagl.Layout.Layered {
     /// The algorithm follows "A technique for Drawing Directed Graphs", Gansner, Koutsofios, North, Vo.
     /// Consider re-implement this algorithm following Chvatal. The algorithm works for a connected graph.
     /// </summary>
-    internal class NetworkSimplex : AlgorithmBase, LayerCalculator {
+    public class NetworkSimplex : AlgorithmBase, LayerCalculator {
 
-        static BasicGraphOnEdges<PolyIntEdge> CreateGraphWithIEEdges(BasicGraphOnEdges<PolyIntEdge> bg) {
+        public static BasicGraphOnEdges<PolyIntEdge> CreateGraphWithIEEdges(BasicGraphOnEdges<PolyIntEdge> bg) {
             List<PolyIntEdge> ieEdges = new List<PolyIntEdge>();
 
             foreach (PolyIntEdge e in bg.Edges)
@@ -26,7 +26,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         int[] layers;
 
 
-        internal NetworkSimplex(BasicGraphOnEdges<PolyIntEdge> graph, CancelToken cancelToken)
+        public NetworkSimplex(BasicGraphOnEdges<PolyIntEdge> graph, CancelToken cancelToken)
         {
             this.graph = CreateGraphWithIEEdges(graph);
             inTree = new bool[graph.NodeCount];
@@ -40,7 +40,7 @@ namespace Microsoft.Msagl.Layout.Layered {
             return layers;
         }
 
-        private void ShiftLayerToZero() {
+        public void ShiftLayerToZero() {
             int minLayer = NetworkEdge.Infinity;
             foreach (int i in layers)
                 if (i < minLayer)
@@ -57,7 +57,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// <summary>
         /// The function FeasibleTree constructs an initial feasible spanning tree.
         /// </summary>
-        void FeasibleTree() {
+        public void FeasibleTree() {
             InitLayers();
 
             while (TightTree() < this.graph.NodeCount) {
@@ -89,7 +89,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// <param name="v">a v</param>
         /// <param name="treeEdge">a vertex</param>
         /// <returns>an edge from the tree</returns>
-        int VertexSourceTargetVal(int v, NetworkEdge treeEdge) {
+        public int VertexSourceTargetVal(int v, NetworkEdge treeEdge) {
 #if DEBUGNW
       if (treeEdge.inTree == false)
         throw new Exception("wrong params for VertexSourceTargetVal");
@@ -115,11 +115,11 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// </summary>
         /// <param name="v"></param>
         /// <returns>edges incident to v</returns>
-        IncEdges IncidentEdges(int v) {
+        public IncEdges IncidentEdges(int v) {
             return new IncEdges(v, this);
         }
 
-        bool AllLowCutsHaveBeenDone(int v) {
+        public bool AllLowCutsHaveBeenDone(int v) {
             foreach (NetworkEdge ie in IncidentEdges(v))
                 if (ie.inTree && ie.Cut == NetworkEdge.Infinity && ie != parent[v])
                     return false;
@@ -136,7 +136,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// <param name="e">a non-tree edge</param>
         /// <param name="treeEdge">a tree edge</param>
         /// <returns></returns>
-        int EdgeSourceTargetVal(NetworkEdge e, NetworkEdge treeEdge) {
+        public int EdgeSourceTargetVal(NetworkEdge e, NetworkEdge treeEdge) {
 
             // if (e.inTree || treeEdge.inTree == false)
             // throw new Exception("wrong params for EdgeSOurceTargetVal");
@@ -158,7 +158,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// node except one, the cut value of the remaining edge is the sum of the known cut 
         /// values plus a term dependent only on the edges incident to the given node.
         /// </summary>
-        void InitCutValues() {
+        public void InitCutValues() {
             InitLimLowAndParent();
 
             //going up from the leaves following parents
@@ -217,7 +217,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// <param name="e">tree edge</param>
         /// <param name="w">parent[w] is in the process of the cut calculation</param>
         /// <returns></returns>
-        int EdgeContribution(NetworkEdge e, int w) {
+        public int EdgeContribution(NetworkEdge e, int w) {
             int ret = e.Cut - e.Weight;
             foreach (NetworkEdge ie in IncidentEdges(w)) {
                 if (ie.inTree == false) {
@@ -274,7 +274,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// Of course, these postorder parameters must also be adjusted when 
         /// exchanging tree edges, but only for nodes below l.
         /// </summary>
-        void InitLimLowAndParent() {
+        public void InitLimLowAndParent() {
             lim = new int[graph.NodeCount];
             low = new int[graph.NodeCount];
             parent = new NetworkEdge[graph.NodeCount];
@@ -286,7 +286,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// </summary>
         /// <param name="curLim">the root of the subtree</param>
         /// <param name="v">the low[v]</param>
-        private void InitLowLimParentAndLeavesOnSubtree(int curLim, int v) {
+        public void InitLowLimParentAndLeavesOnSubtree(int curLim, int v) {
             Stack<StackStruct> stack = new Stack<StackStruct>();
             IEnumerator outEnum = this.graph.OutEdges(v).GetEnumerator();
             IEnumerator inEnum = this.graph.InEdges(v).GetEnumerator();
@@ -347,7 +347,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// here we update values lim and low for the subtree with the root l
         /// </summary>
         /// <param name="l"></param>
-        void UpdateLimLowLeavesAndParentsUnderNode(int l) {
+        public void UpdateLimLowLeavesAndParentsUnderNode(int l) {
 
             //first we zero all low values in the subtree since they are an indication when positive that 
             //the node has been processed
@@ -371,7 +371,7 @@ namespace Microsoft.Msagl.Layout.Layered {
 
         }
 
-        int Slack(PolyIntEdge e) {
+        public int Slack(PolyIntEdge e) {
             int ret = layers[e.Source] - layers[e.Target] - e.Separation;
 #if DEBUGNW
       if (ret < 0)
@@ -384,7 +384,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// one of the returned edge vertices does not belong to the tree but another does
         /// </summary>
         /// <returns></returns>
-        NetworkEdge GetNonTreeEdgeIncidentToTheTreeWithMinimalAmountOfSlack() {
+        public NetworkEdge GetNonTreeEdgeIncidentToTheTreeWithMinimalAmountOfSlack() {
             PolyIntEdge eret = null;
             int minSlack = NetworkEdge.Infinity;
 
@@ -436,7 +436,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// The function also builds the tree.
         /// </summary>
         /// <returns>number of verices in a tight tree</returns>
-        int TightTree() {
+        public int TightTree() {
             treeVertices.Clear();
             foreach (NetworkEdge ie in this.graph.Edges)
                 ie.inTree = false;
@@ -494,7 +494,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         ///// <param name="leavingEdge">a leaving edge</param>
         ///// <param name="enteringEdge">an entering edge</param>
         ///// <returns>returns true if a pair is chosen</returns>
-        Tuple<NetworkEdge, NetworkEdge> LeaveEnterEdge() {
+        public Tuple<NetworkEdge, NetworkEdge> LeaveEnterEdge() {
             NetworkEdge leavingEdge = null;
             NetworkEdge enteringEdge = null; //to keep the compiler happy
             int minCut = 0;
@@ -547,7 +547,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// </summary>
         /// <param name="e">exiting edge</param>
         /// <param name="f">entering edge</param>
-        void Exchange(NetworkEdge e, NetworkEdge f) {
+        public void Exchange(NetworkEdge e, NetworkEdge f) {
             int l = CommonPredecessorOfSourceAndTargetOfF(f);
 
             CreatePathForCutUpdates(e, f, l);
@@ -561,7 +561,7 @@ namespace Microsoft.Msagl.Layout.Layered {
 
         }
 
-        private void UpdateLayersUnderNode(int l) {
+        public void UpdateLayersUnderNode(int l) {
 
             //update the layers under l
             Stack<int> front = new Stack<int>();
@@ -589,7 +589,7 @@ namespace Microsoft.Msagl.Layout.Layered {
             }
         }
 
-        private void UpdateCuts(NetworkEdge e) {
+        public void UpdateCuts(NetworkEdge e) {
             //going up from the leaves of the branch following parents
             Stack<int> front = new Stack<int>();
             Stack<int> newFront = new Stack<int>();
@@ -651,7 +651,7 @@ namespace Microsoft.Msagl.Layout.Layered {
             }
         }
 
-        private void CreatePathForCutUpdates(NetworkEdge e, NetworkEdge f, int l) {
+        public void CreatePathForCutUpdates(NetworkEdge e, NetworkEdge f, int l) {
             //we mark the path by setting the cut value to infinity
 
             int v = f.Target;
@@ -668,7 +668,7 @@ namespace Microsoft.Msagl.Layout.Layered {
 
         }
 
-        private int CommonPredecessorOfSourceAndTargetOfF(NetworkEdge f) {
+        public int CommonPredecessorOfSourceAndTargetOfF(NetworkEdge f) {
             //find the common predecessor of f.Source and f.Target 
             int fMin, fmax;
             if (lim[f.Source] < lim[f.Target]) {
@@ -694,7 +694,7 @@ namespace Microsoft.Msagl.Layout.Layered {
             return l;
         }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "System.Diagnostics.Debug.WriteLine(System.String,System.Object,System.Object,System.Object)"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        void CheckCutValues() {
+        public void CheckCutValues() {
             foreach (NetworkEdge e in this.graph.Edges) {
                 if (e.inTree) {
                     int cut = 0;
@@ -715,7 +715,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         }
 
 
-        void InitLayers() {
+        public void InitLayers() {
             LongestPathLayering lp = new LongestPathLayering(this.graph);
             this.layers = lp.GetLayers();
         }
@@ -725,7 +725,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// <summary>
         /// to enumerate over all edges incident to v
         /// </summary>
-        internal class IncEdges : IEnumerable<NetworkEdge> {
+        public class IncEdges : IEnumerable<NetworkEdge> {
             int v;
             NetworkSimplex nw;
 
@@ -744,7 +744,7 @@ namespace Microsoft.Msagl.Layout.Layered {
             }
 
 
-            internal IncEdges(int v, NetworkSimplex nw) {
+            public IncEdges(int v, NetworkSimplex nw) {
                 this.v = v;
                 this.nw = nw;
             }
@@ -809,8 +809,8 @@ namespace Microsoft.Msagl.Layout.Layered {
         #endregion
 
   
-        BasicGraphOnEdges<PolyIntEdge> graph;
-        private CancelToken NetworkCancelToken;
+        public BasicGraphOnEdges<PolyIntEdge> graph;
+        internal CancelToken NetworkCancelToken;
 
         public int Weight { get {
                 return this.graph.Edges.Select(e => e.Weight*(this.layers[e.Source]-this.layers[e.Target])).Sum();
@@ -818,8 +818,10 @@ namespace Microsoft.Msagl.Layout.Layered {
         }
 
         protected override void RunInternal() {
-            if (graph.Edges.Count == 0 && graph.NodeCount == 0)
+            if (graph.Edges.Count == 0 && graph.NodeCount == 0) {
                 layers = new int[0];
+                return;
+            }
 
             FeasibleTree();
 

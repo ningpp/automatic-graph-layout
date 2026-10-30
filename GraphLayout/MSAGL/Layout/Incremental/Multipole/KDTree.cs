@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Diagnostics;
 using Microsoft.Msagl.Core.Geometry;
@@ -100,7 +100,7 @@ namespace Microsoft.Msagl.Layout.Incremental
         public class Particle
         {
             internal enum Dim { Horizontal = 0, Vertical = 1 };
-            internal Point force;
+            public Point force;
             internal Point point;
             internal bool splitLeft;
             internal double pos(Dim d)

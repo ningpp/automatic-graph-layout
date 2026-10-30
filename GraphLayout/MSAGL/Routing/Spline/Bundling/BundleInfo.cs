@@ -9,20 +9,20 @@ using Microsoft.Msagl.DebugHelpers;
 using Microsoft.Msagl.Core.Layout;
 
 namespace Microsoft.Msagl.Routing.Spline.Bundling {
-    internal class BundleInfo {
+    public class BundleInfo {
         const double FeasibleWidthEpsilon = 0.1; //??
 
-        internal readonly BundleBase SourceBase;
-        internal readonly BundleBase TargetBase;
+        public readonly BundleBase SourceBase;
+        public readonly BundleBase TargetBase;
         readonly Set<Polyline> obstaclesToIgnore;
-        readonly internal double EdgeSeparation;
-        readonly internal double[] HalfWidthArray;
+        readonly public double EdgeSeparation;
+        readonly public double[] HalfWidthArray;
         readonly double longEnoughSideLength;
 
         List<Polyline> tightObstaclesInTheBoundingBox;
-        internal double TotalRequiredWidth;
+        public double TotalRequiredWidth;
 
-        internal BundleInfo(BundleBase sourceBase, BundleBase targetBase, Set<Polyline> obstaclesToIgnore, double edgeSeparation, double[] halfWidthArray) {
+        public BundleInfo(BundleBase sourceBase, BundleBase targetBase, Set<Polyline> obstaclesToIgnore, double edgeSeparation, double[] halfWidthArray) {
             SourceBase = sourceBase;
             TargetBase = targetBase;
             this.obstaclesToIgnore = obstaclesToIgnore;
@@ -42,7 +42,7 @@ namespace Microsoft.Msagl.Routing.Spline.Bundling {
             }
         }
 
-        internal void SetParamsFeasiblySymmetrically(RectangleNode<Polyline, Point> tightTree) {
+        public void SetParamsFeasiblySymmetrically(RectangleNode<Polyline, Point> tightTree) {
             CalculateTightObstaclesForBundle(tightTree, obstaclesToIgnore);
             SetEndParamsSymmetrically();
         }
@@ -189,7 +189,7 @@ namespace Microsoft.Msagl.Routing.Spline.Bundling {
             return new LineSegment(i0.IntersectionPoint, i1.IntersectionPoint);
         }
 
-        internal void RotateBy(int rotationOfSourceRightPoint, int rotationOfSourceLeftPoint, int rotationOfTargetRightPoint, int rotationOfTargetLeftPoint, double parameterChange) {
+        public void RotateBy(int rotationOfSourceRightPoint, int rotationOfSourceLeftPoint, int rotationOfTargetRightPoint, int rotationOfTargetLeftPoint, double parameterChange) {
             bool needToUpdateSource = rotationOfSourceRightPoint != 0 || rotationOfSourceLeftPoint != 0;
             bool needToUpdateTarget = rotationOfTargetRightPoint != 0 || rotationOfTargetLeftPoint != 0;
 
@@ -202,7 +202,7 @@ namespace Microsoft.Msagl.Routing.Spline.Bundling {
             UpdateSourceAndTargetBases(needToUpdateSource, needToUpdateTarget);
         }
 
-        internal void UpdateSourceAndTargetBases(bool sourceChanged, bool targetChanged) {
+        public void UpdateSourceAndTargetBases(bool sourceChanged, bool targetChanged) {
             if (sourceChanged)
                 UpdatePointsOnBundleBase(SourceBase);
             if (targetChanged)
@@ -240,7 +240,7 @@ namespace Microsoft.Msagl.Routing.Spline.Bundling {
             }
         }
 
-        internal bool RotationIsLegal(int rotationOfSourceRightPoint, int rotationOfSourceLeftPoint,
+        public bool RotationIsLegal(int rotationOfSourceRightPoint, int rotationOfSourceLeftPoint,
             int rotationOfTargetRightPoint, int rotationOfTargetLeftPoint, double parameterChange) {
             //1. we can't have intersections with obstacles
             //(we check borderlines of the bundle only)

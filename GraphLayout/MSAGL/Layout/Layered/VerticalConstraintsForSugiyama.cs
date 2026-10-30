@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Msagl.Core.DataStructures;
@@ -9,12 +9,12 @@ namespace Microsoft.Msagl.Layout.Layered {
     /// <summary>
     /// vertical constraints for Suquiyama scheme
     /// </summary>
-    internal class VerticalConstraintsForSugiyama {
+    public class VerticalConstraintsForSugiyama {
         readonly Set<Node> _maxLayerOfGeomGraph = new Set<Node>();
         /// <summary>
         /// nodes that are pinned to the max layer
         /// </summary>
-        internal Set<Node> MaxLayerOfGeomGraph {
+        public Set<Node> MaxLayerOfGeomGraph {
             get { return _maxLayerOfGeomGraph; }
         }
 
@@ -22,7 +22,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// <summary>
         /// nodes that are pinned to the min layer
         /// </summary>
-        internal Set<Node> MinLayerOfGeomGraph
+        public Set<Node> MinLayerOfGeomGraph
         {
             get { return _minLayerOfGeomGraph; }
         }
@@ -32,7 +32,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// set of couple of nodes belonging to the same layer
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        internal Set<Tuple<Node, Node>> SameLayerConstraints
+        public Set<Tuple<Node, Node>> SameLayerConstraints
         {
             get { return sameLayerConstraints; }
         }
@@ -42,7 +42,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// set of node couples such that the first node of the couple is above the second one
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        internal Set<Tuple<Node, Node>> UpDownConstraints
+        public Set<Tuple<Node, Node>> UpDownConstraints
         {
             get { return upDownConstraints; }
         }
@@ -50,7 +50,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// pins a node to max layer
         /// </summary>
         /// <param name="node"></param>
-        internal void PinNodeToMaxLayer(Node node)
+        public void PinNodeToMaxLayer(Node node)
         {
             MaxLayerOfGeomGraph.Insert(node);
         }
@@ -59,13 +59,13 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// pins a node to min layer
         /// </summary>
         /// <param name="node"></param>
-        internal void PinNodeToMinLayer(Node node)
+        public void PinNodeToMinLayer(Node node)
         {
             System.Diagnostics.Debug.Assert(node != null);
             MinLayerOfGeomGraph.Insert(node);
         }
 
-        internal bool IsEmpty {
+        public bool IsEmpty {
             get { return MaxLayerOfGeomGraph.Count == 0 && MinLayerOfGeomGraph.Count == 0 && SameLayerConstraints.Count == 0 && this.UpDownConstraints.Count == 0; }
         }
 
@@ -73,7 +73,7 @@ namespace Microsoft.Msagl.Layout.Layered {
       
         
 
-        internal void Clear() {
+        public void Clear() {
             this.MaxLayerOfGeomGraph.Clear(); 
             this.MinLayerOfGeomGraph.Clear();
             this.SameLayerConstraints.Clear();
@@ -81,7 +81,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         }
         Set<IntPair> gluedUpDownIntConstraints = new Set<IntPair>();
 
-        internal Set<IntPair> GluedUpDownIntConstraints {
+        public Set<IntPair> GluedUpDownIntConstraints {
             get { return gluedUpDownIntConstraints; }
             set { gluedUpDownIntConstraints = value; }
         }
@@ -98,7 +98,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// </summary>
         Dictionary<int, int> sameLayerDictionaryOfRepresentatives = new Dictionary<int, int>();
         Dictionary<int, IEnumerable<int>> representativeToItsLayer = new Dictionary<int, IEnumerable<int>>();
-        internal IEnumerable<IEdge> GetFeedbackSet(BasicGraph<Node, PolyIntEdge> intGraphPar, Dictionary<Node, int> nodeIdToIndexPar) {
+        public IEnumerable<IEdge> GetFeedbackSet(BasicGraph<Node, PolyIntEdge> intGraphPar, Dictionary<Node, int> nodeIdToIndexPar) {
             this.nodeIdToIndex = nodeIdToIndexPar;
             this.intGraph = intGraphPar;
             this.maxRepresentative = -1;
@@ -110,7 +110,7 @@ namespace Microsoft.Msagl.Layout.Layered {
             return GetFeedbackSet();
         }
 
-        private void RemoveCyclesFromGluedConstraints() {
+        internal void RemoveCyclesFromGluedConstraints() {
             var feedbackSet= CycleRemoval<IntPair>.
                 GetFeedbackSetWithConstraints(new BasicGraphOnEdges<IntPair>(GluedUpDownIntConstraints, this.intGraph.NodeCount), null);
             //feedbackSet contains all glued constraints making constraints cyclic
@@ -118,7 +118,7 @@ namespace Microsoft.Msagl.Layout.Layered {
                 GluedUpDownIntConstraints.Remove(p);
         }
 
-        private void AddMaxMinConstraintsToGluedConstraints() {
+        internal void AddMaxMinConstraintsToGluedConstraints() {
             if (this.maxRepresentative != -1)
                 for (int i = 0; i < this.intGraph.NodeCount; i++) {
                     int j = NodeToRepr(i);
@@ -134,24 +134,24 @@ namespace Microsoft.Msagl.Layout.Layered {
                 }
         }
 
-        private void GlueTogetherSameConstraintsMaxAndMin() {
+        internal void GlueTogetherSameConstraintsMaxAndMin() {
             CreateDictionaryOfSameLayerRepresentatives();
             GluedUpDownIntConstraints = new Set<IntPair>(from p in UpDownInts select GluedIntPair(p));
         }
 
-        internal IntPair GluedIntPair(Tuple<int, int> p) {
+        public IntPair GluedIntPair(Tuple<int, int> p) {
             return new IntPair(NodeToRepr(p.Item1), NodeToRepr(p.Item2));
         }
      
-        private IntPair GluedIntPair(PolyIntEdge p) {
+        public IntPair GluedIntPair(PolyIntEdge p) {
             return new IntPair(NodeToRepr(p.Source), NodeToRepr(p.Target));
         }
 
-        internal IntPair GluedIntPair(IntPair p) {
+        public IntPair GluedIntPair(IntPair p) {
             return new IntPair(NodeToRepr(p.First), NodeToRepr(p.Second));
         }
 
-        internal PolyIntEdge GluedIntEdge(PolyIntEdge intEdge) {
+        public PolyIntEdge GluedIntEdge(PolyIntEdge intEdge) {
             int sourceRepr = NodeToRepr(intEdge.Source);
             int targetRepr = NodeToRepr(intEdge.Target);
             PolyIntEdge ie = new PolyIntEdge(sourceRepr, targetRepr);
@@ -162,24 +162,24 @@ namespace Microsoft.Msagl.Layout.Layered {
         }
         
 
-        internal int NodeToRepr(int node) {
+        public int NodeToRepr(int node) {
             int repr;
             if (this.sameLayerDictionaryOfRepresentatives.TryGetValue(node, out repr))
                 return repr;
             return node;
         }
 
-        private void CreateDictionaryOfSameLayerRepresentatives() {
+        public void CreateDictionaryOfSameLayerRepresentatives() {
             BasicGraphOnEdges<IntPair> graphOfSameLayers = CreateGraphOfSameLayers();
             foreach (var comp in ConnectedComponentCalculator<IntPair>.GetComponents(graphOfSameLayers))
                 GlueSameLayerNodesOfALayer(comp);
         }
 
-        private BasicGraphOnEdges<IntPair> CreateGraphOfSameLayers() {
+        public BasicGraphOnEdges<IntPair> CreateGraphOfSameLayers() {
             return new BasicGraphOnEdges<IntPair>(CreateEdgesOfSameLayers(), this.intGraph.NodeCount);
         }
 
-        private IEnumerable<IntPair> CreateEdgesOfSameLayers() {
+        public IEnumerable<IntPair> CreateEdgesOfSameLayers() {
             List<IntPair> ret = new List<IntPair>();
             if (maxRepresentative != -1)
                 ret.AddRange(from v in maxLayerInt where v != maxRepresentative select new IntPair(maxRepresentative, v));
@@ -192,7 +192,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// maps all nodes of the component to one random representative
         /// </summary>
         /// <param name="sameLayerNodes"></param>
-        private void GlueSameLayerNodesOfALayer(IEnumerable<int> sameLayerNodes) {
+        public void GlueSameLayerNodesOfALayer(IEnumerable<int> sameLayerNodes) {
             if (sameLayerNodes.Count<int>() > 1) {
                 int representative = -1;
                 if (ComponentsIsMaxLayer(sameLayerNodes))
@@ -212,11 +212,11 @@ namespace Microsoft.Msagl.Layout.Layered {
             }
         }
 
-        private bool ComponentIsMinLayer(IEnumerable<int> component) {
+        public bool ComponentIsMinLayer(IEnumerable<int> component) {
             return component.Contains<int>(this.minRepresentative);
         }
 
-        private bool ComponentsIsMaxLayer(IEnumerable<int> component) {
+        public bool ComponentsIsMaxLayer(IEnumerable<int> component) {
             return component.Contains<int>(this.maxRepresentative);
         }
 
@@ -238,22 +238,22 @@ namespace Microsoft.Msagl.Layout.Layered {
             set { upDownInts = value; }
         }
 
-        private void CreateIntegerConstraints() {
+        public void CreateIntegerConstraints() {
             CreateMaxIntConstraints();
             CreateMinIntConstraints();
             CreateUpDownConstraints();
             CreateSameLayerConstraints();
         }
 
-        private void CreateSameLayerConstraints() {
+        public void CreateSameLayerConstraints() {
             this.SameLayerInts = CreateIntConstraintsFromStringCouples(this.SameLayerConstraints);
         }
 
-        private void CreateUpDownConstraints() {
+        public void CreateUpDownConstraints() {
             this.UpDownInts = CreateIntConstraintsFromStringCouples(this.UpDownConstraints);
         }
 
-        private List<Tuple<int, int>> CreateIntConstraintsFromStringCouples(Set<Tuple<Node, Node>> set)
+        internal List<Tuple<int, int>> CreateIntConstraintsFromStringCouples(Set<Tuple<Node, Node>> set)
         {
             return new List<Tuple<int, int>>(from couple in set
                                               let t = new Tuple<int, int>(NodeIndex(couple.Item1), NodeIndex(couple.Item2))
@@ -261,52 +261,52 @@ namespace Microsoft.Msagl.Layout.Layered {
                                               select t);
         }
 
-        private void CreateMinIntConstraints() {
+        public void CreateMinIntConstraints() {
             this.minLayerInt = CreateIntConstraintsFromExtremeLayer(this.MinLayerOfGeomGraph);
             if (minLayerInt.Count > 0)
                 this.minRepresentative = minLayerInt[0];
         }
 
-        private void CreateMaxIntConstraints() {
+        public void CreateMaxIntConstraints() {
             this.maxLayerInt = CreateIntConstraintsFromExtremeLayer(this.MaxLayerOfGeomGraph);
             if (maxLayerInt.Count > 0)
                 this.maxRepresentative = maxLayerInt[0];
         }
 
-        private List<int> CreateIntConstraintsFromExtremeLayer(Set<Node> setOfNodes) {
+        public List<int> CreateIntConstraintsFromExtremeLayer(Set<Node> setOfNodes) {
             return new List<int>(from node in setOfNodes let index = NodeIndex(node) where index != -1 select index);   
         }
-        int NodeIndex(Node node) {
+        public int NodeIndex(Node node) {
             int index;
             if (this.nodeIdToIndex.TryGetValue(node, out index))
                 return index;
             return -1;
         }
-        private IEnumerable<IEdge> GetFeedbackSet() {
+        public IEnumerable<IEdge> GetFeedbackSet() {
             this.gluedIntGraph = CreateGluedGraph();
             return UnglueIntPairs(CycleRemoval<IntPair>.GetFeedbackSetWithConstraints(gluedIntGraph, this.GluedUpDownIntConstraints));//avoiding lazy evaluation
         }
 
-        private IEnumerable<IEdge> UnglueIntPairs(IEnumerable<IEdge> gluedEdges) {
+        public IEnumerable<IEdge> UnglueIntPairs(IEnumerable<IEdge> gluedEdges) {
             foreach (IEdge gluedEdge in gluedEdges)
                 foreach (IEdge ungluedEdge in UnglueEdge(gluedEdge))
                     yield return ungluedEdge; 
 
         }
 
-        private IEnumerable<IEdge> UnglueEdge(IEdge gluedEdge) {
+        public IEnumerable<IEdge> UnglueEdge(IEdge gluedEdge) {
             foreach (int source in UnglueNode(gluedEdge.Source))
                 foreach (PolyIntEdge edge in intGraph.OutEdges(source))
                     if (NodeToRepr(edge.Target) == gluedEdge.Target)
                         yield return edge;
         }
 
-        private BasicGraphOnEdges<IntPair> CreateGluedGraph() {
+        public BasicGraphOnEdges<IntPair> CreateGluedGraph() {
             return new BasicGraphOnEdges<IntPair>(new Set<IntPair>(from edge in this.intGraph.Edges select GluedIntPair(edge)), this.intGraph.NodeCount);
         }
 
 
-        IEnumerable<int> UnglueNode(int node) {
+        public IEnumerable<int> UnglueNode(int node) {
             IEnumerable<int> layer;
             if (this.representativeToItsLayer.TryGetValue(node, out layer))
                 return layer;
@@ -314,7 +314,7 @@ namespace Microsoft.Msagl.Layout.Layered {
         }
 
 
-        internal int[] GetGluedNodeCounts() {
+        public int[] GetGluedNodeCounts() {
             int[] ret = new int[this.nodeIdToIndex.Count];
             for (int node = 0; node < ret.Length; node++)
                 ret[NodeToRepr(node)]++;

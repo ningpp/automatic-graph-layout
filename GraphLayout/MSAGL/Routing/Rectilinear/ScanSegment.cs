@@ -1,4 +1,4 @@
-//
+﻿//
 // ScanSegment.cs
 // MSAGL class for visibility scan segments for Rectilinear Edge Routing.
 //
@@ -13,68 +13,68 @@ using Microsoft.Msagl.Core.Geometry;
 using Microsoft.Msagl.Routing.Visibility;
 
 namespace Microsoft.Msagl.Routing.Rectilinear {
-    internal class ScanSegment : SegmentBase {
+    public class ScanSegment : SegmentBase {
         // This is a single segment added by the ScanLine.
-        internal PointAndCrossingsList GroupBoundaryPointAndCrossingsList;
+        public PointAndCrossingsList GroupBoundaryPointAndCrossingsList;
         private Point endPoint;
         private Point startPoint;
 
-        internal const double NormalWeight = VisibilityEdge.DefaultWeight;
-        internal const double ReflectionWeight = 5;
-        internal const double OverlappedWeight = 500;
-        internal double Weight { get; private set; }
+        public const double NormalWeight = VisibilityEdge.DefaultWeight;
+        public const double ReflectionWeight = 5;
+        public const double OverlappedWeight = 500;
+        public double Weight { get; private set; }
 
         // For sparse visibility graph.
-        internal ScanSegment NextSegment { get; set; }
+        public ScanSegment NextSegment { get; set; }
 
-        internal ScanSegment(Point start, Point end) : this(start, end, NormalWeight, gbcList:null) {
+        public ScanSegment(Point start, Point end) : this(start, end, NormalWeight, gbcList:null) {
         }
 
-        internal ScanSegment(Point start, Point end, double weight, PointAndCrossingsList gbcList) {
+        public ScanSegment(Point start, Point end, double weight, PointAndCrossingsList gbcList) {
             Update(start, end);
             Weight = weight;
             GroupBoundaryPointAndCrossingsList = gbcList;
         }
 
-        internal override Point Start {
+        public override Point Start {
             get { return startPoint; }
         }
 
-        internal override Point End {
+        public override Point End {
             get { return endPoint; }
         }
 
-        internal bool IsVertical {
+        public bool IsVertical {
             get { return IsVerticalSegment(Start, End); }
         }
 
-        internal ScanDirection ScanDirection {
+        public ScanDirection ScanDirection {
             get { return IsVertical ? ScanDirection.VerticalInstance : ScanDirection.HorizontalInstance; }
         }
 
         // For fast intersection calculation and ScanSegment splicing.
-        internal VisibilityVertex LowestVisibilityVertex { get; private set; }
-        internal VisibilityVertex HighestVisibilityVertex { get; private set; }
+        public VisibilityVertex LowestVisibilityVertex { get; private set; }
+        public VisibilityVertex HighestVisibilityVertex { get; private set; }
 
         // For overlaps, we will need to create a VisibilityVertex at the junction of overlapped/nonoverlapped
         // segments, but we don't want to create this for non-overlapped situations.
-        internal bool IsOverlapped {
+        public bool IsOverlapped {
             get { return OverlappedWeight == this.Weight; }
         }
-        internal bool IsReflection {
+        public bool IsReflection {
             get { return ReflectionWeight == this.Weight; }
         }
 
-        internal bool NeedStartOverlapVertex { get; set; }
-        internal bool NeedEndOverlapVertex { get; set; }
+        public bool NeedStartOverlapVertex { get; set; }
+        public bool NeedEndOverlapVertex { get; set; }
 
-        internal static bool IsVerticalSegment(Point start, Point end) {
+        public static bool IsVerticalSegment(Point start, Point end) {
             return start.X == end.X;
         }
 
         // For group boundary crossings.
 
-        internal void MergeGroupBoundaryCrossingList(PointAndCrossingsList other) {
+        public void MergeGroupBoundaryCrossingList(PointAndCrossingsList other) {
             if (null != other) {
                 if (null == GroupBoundaryPointAndCrossingsList) {
                     GroupBoundaryPointAndCrossingsList = new PointAndCrossingsList();
@@ -83,7 +83,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             }
         }
 
-        internal void TrimGroupBoundaryCrossingList() {
+        public void TrimGroupBoundaryCrossingList() {
             if (null != GroupBoundaryPointAndCrossingsList) {
                 GroupBoundaryPointAndCrossingsList.Trim(Start, End);
             }
@@ -91,7 +91,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
 
         // ctor
 
-        internal void Update(Point start, Point end) {
+        public void Update(Point start, Point end) {
             Debug.Assert(PointComparer.Equal(start, end)
                     || StaticGraphUtility.IsAscending(PointComparer.GetPureDirection(start, end))
                     , "non-ascending segment");
@@ -105,7 +105,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
         }
 
         // Append a vertex before LowestVisibilityVertex or after HighestVisibilityVertex.
-        internal void AppendVisibilityVertex(VisibilityGraph vg, VisibilityVertex newVertex) {
+        public void AppendVisibilityVertex(VisibilityGraph vg, VisibilityVertex newVertex) {
             Debug.Assert(null != newVertex, "newVertex must not be null");
             Debug.Assert((null == LowestVisibilityVertex) == (null == HighestVisibilityVertex), "Mismatched null Lowest/HighestVisibilityVertex");
             Debug.Assert(StaticGraphUtility.PointIsOnSegment(this, newVertex.Point), "newVertex is out of segment range");
@@ -169,14 +169,14 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             }
         }
 
-        internal void OnSegmentIntersectorBegin(VisibilityGraph vg) {
+        public void OnSegmentIntersectorBegin(VisibilityGraph vg) {
             // If we process any group crossings, they'll have created the first point.
             if (!AppendGroupCrossingsThroughPoint(vg, Start)) {
                 LoadStartOverlapVertexIfNeeded(vg);
             }
         }
 
-        internal void OnSegmentIntersectorEnd(VisibilityGraph vg) {
+        public void OnSegmentIntersectorEnd(VisibilityGraph vg) {
             AppendGroupCrossingsThroughPoint(vg, End);
             GroupBoundaryPointAndCrossingsList = null;
             if ((null == HighestVisibilityVertex) || (PointComparer.IsPureLower(HighestVisibilityVertex.Point, End))) {
@@ -197,7 +197,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
         //  - For multiple collinear mixed Open and Close events, we'll do all Opens first,
         //    followed by all closes (per EventQueue opening), so we may add multiple discrete
         //    segments, which ScanSegmentTree will merge.
-        internal static bool Subsume(ref ScanSegment seg, Point newStart, Point newEnd,
+        public static bool Subsume(ref ScanSegment seg, Point newStart, Point newEnd,
                 double weight, PointAndCrossingsList gbcList,
                 ScanDirection scanDir, ScanSegmentTree tree, out bool extendStart,
                 out bool extendEnd) {
@@ -253,7 +253,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             return true;
         }
 
-        internal bool IntersectsSegment(ScanSegment seg) {
+        public bool IntersectsSegment(ScanSegment seg) {
             return StaticGraphUtility.SegmentsIntersect(this, seg);
         }
 
@@ -266,7 +266,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
 
         #region SparseVisibilityGraphGenerator utilities
         
-        internal bool ContainsPoint(Point test) {
+        public bool ContainsPoint(Point test) {
             // This may be off the line so do not use GetPureDirections. 
             return PointComparer.Equal(this.Start, test)
                     || PointComparer.Equal(this.End, test)
@@ -275,7 +275,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
 
         private Set<double> sparsePerpendicularCoords;
 
-        internal bool HasSparsePerpendicularCoords {
+        public bool HasSparsePerpendicularCoords {
             get {
                 return (this.sparsePerpendicularCoords == null) ? false : (this.sparsePerpendicularCoords.Count > 0);
             }
@@ -285,7 +285,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             return this.IsVertical ? new Point(this.Start.X, perpCoord) : new Point(perpCoord, this.Start.Y);
         }
 
-        internal void AddSparseVertexCoord(double perpCoord) {
+        public void AddSparseVertexCoord(double perpCoord) {
             Debug.Assert(this.ContainsPoint(this.CreatePointFromPerpCoord(perpCoord)), "vertexLocation is not on Segment");
             if (this.sparsePerpendicularCoords == null) {
                 this.sparsePerpendicularCoords = new Set<double>();
@@ -293,7 +293,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             this.sparsePerpendicularCoords.Insert(perpCoord);
         }
 
-        internal bool AddSparseEndpoint(double coord) {
+        public bool AddSparseEndpoint(double coord) {
             // This is called after AddSparseVertexCoord so this.sparsePerpendicularCoords is already instantiated.
             if (!this.sparsePerpendicularCoords.Contains(coord)) {
                 this.sparsePerpendicularCoords.Insert(coord);
@@ -302,7 +302,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             return false;
         }
 
-        internal void CreateSparseVerticesAndEdges(VisibilityGraph vg) {
+        public void CreateSparseVerticesAndEdges(VisibilityGraph vg) {
             if (this.sparsePerpendicularCoords == null) {
                 return;
             }
@@ -320,7 +320,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear {
             this.sparsePerpendicularCoords = null;
         }
 
-        internal bool HasVisibility() {
+        public bool HasVisibility() {
             // Skip this only if it has no visibility vertex.
             return (null != this.LowestVisibilityVertex);
         }

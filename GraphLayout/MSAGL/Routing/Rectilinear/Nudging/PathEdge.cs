@@ -1,4 +1,4 @@
-using Microsoft.Msagl.Core.Geometry;
+﻿using Microsoft.Msagl.Core.Geometry;
 using Microsoft.Msagl.Core.Geometry.Curves;
 
 namespace Microsoft.Msagl.Routing.Rectilinear.Nudging {
@@ -8,13 +8,13 @@ namespace Microsoft.Msagl.Routing.Rectilinear.Nudging {
     /// </summary>
     /// PathEdge passes through the AxisEdge that it points to but may go to the different direction.
     /// In the last case the PathEdge is marked as Reversed. Several PathEdges can share the same AxisEdge.
-    internal class PathEdge {
+    public class PathEdge {
 
-        internal AxisEdge AxisEdge { get; set; }
-        internal PathEdge Next { get; set; }
-        internal PathEdge Prev { get; set; }
-        internal double Width { get; set; }
-        internal Path Path { get; set; }
+        public AxisEdge AxisEdge { get; set; }
+        public PathEdge Next { get; set; }
+        public PathEdge Prev { get; set; }
+        public double Width { get; set; }
+        public Path Path { get; set; }
         
         public override string ToString() {
             return Source + " " + Target;
@@ -22,7 +22,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear.Nudging {
 
 
 
-        internal PathEdge(AxisEdge edgeForNudging, double width) {
+        public PathEdge(AxisEdge edgeForNudging, double width) {
             AxisEdge = edgeForNudging;
             Width = width;
         }
@@ -35,7 +35,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear.Nudging {
         /// [VisibilityEdge.SourcePoint, VisibilityEdge.TargetPoint] in to the direction of the VisibilityEdge.Perpendicular.
         /// Offset holder is the same for the maximal parallel sequence of connected PathEdges
         /// </summary>
-        internal LongestNudgedSegment LongestNudgedSegment {
+        public LongestNudgedSegment LongestNudgedSegment {
             get { return longestNudgedSegment; }
             set { 
                 longestNudgedSegment = value;
@@ -50,20 +50,20 @@ namespace Microsoft.Msagl.Routing.Rectilinear.Nudging {
         /// A fixed edge cannot be shifted from its visibility edge; offset is always 0.
         /// Such an edge can be, for example, a terminal edge going to a port. 
         /// </summary>
-        internal bool IsFixed { get; set; }
+        public bool IsFixed { get; set; }
 
         
-        internal Point Source {
+        public Point Source {
             get { return !Reversed? AxisEdge.SourcePoint: AxisEdge.TargetPoint; }
         }
 
         
-        internal Point Target {
+        public Point Target {
             get { return Reversed ? AxisEdge.SourcePoint : AxisEdge.TargetPoint; }
         }
 
        
-        static internal bool VectorsAreParallel(Point a, Point b) {
+        static public bool VectorsAreParallel(Point a, Point b) {
             return ApproximateComparer.Close(a.X * b.Y - a.Y * b.X, 0);
         }
 
@@ -72,18 +72,18 @@ namespace Microsoft.Msagl.Routing.Rectilinear.Nudging {
                                       pathEdge.AxisEdge.TargetPoint-pathEdge.AxisEdge.SourcePoint);
         }
 
-        internal Direction Direction { get { return Reversed ? CompassVector.OppositeDir(AxisEdge.Direction) : AxisEdge.Direction;} }
+        public Direction Direction { get { return Reversed ? CompassVector.OppositeDir(AxisEdge.Direction) : AxisEdge.Direction;} }
         /// <summary>
         /// if set to true then in the path the edge is reversed
         /// </summary>
-        internal bool Reversed {get; set;}
+        public bool Reversed {get; set;}
 
         int index=-1;//not set yet
 
         /// <summary>
         /// the index of the edge in the order
         /// </summary>
-        internal int Index {
+        public int Index {
             get { return index; }
             set { index = value; }
         }

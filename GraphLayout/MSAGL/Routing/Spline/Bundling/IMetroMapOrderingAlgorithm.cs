@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -11,7 +11,7 @@ namespace Microsoft.Msagl.Routing.Spline.Bundling {
     /// <summary>
     /// 
     /// </summary>
-    interface IMetroMapOrderingAlgorithm {
+    public interface IMetroMapOrderingAlgorithm {
         IEnumerable<Metroline> GetOrder(Station u, Station v);
 
         /// <summary>

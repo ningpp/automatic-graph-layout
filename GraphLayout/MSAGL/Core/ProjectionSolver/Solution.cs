@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Solution.cs" company="Microsoft">
 //   (c) Microsoft Corporation.  All rights reserved.
 // </copyright>
@@ -21,12 +21,12 @@ namespace Microsoft.Msagl.Core.ProjectionSolver
         /// The only failure condition is if there are one or more unsatisfiable constraints, such as cycles
         /// or mutually exclusive equality constraints.
         /// </summary>
-        public int NumberOfUnsatisfiableConstraints { get; internal set; }
+        public int NumberOfUnsatisfiableConstraints { get; set; }
 
         /// <summary>
         /// The number of times the outer Project/Split loop was run.
         /// </summary>
-        public Int32 OuterProjectIterations { get; internal set; }
+        public Int32 OuterProjectIterations { get; set; }
 
         /// <summary>
         /// The number of times Project iterated internally; divide by OuterProjectIterations to get the average
@@ -47,34 +47,34 @@ namespace Microsoft.Msagl.Core.ProjectionSolver
         /// <summary>
         /// The maximum depth of a constraint tree.
         /// </summary>
-        public Int32 MaxConstraintTreeDepth { get; internal set; }
+        public Int32 MaxConstraintTreeDepth { get; set; }
 
         /// <summary>
         /// The final value of the goal function.
         /// </summary>
-        public double GoalFunctionValue { get; internal set; }
+        public double GoalFunctionValue { get; set; }
 
         /// <summary>
         /// Whether Solve() used the full Qpsc (Quadratic Programming for Separation Constraints) algorithm,
         /// either by default or because UsedParameters.ForceQpsc was set.
         /// </summary>
-        public SolverAlgorithm AlgorithmUsed { get; internal set; }
+        public SolverAlgorithm AlgorithmUsed { get; set; }
 
         /// <summary>
         /// If true, the function ended due to TimeLimit being exceeded.
         /// </summary>
-        public bool TimeLimitExceeded { get; internal set; }
+        public bool TimeLimitExceeded { get; set; }
 
         /// <summary>
         /// If true, the function ended due to OuterProjectIterationsLimit being exceeded.
         /// </summary>
-        public bool OuterProjectIterationsLimitExceeded { get; internal set; }
+        public bool OuterProjectIterationsLimitExceeded { get; set; }
 
         /// <summary>
         /// If true, a call to Project ended early due to InnerProjectIterationsLimit being exceeded.
         /// The result may be nonfeasible.
         /// </summary>
-        public bool InnerProjectIterationsLimitExceeded { get; internal set; }
+        public bool InnerProjectIterationsLimitExceeded { get; set; }
 
         /// <summary>
         /// Indicates whether one or more execution limits were exceeded.

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
@@ -57,13 +57,13 @@ namespace Microsoft.Msagl.Layout.Layered {
         /// <summary>
         /// minLayer, maxLayer, same layer, up-down, up-down vertical and left-right constraints are supported by this class
         /// </summary>
-        internal VerticalConstraintsForSugiyama VerticalConstraints {
+        public VerticalConstraintsForSugiyama VerticalConstraints {
             get { return verticalConstraints; }
         }
 
         readonly HorizontalConstraintsForSugiyama horizontalConstraints = new HorizontalConstraintsForSugiyama();
 
-        internal HorizontalConstraintsForSugiyama HorizontalConstraints {
+        public HorizontalConstraintsForSugiyama HorizontalConstraints {
             get { return horizontalConstraints; }
         }
 
@@ -305,7 +305,7 @@ namespace Microsoft.Msagl.Layout.Layered {
             "CA2000:Dispose objects before losing scope"),
          SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider",
              MessageId = "System.String.Format(System.String,System.Object)")]
-        internal static LayeredLayoutEngine CalculateLayout(GeometryGraph msaglGraph, SugiyamaLayoutSettings settings, CancelToken cancelToken) {
+        public static LayeredLayoutEngine CalculateLayout(GeometryGraph msaglGraph, SugiyamaLayoutSettings settings, CancelToken cancelToken) {
             var engine = new LayeredLayoutEngine(msaglGraph, settings);
 #if USE_PHYLOTREE
            PhyloTree phyloTree = msaglGraph as PhyloTree;
@@ -390,7 +390,7 @@ namespace Microsoft.Msagl.Layout.Layered {
             set { aspectRatio = value; }
         }
 
-        internal double ActualLayerSeparation(bool layersAreDoubled) {
+        public double ActualLayerSeparation(bool layersAreDoubled) {
             return layersAreDoubled ? LayerSeparation/2.0 : LayerSeparation;
         }
 

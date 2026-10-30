@@ -58,7 +58,7 @@ namespace Microsoft.Msagl.Prototype.LayoutEditing {
         [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         readonly GeometryGraph graph;
 
-        internal Node Target { get; private set; }
+        public Node Target { get; private set; }
 
         VisibilityVertex sourceVisibilityVertex;
 
@@ -69,10 +69,10 @@ namespace Microsoft.Msagl.Prototype.LayoutEditing {
             //            set { targetVisibilityVertex = value; }
         }
 
-        internal Node Source { get; private set; }
+        public Node Source { get; private set; }
 
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal GeometryGraph Graph {
+        public GeometryGraph Graph {
             get { return graph; }
         }
 

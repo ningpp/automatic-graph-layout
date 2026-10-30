@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -9,26 +9,26 @@ namespace Microsoft.Msagl.Routing.Rectilinear.Nudging {
     /// <summary>
     /// sets the order of connector paths on the edges
     /// </summary>
-    internal class CombinatorialNudger {
+    public class CombinatorialNudger {
 
         const int NotOrdered = int.MaxValue;
 
         //A new visibility graph is needed; the DAG of AxisEdges.
         readonly VisibilityGraph pathVisibilityGraph = new VisibilityGraph();
-        internal VisibilityGraph PathVisibilityGraph {
+        public VisibilityGraph PathVisibilityGraph {
             get { return pathVisibilityGraph; }
         }
 
     
         readonly Dictionary<AxisEdge, List<PathEdge>> axisEdgesToPathOrders = new Dictionary<AxisEdge, List<PathEdge>>();
 
-        internal CombinatorialNudger(IEnumerable<Path> paths) {
+        public CombinatorialNudger(IEnumerable<Path> paths) {
             OriginalPaths = paths;
         }
 
         IEnumerable<Path> OriginalPaths { get; set; }
 
-        internal Dictionary<AxisEdge, List<PathEdge>> GetOrder() {
+        public Dictionary<AxisEdge, List<PathEdge>> GetOrder() {
             FillTheVisibilityGraphByWalkingThePaths();
             InitPathOrder();
             OrderPaths();
@@ -183,7 +183,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear.Nudging {
         }
 
 
-        internal List<PathEdge> PathOrderOfVisEdge(AxisEdge axisEdge) {
+        public List<PathEdge> PathOrderOfVisEdge(AxisEdge axisEdge) {
             return axisEdgesToPathOrders[axisEdge];
         }
 
@@ -198,7 +198,7 @@ namespace Microsoft.Msagl.Routing.Rectilinear.Nudging {
 
         }
 
-        static internal IEnumerable<AxisEdge> WalkGraphEdgesInTopologicalOrderIfPossible(VisibilityGraph visibilityGraph){
+        static public IEnumerable<AxisEdge> WalkGraphEdgesInTopologicalOrderIfPossible(VisibilityGraph visibilityGraph){
             //Here the visibility graph is always a DAG since the edges point only to North and East
             // where possible
             var sourcesQueue = new Queue<VisibilityVertex>();

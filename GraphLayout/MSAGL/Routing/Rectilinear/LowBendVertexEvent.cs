@@ -7,7 +7,7 @@
 using Microsoft.Msagl.Core.Geometry.Curves;
 
 namespace Microsoft.Msagl.Routing.Rectilinear {
-    internal class LowBendVertexEvent: BasicVertexEvent {
-        internal LowBendVertexEvent(Obstacle obstacle, PolylinePoint p) : base(obstacle, p) { }
+    public class LowBendVertexEvent: BasicVertexEvent {
+        public LowBendVertexEvent(Obstacle obstacle, PolylinePoint p) : base(obstacle, p) { }
     }
 }
